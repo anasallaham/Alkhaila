@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="0">
+
+    <record id="account_journal_rule_move" model="ir.rule">
+        <field name="name">Rule Account Moves</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="domain_force">['|',('journal_id.rule_users', 'in', user.id),('journal_id.rule_users', '=', False)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+    </record>
+
+    <record id="account_journal_rule_moveline" model="ir.rule">
+        <field name="name">Rule Account MovesLines</field>
+        <field name="model_id" ref="account.model_account_move_line"/>
+        <field name="domain_force">['|',('move_id.journal_id.rule_users', 'in', user.id),('move_id.journal_id.rule_users', '=', False)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+    </record>
+
+    <record id="account_journal_rule_journal" model="ir.rule">
+        <field name="name">Rule Account Journal</field>
+        <field name="model_id" ref="account.model_account_journal"/>
+        <field name="domain_force">['|',('rule_users', 'in', user.id),('rule_users', '=', False)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+    </record>
+
+</data>
+</odoo>
