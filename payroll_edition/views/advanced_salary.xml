@@ -1,328 +1,312 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
 
-        <menuitem id="advanced_salary_root" name="السلف" parent="hr_payroll.menu_hr_payroll_root" sequence="10"/>
+    <menuitem id="advanced_salary_root" name="السلف" parent="hr_payroll.menu_hr_payroll_root" sequence="10"/>
 
-        <menuitem id="advanced_salary_sub" name="السلف" parent="advanced_salary_root"/>
+    <menuitem id="advanced_salary_sub" name="السلف" parent="advanced_salary_root"/>
 
-        <record id="advanced_salary_module_tree_view" model="ir.ui.view">
-            <field name="name">advanced.salary.tree</field>
-            <field name="model">advanced.salary</field>
-            <field name="arch" type="xml">
-                <tree>
-                    <field name="order_number"/>
-                    <field name="note"/>
-                    <field name="hr_employee"/>
-                    <field name="amount" sum="Total"/>
-                    <field name="date"/>
-                    <field name="state"/>
-                </tree>
-            </field>
-        </record>
+    <record id="advanced_salary_module_tree_view" model="ir.ui.view">
+        <field name="name">advanced.salary.tree</field>
+        <field name="model">advanced.salary</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="order_number"/>
+                <field name="note"/>
+                <field name="hr_employee"/>
+                <field name="amount" sum="Total"/>
+                <field name="date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
 
-        <record id="advanced_salary_module_form_view" model="ir.ui.view">
-            <field name="name">advanced.salary.form</field>
-            <field name="model">advanced.salary</field>
-            <field name="arch" type="xml">
-                <form string="advanced_salary">
+    <record id="advanced_salary_module_form_view" model="ir.ui.view">
+        <field name="name">advanced.salary.form</field>
+        <field name="model">advanced.salary</field>
+        <field name="arch" type="xml">
+            <form string="advanced_salary">
 
-                    <header>
-                        <button name="action_depatment_manager_accept" string="موافقة القسم"
-                                type="object" class="btn-primary"
-                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                <header>
+                    <button name="action_depatment_manager_accept" string="موافقة القسم"
+                            type="object" class="btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
 
 
-                        <button name="action_hr_manager_accept" string="موافقة الموارد البشرية"
-                                type="object" class="btn-primary"
-                                attrs="{'invisible': [('state', '!=', 'depatment_manager_accept')]}"/>
+                    <button name="action_hr_manager_accept" string="موافقة الموارد البشرية"
+                            type="object" class="btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'depatment_manager_accept')]}"/>
 
-                        <button name="action_accepted" string="الموافقة النهائية"
-                                type="object" class="btn-primary"
-                                attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
+                    <button name="action_accepted" string="الموافقة النهائية"
+                            type="object" class="btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
 
-                        <button name="draft_advanced" attrs="{'invisible': [('state', '=', 'draft')]}" type="object"
-                                string="الرجوع الى مسودة"/>
-                        <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['draft','posted','refuse'])]}"
-                                type="object" string="رفض"/>
+                    <button name="draft_advanced" attrs="{'invisible': [('state', '=', 'draft')]}" type="object"
+                            string="الرجوع الى مسودة"/>
+                    <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['draft','posted','refuse'])]}"
+                            type="object" string="رفض"/>
 
-                        <field name="state" widget="statusbar"
-                               statusbar_visible="draft,depatment_manager_accept,hr_manager_accept,accepted"/>
-                    </header>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,depatment_manager_accept,hr_manager_accept,accepted"/>
+                </header>
 
-                    <sheet>
+                <sheet>
+                    <group>
                         <group>
-                            <group>
-                                <field name="order_number"/>
-                                <field name="note" attrs="{'readonly': [('state', '=', 'posted')]}"/>
-                                <field name="hr_employee" attrs="{'readonly': [('state', '=', 'posted')]}"/>
-                                <field name="amount" attrs="{'readonly': [('state', '=', 'posted')]}"/>
-                            </group>
-                            <group>
-                                <field name="date" attrs="{'readonly': [('state', '=', 'posted')]}"/>
-                                <field name="journal_id" attrs="{'readonly': [('state', '=', 'posted')]}"/>
-                                <field name="analytic_account_id" attrs="{'readonly': [('state', '=', 'posted')]}"/>
-                            </group>
+                            <field name="order_number"/>
+                            <field name="note" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                            <field name="hr_employee" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                            <field name="amount" attrs="{'readonly': [('state', '=', 'posted')]}"/>
                         </group>
-                        <notebook>
-                            <page string="القيود">
-                                <field name="move_id"/>
-                            </page>
+                        <group>
+                            <field name="date" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                            <field name="journal_id" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                            <field name="analytic_account_id" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="القيود">
+                            <field name="move_id"/>
+                        </page>
 
-                        </notebook>
-                    </sheet>
-                </form>
+                    </notebook>
+                </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
                     <field name="activity_ids" widget="mail_activity"/>
                     <field name="message_ids" widget="mail_thread"/>
                 </div>
-            </field>
-        </record>
+            </form>
 
-        <record id="advanced_salary_action" model="ir.actions.act_window">
-            <field name="name">السلف</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">advanced.salary</field>
-            <field name="view_mode">tree,form</field>
-        </record>
+        </field>
+    </record>
 
-
-        <menuitem id="advanced_salary_sub_sub" name="السلف" parent="advanced_salary_sub"
-                  action="advanced_salary_action"/>
+    <record id="advanced_salary_action" model="ir.actions.act_window">
+        <field name="name">السلف</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">advanced.salary</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 
 
-        <menuitem id="penalty_name_root" name="العقوبات" parent="hr_payroll.menu_hr_payroll_root" sequence="10"/>
+    <menuitem id="advanced_salary_sub_sub" name="السلف" parent="advanced_salary_sub" action="advanced_salary_action"/>
 
-        <menuitem id="penalty_name_sub" name=" العقوبات" parent="penalty_name_root"/>
 
-        <record id="penalty_name_module_tree_view" model="ir.ui.view">
-            <field name="name">penalty.name.tree</field>
-            <field name="model">penalty.name</field>
-            <field name="arch" type="xml">
-                <tree>
-                    <field name="name"/>
-                </tree>
-            </field>
-        </record>
+    <menuitem id="penalty_name_root" name="العقوبات" parent="hr_payroll.menu_hr_payroll_root" sequence="10"/>
 
-        <record id="penalty_name_module_form_view" model="ir.ui.view">
-            <field name="name">penalty.name.form</field>
-            <field name="model">penalty.name</field>
-            <field name="arch" type="xml">
-                <form string="penalty_name">
-                    <sheet>
+    <menuitem id="penalty_name_sub" name=" العقوبات" parent="penalty_name_root"/>
+
+    <record id="penalty_name_module_tree_view" model="ir.ui.view">
+        <field name="name">penalty.name.tree</field>
+        <field name="model">penalty.name</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="penalty_name_module_form_view" model="ir.ui.view">
+        <field name="name">penalty.name.form</field>
+        <field name="model">penalty.name</field>
+        <field name="arch" type="xml">
+            <form string="penalty_name">
+                <sheet>
+                    <group>
                         <group>
-                            <group>
-                                <field name="name"/>
-                            </group>
+                            <field name="name"/>
                         </group>
-                    </sheet>
-                </form>
-            </field>
-        </record>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
-        <record id="penalty_name_action" model="ir.actions.act_window">
-            <field name="name">تعريف العقوبات</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">penalty.name</field>
-            <field name="view_mode">tree,form</field>
-        </record>
-
-
-        <menuitem id="penalty_name_sub_sub" name="تعريف العقوبات" parent="penalty_name_sub"
-                  action="penalty_name_action"/>
+    <record id="penalty_name_action" model="ir.actions.act_window">
+        <field name="name">تعريف العقوبات</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">penalty.name</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 
 
-        <record id="penalty_salary_module_tree_view" model="ir.ui.view">
-            <field name="name">penalty.salary.tree</field>
-            <field name="model">penalty.salary</field>
-            <field name="arch" type="xml">
-                <tree>
-                    <field name="order_number"/>
-                    <field name="note"/>
-                    <field name="penalty_name"/>
-                    <field name="hr_employee"/>
-                    <field name="amount" sum="Total"/>
-                    <field name="date"/>
-                    <field name="state"/>
-                </tree>
-            </field>
-        </record>
-
-        <record id="penalty_salary_module_form_view" model="ir.ui.view">
-            <field name="name">penalty.salary.form</field>
-            <field name="model">penalty.salary</field>
-            <field name="arch" type="xml">
-                <form string="penalty_salary">
-                    <!--
-                                    <header>
-                                        <button name="post_advanced" type='object' string='ترحيل' states='draft' />
-                                        <button name="draft_advanced" type='object' string='الغاء الترحيل' states='posted' />
-                                        <field name="state" widget="statusbar"
-                                               statusbar_colors='{"draft":"blue","posted":"black"}'/>
-                                    </header>
-                    -->
-                    <header>
-                        <button name="action_depatment_manager_accept" string="موافقة القسم"
-                                type="object" class="btn-primary"
-                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+    <menuitem id="penalty_name_sub_sub" name="تعريف العقوبات" parent="penalty_name_sub" action="penalty_name_action"/>
 
 
-                        <button name="action_hr_manager_accept" string="موافقة الموارد البشرية"
-                                type="object" class="btn-primary"
-                                attrs="{'invisible': [('state', '!=', 'depatment_manager_accept')]}"/>
+    <record id="penalty_salary_module_tree_view" model="ir.ui.view">
+        <field name="name">penalty.salary.tree</field>
+        <field name="model">penalty.salary</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="order_number"/>
+                <field name="note"/>
+                <field name="penalty_name"/>
+                <field name="hr_employee"/>
+                <field name="amount" sum="Total"/>
+                <field name="date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
 
-                        <button name="action_accepted" string="الموافقة النهائية"
-                                type="object" class="btn-primary"
-                                attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
+    <record id="penalty_salary_module_form_view" model="ir.ui.view">
+        <field name="name">penalty.salary.form</field>
+        <field name="model">penalty.salary</field>
+        <field name="arch" type="xml">
+            <form string="penalty_salary">
+                <header>
+                    <button name="action_depatment_manager_accept" string="موافقة القسم"
+                            type="object" class="btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
 
-                        <button name="draft_advanced" attrs="{'invisible': [('state', '=', 'draft')]}" type="object"
-                                string="الرجوع الى مسودة"/>
-                        <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['draft','posted','refuse'])]}"
-                                type="object" string="رفض"/>
-                        <field name="state" widget="statusbar"
-                               statusbar_visible="draft,depatment_manager_accept,hr_manager_accept,accepted"/>
-                    </header>
-                    <sheet>
+
+                    <button name="action_hr_manager_accept" string="موافقة الموارد البشرية"
+                            type="object" class="btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'depatment_manager_accept')]}"/>
+
+                    <button name="action_accepted" string="الموافقة النهائية"
+                            type="object" class="btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
+
+                    <button name="draft_advanced" attrs="{'invisible': [('state', '=', 'draft')]}" type="object"
+                            string="الرجوع الى مسودة"/>
+                    <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['draft','posted','refuse'])]}"
+                            type="object" string="رفض"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,depatment_manager_accept,hr_manager_accept,accepted"/>
+                </header>
+                <sheet>
+                    <group>
                         <group>
-                            <group>
-                                <field name="order_number"/>
-                                <field name="note" attrs="{'readonly': [('state', '=', 'posted')]}"/>
-                                <field name="penalty_name" attrs="{'readonly': [('state', '=', 'posted')]}"/>
-                                <field name="hr_employee" attrs="{'readonly': [('state', '=', 'posted')]}"/>
-                                <field name="amount" attrs="{'readonly': [('state', '=', 'posted')]}"/>
-                            </group>
-                            <group>
-                                <field name="date" attrs="{'readonly': [('state', '=', 'posted')]}"/>
-                                <field name="journal_id" attrs="{'readonly': [('state', '=', 'posted')]}"/>
-                                <field name="analytic_account_id" attrs="{'readonly': [('state', '=', 'posted')]}"/>
-
-                            </group>
+                            <field name="order_number"/>
+                            <field name="note" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                            <field name="penalty_name" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                            <field name="hr_employee" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                            <field name="amount" attrs="{'readonly': [('state', '=', 'posted')]}"/>
                         </group>
-                        <notebook>
-                            <page string="القيود">
-                                <field name="move_id"/>
-                            </page>
+                        <group>
+                            <field name="date" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                            <field name="journal_id" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                            <field name="analytic_account_id" attrs="{'readonly': [('state', '=', 'posted')]}"/>
 
-                        </notebook>
-                    </sheet>
-                </form>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="القيود">
+                            <field name="move_id"/>
+                        </page>
+
+                    </notebook>
+                </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
                     <field name="activity_ids" widget="mail_activity"/>
                     <field name="message_ids" widget="mail_thread"/>
                 </div>
-            </field>
-        </record>
+            </form>
 
-        <record id="penalty_salary_action" model="ir.actions.act_window">
-            <field name="name">العقوبات</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">penalty.salary</field>
-            <field name="view_mode">tree,form</field>
-        </record>
+        </field>
+    </record>
 
-
-        <menuitem id="penalty_salary_sub_sub" name="العقوبات" parent="penalty_name_sub" action="penalty_salary_action"/>
-
-
-        <record id="advanced_salary_monthly_module_tree_view" model="ir.ui.view">
-            <field name="name">advanced.salary.monthly.tree</field>
-            <field name="model">advanced.salary.monthly</field>
-            <field name="arch" type="xml">
-                <tree>
-                    <field name="order_number"/>
-                    <field name="note"/>
-                    <field name="hr_employee"/>
-                    <field name="amount" sum="Total"/>
-                    <field name="date"/>
-                    <field name="count_cut"/>
-                    <field name="state"/>
-                </tree>
-            </field>
-        </record>
-
-        <record id="advanced_salary_monthly_module_form_view" model="ir.ui.view">
-            <field name="name">advanced.salary.monthly.form</field>
-            <field name="model">advanced.salary.monthly</field>
-            <field name="arch" type="xml">
-                <form string="advanced_salary_monthly">
-                    <!--
-                                    <header>
-                                        <button name="post_advanced" type='object' string='ترحيل' states='draft' />
-                                        <button name="draft_advanced" type='object' string='الغاء الترحيل' states='posted' />
-                                        <field name="state" widget="statusbar"
-                                               statusbar_colors='{"draft":"blue","posted":"black"}'/>
-                                    </header>
-                    -->
-                    <header>
-                        <button name="action_depatment_manager_accept" string="موافقة القسم"
-                                type="object" class="btn-primary"
-                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+    <record id="penalty_salary_action" model="ir.actions.act_window">
+        <field name="name">العقوبات</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">penalty.salary</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 
 
-                        <button name="action_hr_manager_accept" string="موافقة الموارد البشرية"
-                                type="object" class="btn-primary"
-                                attrs="{'invisible': [('state', '!=', 'depatment_manager_accept')]}"/>
+    <menuitem id="penalty_salary_sub_sub" name="العقوبات" parent="penalty_name_sub" action="penalty_salary_action"/>
 
-                        <button name="action_accepted" string="الموافقة النهائية"
-                                type="object" class="btn-primary"
-                                attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
 
-                        <button name="draft_advanced" attrs="{'invisible': [('state', '=', 'draft')]}" type="object"
-                                string="الرجوع الى مسودة"/>
-                        <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['draft','posted','refuse'])]}"
-                                type="object" string="رفض"/>
-                        <field name="state" widget="statusbar"
-                               statusbar_visible="draft,depatment_manager_accept,hr_manager_accept,accepted"/>
-                    </header>
-                    <sheet>
+    <record id="advanced_salary_monthly_module_tree_view" model="ir.ui.view">
+        <field name="name">advanced.salary.monthly.tree</field>
+        <field name="model">advanced.salary.monthly</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="order_number"/>
+                <field name="note"/>
+                <field name="hr_employee"/>
+                <field name="amount" sum="Total"/>
+                <field name="date"/>
+                <field name="count_cut"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="advanced_salary_monthly_module_form_view" model="ir.ui.view">
+        <field name="name">advanced.salary.monthly.form</field>
+        <field name="model">advanced.salary.monthly</field>
+        <field name="arch" type="xml">
+            <form string="advanced_salary_monthly">
+                <header>
+                    <button name="action_depatment_manager_accept" string="موافقة القسم"
+                            type="object" class="btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+
+
+                    <button name="action_hr_manager_accept" string="موافقة الموارد البشرية"
+                            type="object" class="btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'depatment_manager_accept')]}"/>
+
+                    <button name="action_accepted" string="الموافقة النهائية"
+                            type="object" class="btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
+
+                    <button name="draft_advanced" attrs="{'invisible': [('state', '=', 'draft')]}" type="object"
+                            string="الرجوع الى مسودة"/>
+                    <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['draft','posted','refuse'])]}"
+                            type="object" string="رفض"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,depatment_manager_accept,hr_manager_accept,accepted"/>
+                </header>
+                <sheet>
+                    <group>
                         <group>
-                            <group>
-                                <field name="order_number"/>
-                                <field name="note" attrs="{'readonly': [('state', '=', 'posted')]}"/>
-                                <field name="hr_employee" attrs="{'readonly': [('state', '=', 'posted')]}"/>
-                                <field name="holiday_id" attrs="{'readonly': [('state', '=', 'posted')]}"/>
-                                <field name="contract_id"
-                                       attrs="{'readonly': [('state', '=', 'posted')],'invisible': [('holiday_id', '=', False)]}"
-                                       domain="[('employee_id','=',hr_employee)]"/>
-                                <field name="amount"
-                                       attrs="{'readonly': [('state', '=', 'posted')],'invisible': [('holiday_id', '!=', False)]}"/>
-                            </group>
-                            <group>
-                                <field name="date" attrs="{'readonly': [('state', '=', 'posted')]}"/>
-                                <field name="count_cut"
-                                       attrs="{'readonly': [('state', '=', 'posted')],'invisible': [('holiday_id', '!=', False)]}"/>
-                            </group>
+                            <field name="order_number"/>
+                            <field name="note" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                            <field name="hr_employee" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                            <field name="holiday_id" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                            <field name="contract_id"
+                                   attrs="{'readonly': [('state', '=', 'posted')],'invisible': [('holiday_id', '=', False)]}"
+                                   domain="[('employee_id','=',hr_employee)]"/>
+                            <field name="amount"
+                                   attrs="{'readonly': [('state', '=', 'posted')],'invisible': [('holiday_id', '!=', False)]}"/>
                         </group>
-                        <field name="advanced_salary" readonly="1">
-                            <tree>
-                                <field name="date"/>
-                                <field name="amount"/>
-                                <field name="state"/>
-                            </tree>
-                        </field>
-                    </sheet>
+                        <group>
+                            <field name="date" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                            <field name="count_cut"
+                                   attrs="{'readonly': [('state', '=', 'posted')],'invisible': [('holiday_id', '!=', False)]}"/>
+                        </group>
+                    </group>
+                    <field name="advanced_salary" readonly="1">
+                        <tree>
+                            <field name="date"/>
+                            <field name="amount"/>
+                            <field name="state"/>
+                        </tree>
+                    </field>
+                </sheet>
 
-                </form>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
                     <field name="activity_ids" widget="mail_activity"/>
                     <field name="message_ids" widget="mail_thread"/>
                 </div>
-            </field>
-        </record>
+            </form>
 
-        <record id="advanced_salary_monthly_action" model="ir.actions.act_window">
-            <field name="name">السلف الشهرية</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">advanced.salary.monthly</field>
-            <field name="view_mode">tree,form</field>
-        </record>
+        </field>
+    </record>
+
+    <record id="advanced_salary_monthly_action" model="ir.actions.act_window">
+        <field name="name">السلف الشهرية</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">advanced.salary.monthly</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 
 
-        <menuitem id="advanced_salary_monthly_sub_sub" name="السلف الشهرية" parent="advanced_salary_sub"
-                  action="advanced_salary_monthly_action"/>
-    </data>
+    <menuitem id="advanced_salary_monthly_sub_sub" name="السلف الشهرية" parent="advanced_salary_sub"
+              action="advanced_salary_monthly_action"/>
+
 </odoo>
