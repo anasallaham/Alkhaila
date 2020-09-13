@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+<data>
 
     <menuitem id="advanced_salary_root" name="السلف" parent="hr_payroll.menu_hr_payroll_root" sequence="10"/>
 
@@ -322,5 +323,6 @@
 
     <menuitem id="advanced_salary_monthly_sub_sub" name="السلف الشهرية" parent="advanced_salary_sub"
               action="advanced_salary_monthly_action"/>
+</data>
 
 </odoo>
