@@ -1,0 +1,113 @@
+<odoo>
+    <data>
+
+        <record id="exit_entry_tree" model="ir.ui.view">
+            <field name="name">exit.entry.tree</field>
+            <field name="model">exit.entry</field>
+            <field name="arch" type="xml">
+                <tree string="exit_entry  Tree">
+                    <field name="employee_id"/>
+                    <field name="type_exit_entry"/>
+                    <field name="amount"/>
+                    <field name="count"/>
+                    <field name="date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="exit_entry_form" model="ir.ui.view">
+            <field name="name">exit.entry.form</field>
+            <field name="model">exit.entry</field>
+            <field name="arch" type="xml">
+                <form string="exit_entry  Form">
+                    <header>
+                        <button name="action_depatment_manager_accept" string="موافقة القسم"
+                                type="object" class="btn-primary"
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+
+
+                        <button name="action_hr_manager_accept" string="موافقة الموارد البشرية"
+                                type="object" class="btn-primary"
+                                attrs="{'invisible': [('state', '!=', 'depatment_manager_accept')]}"/>
+
+                        <button name="action_accepted" string="الموافقة النهائية"
+                                type="object" class="btn-primary"
+                                attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
+
+                        <!--
+                                                <button name="action_cancel" states="draft" type="object" string="الغاء"/>
+                        -->
+                        <button name="draft_advanced" attrs="{'invisible': [('state', '=', 'draft')]}" type="object"
+                                string="الرجوع الى مسودة"/>
+
+                        <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['draft','accepted','refuse'])]}"
+                                type="object" string="رفض"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,depatment_manager_accept,hr_manager_accept,accepted"/>
+                    </header>
+
+                    <sheet>
+
+                        <group>
+                            <group>
+                                <field name="order_number"/>
+                                <field name="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="type_exit_entry" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="amount" readonly="1"/>
+                                <field name="count" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="journal_id" attrs="{'readonly': [('state', '!=', 'hr_manager_accept')],'required': [('state', '=', 'hr_manager_accept')]}"/>
+                                <field name="analytic_account_id" attrs="{'readonly': [('state', 'in', ['accepted','refuse'])]}"/>
+
+                            </group>
+
+                        </group>
+                        <notebook>
+                            <page string="السلف">
+                                <field name="advanced_salary" readonly="1">
+                                    <tree>
+                                        <field name="date"/>
+                                        <field name="amount"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="القيود">
+                                        <field name="move_id"/>
+                            </page>
+
+                        </notebook>
+                    </sheet>
+
+                </form>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+
+            </field>
+        </record>
+
+
+        <record id="action_exit_entry" model="ir.actions.act_window">
+            <field name="name">exit_entry Renew</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">exit.entry</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="exit_entry_tree"/>
+        </record>
+
+
+        <menuitem name="Exit Entry"
+                  id="menu_base_exit_entry"
+                  action="action_exit_entry"
+                  parent="hr.menu_hr_employee_payroll"
+                  sequence="20"/>
+
+
+    </data>
+</odoo>

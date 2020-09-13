@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_payslip_attendance_view_form" model="ir.ui.view">
+        <field name="name">hr.payslip.form</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="ايام العمل">
+                    <sheet>
+                        <group>
+
+                            <field name="hr_attendance_save_ids">
+                                <tree editable="buttom">
+                                    <field name="hr_payslip_id" invisible="1"/>
+                                    <field name="employee_id" invisible="1"/>
+                                    <field name="date"/>
+                                    <field name="hours_per_day" widget="float_time"/>
+                                    <field name="time_work" widget="float_time"/>
+                                    <field name="addition" widget="float_time"/>
+                                    <field name="delays" widget="float_time"/>
+                                </tree>
+                            </field>
+                            <group>
+                                <field name="addition_sum"/>
+                                <field name="addition_amount"/>
+                            </group>
+                            <group>
+                                <field name="delay_sum"/>
+                                <field name="delay_amount"/>
+                            </group>
+
+                        </group>
+                    </sheet>
+
+                </page>
+                <page string="السلف">
+                    <sheet>
+                        <group>
+
+                            <field name="advanced_salary_ids">
+                                <tree editable="buttom">
+                                    <field name="hr_employee"/>
+                                    <field name="amount" sum="Total"/>
+                                    <field name="date"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                            <group>
+                                <field name="amount_advanced_salary"/>
+                            </group>
+                        </group>
+                    </sheet>
+
+                </page>
+                <page string="العقويات">
+                    <sheet>
+                        <group>
+
+                            <field name="penalty_salary_ids">
+                                <tree editable="buttom">
+                                    <field name="penalty_name"/>
+                                    <field name="hr_employee"/>
+                                    <field name="amount" sum="Total"/>
+                                    <field name="date"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                            <group>
+                                <field name="amount_penalty_salary"/>
+                            </group>
+                        </group>
+                    </sheet>
+
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+
+</odoo>

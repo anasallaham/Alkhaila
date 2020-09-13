@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+hr_attendance_save,hr_attendance_save2,model_hr_attendance_save,hr_payroll.group_hr_payroll_user,1,1,1,1
+advanced_salary_monthly_save,advanced_salary2_monthly,model_advanced_salary_monthly,hr_payroll.group_hr_payroll_user,1,1,1,1
+advanced_salary_save,advanced_salary2,model_advanced_salary,hr_payroll.group_hr_payroll_user,1,1,1,1
+penalty_name_save,penalty_name2,model_penalty_name,hr_payroll.group_hr_payroll_user,1,1,1,1
+penalty_salary_save,penalty_salary_save2,model_penalty_salary,hr_payroll.group_hr_payroll_user,1,1,1,1
+access_iqama_renew,access_iqama_renew,model_iqama_renew,base.group_user,1,1,1,0
+exit_entry2,exit_entry22,model_exit_entry,base.group_user,1,1,1,0

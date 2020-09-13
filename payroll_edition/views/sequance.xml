@@ -1,0 +1,37 @@
+<odoo>
+    <data>
+
+        <record id="advanced_salary_seq" model="ir.sequence">
+            <field name="name">advanced_salary</field>
+            <field name="code">advanced.salary</field>
+            <field name="prefix">AS/</field>
+            <field name="padding">4</field>
+            <!--<field name="number_next">1</field>-->
+            <field name="number_increment">1</field>
+        </record>
+        <record id="advanced_salary_monthly_seq" model="ir.sequence">
+            <field name="name">advanced_salary monthly</field>
+            <field name="code">advanced.salary.monthly</field>
+            <field name="prefix">ASM/</field>
+            <field name="padding">4</field>
+            <!--<field name="number_next">1</field>-->
+            <field name="number_increment">1</field>
+        </record>
+        <record id="penalty_salary_seq" model="ir.sequence">
+            <field name="name">penalty_salary</field>
+            <field name="code">penalty.salary</field>
+            <field name="prefix">PS/</field>
+            <field name="padding">4</field>
+            <!--<field name="number_next">1</field>-->
+            <field name="number_increment">1</field>
+        </record>
+        <record id="exit_entry_seq" model="ir.sequence">
+            <field name="name">exit entry</field>
+            <field name="code">exit.entry</field>
+            <field name="prefix">EX/</field>
+            <field name="padding">4</field>
+            <!--<field name="number_next">1</field>-->
+            <field name="number_increment">1</field>
+        </record>
+    </data>
+</odoo>

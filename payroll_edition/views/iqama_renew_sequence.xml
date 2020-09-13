@@ -1,0 +1,13 @@
+<odoo>
+    <data>
+
+        <record id="iqama_renew_seq" model="ir.sequence">
+            <field name="name">Iqama Renew Sequence</field>
+            <field name="code">iqama.renew</field>
+            <field name="prefix">IR/</field>
+            <field name="padding">4</field>
+            <!--<field name="number_next">1</field>-->
+            <field name="number_increment">1</field>
+        </record>
+    </data>
+</odoo>

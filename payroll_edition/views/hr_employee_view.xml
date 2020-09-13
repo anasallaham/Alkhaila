@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="sales_representive_view_employee_form" model="ir.ui.view">
+            <field name="name">hr.employee.form.view.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='job_id']" position="after">
+                    <field name="job_number"/>
+                </xpath>
+                <xpath expr="//field[@name='identification_id']" position="after">
+                    <field name="medical_insurance"/>
+                </xpath>
+
+
+
+                <xpath expr="//form/sheet/notebook/page[@name='personal_information']/group/group[7]" position="after">
+                    <group string="تاريخ الاقامة">
+                       <field name="iqama_start_date"/>
+                       <field name="iqama_end_date"/>
+                    </group>
+
+
+                    <group string="Exit Entry">
+                       <field name="type_exit_entry" readonly="1"/>
+                    </group>
+
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <record id="view_employee_filter_job_number" model="ir.ui.view">
+            <field name="name">job.number.employee.search.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="filter_domain">
+                        ['|','|', ('work_email', 'ilike', self), ('name', 'ilike', self), ('job_number', 'ilike', self)]
+                    </attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

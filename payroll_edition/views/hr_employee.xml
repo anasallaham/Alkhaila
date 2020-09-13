@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <record id="view_employee_sum_eos_form_paid_leave_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <div class="oe_button_box" position="inside">
+                <button type="object" name="action_view_advanced_salary" class="oe_stat_button" icon="fa-truck">
+                    <field name="count_advanced_salary_ids" widget="statinfo" string="السلف"/>
+                    <field name="advanced_salary_ids" invisible="1"/>
+                </button>
+                <button type="object" name="action_view_penalty_salary" class="oe_stat_button" icon="fa-truck">
+                    <field name="count_penalty_salary_ids" widget="statinfo" string="العقوبات"/>
+                    <field name="penalty_salary_ids" invisible="1"/>
+                </button>
+            </div>
+
+            <page name="hr_settings" position="after">
+                <page string="End Of Service">
+
+
+                    <group>
+                        <group string="انهاء الموظف">
+                            <field name="date_stop" attrs="{'readonly': [('doneend', '=', True)]}"/>
+                            <field name="type_end" attrs="{'readonly': [('doneend', '=', True)]}"/>
+                        </group>
+                        <group string="معلومات" attrs="{'invisible': [('doneend', '=', False)]}">
+                            <field name="date_in" attrs="{'invisible': [('doneend', '=', False)]}"/>
+                            <field name="years_in" attrs="{'invisible': [('doneend', '=', False)]}"/>
+                            <field name="months_in" attrs="{'invisible': [('doneend', '=', False)]}"/>
+                            <field name="days_in" attrs="{'invisible': [('doneend', '=', False)]}"/>
+                        </group>
+
+
+                        <group string=" End Of Service" attrs="{'invisible': [('doneend', '!=', True)]}">
+                            <label for="sum_eos"/>
+                            <div>
+                                <field name="sum_eos" class="oe_inline"/>
+                            </div>
+                            <field name="ensbeh_eos" class="oe_inline"/>
+                            <field name="sum_lastes" class="oe_inline"/>
+                            <field name="hr_payslip_ids" invisible="1"/>
+                        </group>
+                        <group string="Holidays Paid" attrs="{'invisible': [('doneend', '!=', True)]}">
+                            <field name="days_paid_holidays"/>
+                            <field name="amount_days_paid_holidays"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="last_date_ehtsab"/>
+                            <button string="احتساب " name="sum_lastes_go" type="object" class="btn-primary"
+                                    invisible="1"
+                            />
+                        </group>
+                        <group>
+                            <field name="doneend" class="oe_inline" readonly="1"/>
+                            <button string="اعتماد الانهاء" name="go_end_employee" type="object" class="btn-primary"
+                                    attrs="{'invisible': [('doneend', '=', True)]}"/>
+                            <button string="الغاء اعتماد الانهاء " name="back_go_end_employee" type="object"
+                                    class="btn-primary" attrs="{'invisible': [('doneend', '!=', True)]}"/>
+                        </group>
+                    </group>
+
+
+                </page>
+            </page>
+        </field>
+    </record>
+
+
+</odoo>

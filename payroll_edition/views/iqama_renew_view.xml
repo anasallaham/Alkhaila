@@ -1,0 +1,97 @@
+<odoo>
+    <data>
+
+        <record id="iqama_renew_tree" model="ir.ui.view">
+            <field name="name">iqama.renew.tree</field>
+            <field name="model">iqama.renew</field>
+            <field name="arch" type="xml">
+                <tree string="Iqama Renew Tree">
+                    <field name="order_number"/>
+                    <field name="employee_id"/>
+                    <field name="iqama_end_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="iqama_renew_form" model="ir.ui.view">
+            <field name="name">iqama.renew.form</field>
+            <field name="model">iqama.renew</field>
+            <field name="arch" type="xml">
+                <form string="Iqama Renew Form">
+                    <header>
+                        <button name="action_depatment_manager_accept" string="موافقة القسم"
+                                type="object" class="btn-primary"
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+
+
+                        <button name="action_hr_manager_accept" string="موافقة الموارد البشرية"
+                                type="object" class="btn-primary"
+                                attrs="{'invisible': [('state', '!=', 'depatment_manager_accept')]}"/>
+
+                        <button name="action_accepted" string="الموافقة النهائية"
+                                type="object" class="btn-primary"
+                                attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
+
+                        <button name="action_cancel"  states="draft" type="object" string="الغاء"/>
+
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,depatment_manager_accept,hr_manager_accept,accepted,cancel"/>
+                    </header>
+
+                    <sheet>
+                        <group>
+                            <field name="order_number"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="job_title" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="iqama_end_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </group>
+
+                            <group>
+                                <field name="job_number" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="department_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="iqama_newstart_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="iqama_newend_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="account_assetw" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </group>
+                        </group>
+                    </sheet>
+
+                </form>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+            </field>
+        </record>
+
+
+        <record id="action_iqama_renew" model="ir.actions.act_window">
+            <field name="name">Iqama Renew</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">iqama.renew</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="iqama_renew_tree"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create Iqama Renew Order.
+                </p>
+            </field>
+        </record>
+
+
+
+        <menuitem name="تجديد الاقامة"
+                  id="menu_base_iqama_renew"
+                  action="action_iqama_renew"
+                  parent="hr.menu_hr_employee_payroll"
+                  sequence="2"/>
+
+
+    </data>
+</odoo>
