@@ -14,7 +14,7 @@
     'license': 'LGPL-3',
     'support': 'prog.abdelraheem@gmail.com',
     'website': '',
-    'depends': ['hr_payroll','account','account_asset'],
+    'depends': ['hr_payroll','account','account_asset','hr_employee_updation'],
     'demo': [],
     'data': [
         'views/hr_payslip.xml',
