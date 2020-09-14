@@ -50,13 +50,12 @@ class IqamaRenew(models.Model):
 
 
     def action_finance_manager(self):
-        #if self.env.user.has_group('base.group_user'):
-        if self.env.user.id == self.department_id.manager_id.user_id.id:
+        if self.env.user.has_group('account.group_account_manager'):
             return self.write({'state': 'finance_manager'})
         else:
             raise UserError(
                 _(
-                    "لا يمكنك الموافقة صلاحية مدير القسم فقط"
+                    "لا يمكنك الموافقة صلاحية مسؤول المحاسبة"
                 )
 
             )

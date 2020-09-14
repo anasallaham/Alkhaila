@@ -50,12 +50,12 @@ class AdvancedSalaryMonthly(models.Model):
                 )
 
         elif self.state == "hr_manager_accept":
-            if self.env.user.id == self.hr_employee.department_id.manager_id.user_id.id:
+            if self.env.user.has_group('account.group_account_manager'):
                 self.state = "refuse"
             else:
                 raise UserError(
                     _(
-                        "لا يمكنك الموافقة صلاحية مدير القسم فقط"
+                        "لا يمكنك الموافقة صلاحية مسؤول المحاسبة"
                     )
 
                 )
@@ -72,12 +72,12 @@ class AdvancedSalaryMonthly(models.Model):
                 )
 
     def action_finance_manager(self):
-        if self.env.user.id == self.hr_employee.department_id.manager_id.user_id.id:
+        if self.env.user.has_group('account.group_account_manager'):
             return self.write({'state': 'finance_manager'})
         else:
             raise UserError(
                 _(
-                    "لا يمكنك الموافقة صلاحية مدير القسم فقط"
+                    "لا يمكنك الموافقة صلاحية مسؤول المحاسبة"
                 )
 
             )
@@ -284,12 +284,12 @@ class AdvancedSalary(models.Model):
                 )
 
         elif self.state == "hr_manager_accept":
-            if self.env.user.id == self.hr_employee.department_id.manager_id.user_id.id:
+            if self.env.user.has_group('account.group_account_manager'):
                 self.state = "refuse"
             else:
                 raise UserError(
                     _(
-                        "لا يمكنك الموافقة صلاحية مدير القسم فقط"
+                        "لا يمكنك الموافقة صلاحية مسؤول المحاسبة"
                     )
 
                 )
@@ -306,12 +306,12 @@ class AdvancedSalary(models.Model):
                 )
 
     def action_finance_manager(self):
-        if self.env.user.id == self.hr_employee.department_id.manager_id.user_id.id:
+        if self.env.user.has_group('account.group_account_manager'):
             return self.write({'state': 'finance_manager'})
         else:
             raise UserError(
                 _(
-                    "لا يمكنك الموافقة صلاحية مدير القسم فقط"
+                    "لا يمكنك الموافقة صلاحية مسؤول المحاسبة"
                 )
 
             )
@@ -485,12 +485,12 @@ class PenaltySalary(models.Model):
                 )
 
         elif self.state == "hr_manager_accept":
-            if self.env.user.id == self.hr_employee.department_id.manager_id.user_id.id:
+            if self.env.user.has_group('account.group_account_manager'):
                 self.state = "refuse"
             else:
                 raise UserError(
                     _(
-                        "لا يمكنك الموافقة صلاحية مدير القسم فقط"
+                        "لا يمكنك الموافقة صلاحية مسؤول المحاسبة"
                     )
 
                 )
@@ -507,12 +507,12 @@ class PenaltySalary(models.Model):
                 )
 
     def action_finance_manager(self):
-        if self.env.user.id == self.hr_employee.department_id.manager_id.user_id.id:
+        if self.env.user.has_group('account.group_account_manager'):
             return self.write({'state': 'finance_manager'})
         else:
             raise UserError(
                 _(
-                    "لا يمكنك الموافقة صلاحية مدير القسم فقط"
+                    "لا يمكنك الموافقة صلاحية مسؤول المحاسبة"
                 )
 
             )
