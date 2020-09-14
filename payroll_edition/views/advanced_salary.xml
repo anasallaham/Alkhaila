@@ -27,26 +27,25 @@
             <form string="advanced_salary">
 
                 <header>
-                    <button name="action_depatment_manager_accept" string="موافقة القسم"
+                    <button name="action_finance_manager" string="finance manager"
                             type="object" class="btn-primary"
-                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                            attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
 
 
                     <button name="action_hr_manager_accept" string="موافقة الموارد البشرية"
                             type="object" class="btn-primary"
-                            attrs="{'invisible': [('state', '!=', 'depatment_manager_accept')]}"/>
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
 
                     <button name="action_accepted" string="الموافقة النهائية"
                             type="object" class="btn-primary"
-                            attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
+                            attrs="{'invisible': [('state', '!=', 'finance_manager')]}"/>
 
                     <button name="draft_advanced" attrs="{'invisible': [('state', '=', 'draft')]}" type="object"
                             string="الرجوع الى مسودة"/>
                     <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['draft','posted','refuse'])]}"
                             type="object" string="رفض"/>
-
                     <field name="state" widget="statusbar"
-                           statusbar_visible="draft,depatment_manager_accept,hr_manager_accept,accepted"/>
+                           statusbar_visible="draft,hr_manager_accept,finance_manager,accepted"/>
                 </header>
 
                 <sheet>
@@ -154,25 +153,25 @@
         <field name="arch" type="xml">
             <form string="penalty_salary">
                 <header>
-                    <button name="action_depatment_manager_accept" string="موافقة القسم"
+                    <button name="action_finance_manager" string="finance manager"
                             type="object" class="btn-primary"
-                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                            attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
 
 
                     <button name="action_hr_manager_accept" string="موافقة الموارد البشرية"
                             type="object" class="btn-primary"
-                            attrs="{'invisible': [('state', '!=', 'depatment_manager_accept')]}"/>
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
 
                     <button name="action_accepted" string="الموافقة النهائية"
                             type="object" class="btn-primary"
-                            attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
+                            attrs="{'invisible': [('state', '!=', 'finance_manager')]}"/>
 
                     <button name="draft_advanced" attrs="{'invisible': [('state', '=', 'draft')]}" type="object"
                             string="الرجوع الى مسودة"/>
                     <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['draft','posted','refuse'])]}"
                             type="object" string="رفض"/>
                     <field name="state" widget="statusbar"
-                           statusbar_visible="draft,depatment_manager_accept,hr_manager_accept,accepted"/>
+                           statusbar_visible="draft,hr_manager_accept,finance_manager,accepted"/>
                 </header>
                 <sheet>
                     <group>
@@ -240,25 +239,25 @@
         <field name="arch" type="xml">
             <form string="advanced_salary_monthly">
                 <header>
-                    <button name="action_depatment_manager_accept" string="موافقة القسم"
+                    <button name="action_finance_manager" string="finance manager"
                             type="object" class="btn-primary"
-                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                            attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
 
 
                     <button name="action_hr_manager_accept" string="موافقة الموارد البشرية"
                             type="object" class="btn-primary"
-                            attrs="{'invisible': [('state', '!=', 'depatment_manager_accept')]}"/>
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
 
                     <button name="action_accepted" string="الموافقة النهائية"
                             type="object" class="btn-primary"
-                            attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
+                            attrs="{'invisible': [('state', '!=', 'finance_manager')]}"/>
 
                     <button name="draft_advanced" attrs="{'invisible': [('state', '=', 'draft')]}" type="object"
                             string="الرجوع الى مسودة"/>
                     <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['draft','posted','refuse'])]}"
                             type="object" string="رفض"/>
                     <field name="state" widget="statusbar"
-                           statusbar_visible="draft,depatment_manager_accept,hr_manager_accept,accepted"/>
+                           statusbar_visible="draft,hr_manager_accept,finance_manager,accepted"/>
                 </header>
                 <sheet>
                     <group>

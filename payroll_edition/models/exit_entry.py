@@ -22,7 +22,7 @@ class ExitEntry(models.Model):
     count = fields.Integer(string="عدد الاشهر",required=True)
     advanced_salary = fields.One2many('advanced.salary','exit_entry_id', string="السلف")
     journal_id = fields.Many2one('account.journal', string="اليوميه")
-    move_id = fields.Many2one('account.move', string="القيد")
+    move_id = fields.Many2one('account.move', string="القيد",readonly=True)
     analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', )
 
     type_exit_entry = fields.Selection([
@@ -32,8 +32,8 @@ class ExitEntry(models.Model):
 
     state = fields.Selection([
         ('draft', 'Draft'),
-        ('depatment_manager_accept', 'Department Mananger Accept'),
         ('hr_manager_accept', 'Hr Mananger Accept'),
+        ('finance_manager', 'Finance Manager'),
         ('accepted', 'Final Accept'),
         ('cancel', 'Cancelled'),
         ("refuse", "Refuse"),
@@ -53,16 +53,6 @@ class ExitEntry(models.Model):
 
     def refuse_go(self):
         if self.state == "draft":
-            if self.env.user.id == self.hr_employee.department_id.manager_id.user_id.id:
-                self.state = "refuse"
-            else:
-                raise UserError(
-                    _(
-                        "لا يمكنك الموافقة صلاحية مدير القسم فقط"
-                    )
-
-                )
-        elif self.state == "depatment_manager_accept":
             if self.env.user.has_group('hr.group_hr_manager'):
                 self.state = "refuse"
             else:
@@ -72,7 +62,19 @@ class ExitEntry(models.Model):
                     )
 
                 )
+
         elif self.state == "hr_manager_accept":
+            if self.env.user.id == self.hr_employee.department_id.manager_id.user_id.id:
+                self.state = "refuse"
+            else:
+                raise UserError(
+                    _(
+                        "لا يمكنك الموافقة صلاحية مدير القسم فقط"
+                    )
+
+                )
+
+        elif self.state == "finance_manager":
             if self.env.user.has_group('base.group_system'):
                 self.state = "refuse"
             else:
@@ -95,9 +97,9 @@ class ExitEntry(models.Model):
             me.amount = 100 * me.count
 
 
-    def action_depatment_manager_accept(self):
+    def action_finance_manager(self):
         if self.env.user.id == self.employee_id.department_id.manager_id.user_id.id:
-            return self.write({'state': 'depatment_manager_accept'})
+            return self.write({'state': 'finance_manager'})
         else:
             raise UserError(
                 _(

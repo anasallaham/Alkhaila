@@ -28,8 +28,8 @@ class IqamaRenew(models.Model):
 
     state = fields.Selection([
         ('draft', 'Draft'),
-        ('depatment_manager_accept', 'Department Mananger Accept'),
         ('hr_manager_accept', 'Hr Mananger Accept'),
+        ('finance_manager', 'Finance Manager'),
         ('accepted', 'Final Accept'),
         ('cancel', 'Cancelled'),
     ], string='Status' ,default='draft')
@@ -49,10 +49,10 @@ class IqamaRenew(models.Model):
             self.iqama_end_date = self.employee_id.iqama_end_date
 
 
-    def action_depatment_manager_accept(self):
+    def action_finance_manager(self):
         #if self.env.user.has_group('base.group_user'):
         if self.env.user.id == self.department_id.manager_id.user_id.id:
-            return self.write({'state': 'depatment_manager_accept'})
+            return self.write({'state': 'finance_manager'})
         else:
             raise UserError(
                 _(

@@ -22,18 +22,18 @@
             <field name="arch" type="xml">
                 <form string="exit_entry  Form">
                     <header>
-                        <button name="action_depatment_manager_accept" string="موافقة القسم"
+                        <button name="action_finance_manager" string="finance manager"
                                 type="object" class="btn-primary"
-                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                                attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
 
 
                         <button name="action_hr_manager_accept" string="موافقة الموارد البشرية"
                                 type="object" class="btn-primary"
-                                attrs="{'invisible': [('state', '!=', 'depatment_manager_accept')]}"/>
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
 
                         <button name="action_accepted" string="الموافقة النهائية"
                                 type="object" class="btn-primary"
-                                attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
+                                attrs="{'invisible': [('state', '!=', 'finance_manager')]}"/>
 
                         <!--
                                                 <button name="action_cancel" states="draft" type="object" string="الغاء"/>
@@ -44,7 +44,7 @@
                         <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['draft','accepted','refuse'])]}"
                                 type="object" string="رفض"/>
                         <field name="state" widget="statusbar"
-                               statusbar_visible="draft,depatment_manager_accept,hr_manager_accept,accepted"/>
+                               statusbar_visible="draft,hr_manager_accept,finance_manager,accepted"/>
                     </header>
 
                     <sheet>
@@ -59,7 +59,7 @@
                             <group>
                                 <field name="amount" readonly="1"/>
                                 <field name="count" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                <field name="journal_id" attrs="{'readonly': [('state', '!=', 'hr_manager_accept')],'required': [('state', '=', 'hr_manager_accept')]}"/>
+                                <field name="journal_id" attrs="{'readonly': [('state', '!=', 'hr_manager_accept')],'required': [('state', '=', 'finance_manager')]}" groups="base.group_system"/>
                                 <field name="analytic_account_id" attrs="{'readonly': [('state', 'in', ['accepted','refuse'])]}"/>
 
                             </group>

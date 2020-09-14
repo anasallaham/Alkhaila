@@ -20,8 +20,8 @@ class AdvancedSalaryMonthly(models.Model):
     contract_id = fields.Many2one('hr.contract',string="العقد")
     state = fields.Selection([
         ('draft', 'Draft'),
-        ('depatment_manager_accept', 'Department Mananger Accept'),
         ('hr_manager_accept', 'Hr Mananger Accept'),
+        ('finance_manager', 'Finance Manager'),
         ('accepted', 'Final Accept'),
         ("refuse", "Refuse"),
         ("posted", "Posted"),
@@ -39,16 +39,6 @@ class AdvancedSalaryMonthly(models.Model):
 
     def refuse_go(self):
         if self.state == "draft":
-            if self.env.user.id == self.hr_employee.department_id.manager_id.user_id.id:
-                self.state = "refuse"
-            else:
-                raise UserError(
-                    _(
-                        "لا يمكنك الموافقة صلاحية مدير القسم فقط"
-                    )
-
-                )
-        elif self.state == "depatment_manager_accept":
             if self.env.user.has_group('hr.group_hr_manager'):
                 self.state = "refuse"
             else:
@@ -58,7 +48,19 @@ class AdvancedSalaryMonthly(models.Model):
                     )
 
                 )
+
         elif self.state == "hr_manager_accept":
+            if self.env.user.id == self.hr_employee.department_id.manager_id.user_id.id:
+                self.state = "refuse"
+            else:
+                raise UserError(
+                    _(
+                        "لا يمكنك الموافقة صلاحية مدير القسم فقط"
+                    )
+
+                )
+
+        elif self.state == "finance_manager":
             if self.env.user.has_group('base.group_system'):
                 self.state = "refuse"
             else:
@@ -69,9 +71,9 @@ class AdvancedSalaryMonthly(models.Model):
 
                 )
 
-    def action_depatment_manager_accept(self):
+    def action_finance_manager(self):
         if self.env.user.id == self.hr_employee.department_id.manager_id.user_id.id:
-            return self.write({'state': 'depatment_manager_accept'})
+            return self.write({'state': 'finance_manager'})
         else:
             raise UserError(
                 _(
@@ -94,7 +96,10 @@ class AdvancedSalaryMonthly(models.Model):
 
     def action_accepted(self):
         if self.env.user.has_group('base.group_system'):
-            date = self.holiday_id.request_date_from
+            if self.holiday_id:
+                date = self.holiday_id.request_date_from
+            else:
+                date = self.date
             if not self.contract_id:
                 amount_monthly = round(self.amount / self.count_cut, 3)
                 for c in range(1, self.count_cut+1):
@@ -212,13 +217,13 @@ class AdvancedSalary(models.Model):
     amount = fields.Float(string="قيمة السلفة")
 
     journal_id = fields.Many2one('account.journal', string="اليوميه")
-    move_id = fields.Many2one('account.move', string="القيد")
+    move_id = fields.Many2one('account.move', string="القيد",readonly=True)
     analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', )
 
     state = fields.Selection([
         ('draft', 'Draft'),
-        ('depatment_manager_accept', 'Department Mananger Accept'),
         ('hr_manager_accept', 'Hr Mananger Accept'),
+        ('finance_manager', 'Finance Manager'),
         ('accepted', 'Final Accept'),
         ("refuse", "Refuse"),
         ("posted", "Posted"),
@@ -268,16 +273,6 @@ class AdvancedSalary(models.Model):
 
     def refuse_go(self):
         if self.state == "draft":
-            if self.env.user.id == self.hr_employee.department_id.manager_id.user_id.id:
-                self.state = "refuse"
-            else:
-                raise UserError(
-                    _(
-                        "لا يمكنك الموافقة صلاحية مدير القسم فقط"
-                    )
-
-                )
-        elif self.state == "depatment_manager_accept":
             if self.env.user.has_group('hr.group_hr_manager'):
                 self.state = "refuse"
             else:
@@ -287,7 +282,19 @@ class AdvancedSalary(models.Model):
                     )
 
                 )
+
         elif self.state == "hr_manager_accept":
+            if self.env.user.id == self.hr_employee.department_id.manager_id.user_id.id:
+                self.state = "refuse"
+            else:
+                raise UserError(
+                    _(
+                        "لا يمكنك الموافقة صلاحية مدير القسم فقط"
+                    )
+
+                )
+
+        elif self.state == "finance_manager":
             if self.env.user.has_group('base.group_system'):
                 self.state = "refuse"
             else:
@@ -297,12 +304,10 @@ class AdvancedSalary(models.Model):
                     )
 
                 )
-        self.move_id.button_cancel()
 
-
-    def action_depatment_manager_accept(self):
+    def action_finance_manager(self):
         if self.env.user.id == self.hr_employee.department_id.manager_id.user_id.id:
-            return self.write({'state': 'depatment_manager_accept'})
+            return self.write({'state': 'finance_manager'})
         else:
             raise UserError(
                 _(
@@ -321,6 +326,7 @@ class AdvancedSalary(models.Model):
                 )
 
             )
+
 
 
     def action_accepted(self):
@@ -416,13 +422,13 @@ class PenaltySalary(models.Model):
     amount = fields.Float(string="القيمة")
 
     journal_id = fields.Many2one('account.journal', string="اليوميه")
-    move_id = fields.Many2one('account.move', string="القيد")
+    move_id = fields.Many2one('account.move', string="القيد",readonly=True)
     analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', )
 
     state = fields.Selection([
         ('draft', 'Draft'),
-        ('depatment_manager_accept', 'Department Mananger Accept'),
         ('hr_manager_accept', 'Hr Mananger Accept'),
+        ('finance_manager', 'Finance Manager'),
         ('accepted', 'Final Accept'),
         ("refuse", "Refuse"),
         ("posted", "Posted"),
@@ -468,16 +474,6 @@ class PenaltySalary(models.Model):
 
     def refuse_go(self):
         if self.state == "draft":
-            if self.env.user.id == self.hr_employee.department_id.manager_id.user_id.id:
-                self.state = "refuse"
-            else:
-                raise UserError(
-                    _(
-                        "لا يمكنك الموافقة صلاحية مدير القسم فقط"
-                    )
-
-                )
-        elif self.state == "depatment_manager_accept":
             if self.env.user.has_group('hr.group_hr_manager'):
                 self.state = "refuse"
             else:
@@ -487,7 +483,19 @@ class PenaltySalary(models.Model):
                     )
 
                 )
+
         elif self.state == "hr_manager_accept":
+            if self.env.user.id == self.hr_employee.department_id.manager_id.user_id.id:
+                self.state = "refuse"
+            else:
+                raise UserError(
+                    _(
+                        "لا يمكنك الموافقة صلاحية مدير القسم فقط"
+                    )
+
+                )
+
+        elif self.state == "finance_manager":
             if self.env.user.has_group('base.group_system'):
                 self.state = "refuse"
             else:
@@ -495,12 +503,12 @@ class PenaltySalary(models.Model):
                     _(
                         "لا يمكنك الموافقة صلاحية الادارة فقط"
                     )
-                )
-        self.move_id.button_cancel()
 
-    def action_depatment_manager_accept(self):
+                )
+
+    def action_finance_manager(self):
         if self.env.user.id == self.hr_employee.department_id.manager_id.user_id.id:
-            return self.write({'state': 'depatment_manager_accept'})
+            return self.write({'state': 'finance_manager'})
         else:
             raise UserError(
                 _(
@@ -519,6 +527,7 @@ class PenaltySalary(models.Model):
                 )
 
             )
+
 
 
     def action_accepted(self):

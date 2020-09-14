@@ -19,23 +19,23 @@
             <field name="arch" type="xml">
                 <form string="Iqama Renew Form">
                     <header>
-                        <button name="action_depatment_manager_accept" string="موافقة القسم"
-                                type="object" class="btn-primary"
-                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
-
 
                         <button name="action_hr_manager_accept" string="موافقة الموارد البشرية"
                                 type="object" class="btn-primary"
-                                attrs="{'invisible': [('state', '!=', 'depatment_manager_accept')]}"/>
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                        <button name="action_finance_manager" string="finance manager"
+                                type="object" class="btn-primary"
+                                attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
+
 
                         <button name="action_accepted" string="الموافقة النهائية"
                                 type="object" class="btn-primary"
-                                attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
+                                attrs="{'invisible': [('state', '!=', 'finance_manager')]}"/>
 
                         <button name="action_cancel"  states="draft" type="object" string="الغاء"/>
 
                         <field name="state" widget="statusbar"
-                               statusbar_visible="draft,depatment_manager_accept,hr_manager_accept,accepted,cancel"/>
+                               statusbar_visible="draft,hr_manager_accept,finance_manager,accepted,cancel"/>
                     </header>
 
                     <sheet>
