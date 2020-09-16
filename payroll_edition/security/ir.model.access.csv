@@ -6,3 +6,4 @@ penalty_name_save,penalty_name2,model_penalty_name,hr_payroll.group_hr_payroll_u
 penalty_salary_save,penalty_salary_save2,model_penalty_salary,hr_payroll.group_hr_payroll_user,1,1,1,1
 access_iqama_renew,access_iqama_renew,model_iqama_renew,base.group_user,1,1,1,1
 exit_entry2,exit_entry22,model_exit_entry,base.group_user,1,1,1,1
+end_employee2,end_employee22,model_end_employee,base.group_user,1,1,1,1

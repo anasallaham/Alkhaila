@@ -30,9 +30,13 @@ class IqamaRenew(models.Model):
         ('draft', 'Draft'),
         ('hr_manager_accept', 'Hr Mananger Accept'),
         ('finance_manager', 'Finance Manager'),
+        ('director', 'Director'),
         ('accepted', 'Final Accept'),
         ('cancel', 'Cancelled'),
     ], string='Status' ,default='draft')
+
+    def draft_advanced(self):
+        self.state = "draft"
 
     @api.model
     def create(self, vals):
@@ -71,9 +75,19 @@ class IqamaRenew(models.Model):
 
             )
 
-
-    def action_accepted(self):
+    def action_director(self):
         if self.env.user.has_group('base.group_system'):
+
+            return self.write({'state': 'director'})
+        else:
+            raise UserError(
+                _(
+                    "لا يمكنك الموافقة صلاحية الادارة فقط"
+                )
+
+            )
+    def action_accepted(self):
+        if self.env.user.has_group('account.group_account_manager'):
             self.employee_id.iqama_start_date = self.iqama_newstart_date
             self.employee_id.iqama_end_date = self.iqama_newend_date
             return self.write({'state': 'accepted'})

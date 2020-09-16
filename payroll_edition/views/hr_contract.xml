@@ -7,13 +7,13 @@
         <field name="arch" type="xml">
             <field name="hr_responsible_id" position="before">
                 <field name="addition_ture"/>
+                <field name="addition_nsbeh" attrs="{'invisible': [('addition_ture', '=', False)]}"/>
                 <field name="delay_ture"/>
+                <field name="delay_nsbeh" attrs="{'invisible': [('delay_ture', '=', False)]}"/>
             </field>
             <field name="advantages" position="after">
                 <field name="hous"/>
                 <field name="amount_hous"/>
-                <field name="moving"/>
-                <field name="amount_moving"/>
 
             </field>
 

@@ -27,15 +27,18 @@
                                 type="object" class="btn-primary"
                                 attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
 
-
-                        <button name="action_accepted" string="الموافقة النهائية"
+                        <button name="action_director" string="Director Accept"
                                 type="object" class="btn-primary"
                                 attrs="{'invisible': [('state', '!=', 'finance_manager')]}"/>
+                        <button name="action_accepted" string="الموافقة النهائية"
+                                type="object" class="btn-primary"
+                                attrs="{'invisible': [('state', '!=', 'director')]}"/>
 
                         <button name="action_cancel"  states="draft" type="object" string="الغاء"/>
-
+                        <button name="draft_advanced" attrs="{'invisible': [('state', '=', 'draft')]}" type="object"
+                                string="الرجوع الى مسودة"/>
                         <field name="state" widget="statusbar"
-                               statusbar_visible="draft,hr_manager_accept,finance_manager,accepted,cancel"/>
+                               statusbar_visible="draft,hr_manager_accept,finance_manager,director,accepted,cancel"/>
                     </header>
 
                     <sheet>

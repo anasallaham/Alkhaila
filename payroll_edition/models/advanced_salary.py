@@ -16,15 +16,17 @@ class AdvancedSalaryMonthly(models.Model):
     date = fields.Date(string=" تاريخ")
     count_cut = fields.Integer(string="عدد الاقساط")
     amount = fields.Float(string="القيمة الكلية")
+    journal_id = fields.Many2one('account.journal', string="اليوميه")
+    account_id = fields.Many2one('account.account', string="الحساب")
     holiday_id = fields.Many2one('hr.leave',string="مرتبط باجازة")
     contract_id = fields.Many2one('hr.contract',string="العقد")
     state = fields.Selection([
         ('draft', 'Draft'),
         ('hr_manager_accept', 'Hr Mananger Accept'),
         ('finance_manager', 'Finance Manager'),
+        ('director', 'Director'),
         ('accepted', 'Final Accept'),
         ("refuse", "Refuse"),
-        ("posted", "Posted"),
     ],
         string="State",
         default="draft",
@@ -92,10 +94,20 @@ class AdvancedSalaryMonthly(models.Model):
                 )
 
             )
+    def action_director(self):
+        if self.env.user.has_group('base.group_system'):
 
+            return self.write({'state': 'director'})
+        else:
+            raise UserError(
+                _(
+                    "لا يمكنك الموافقة صلاحية الادارة فقط"
+                )
+
+            )
 
     def action_accepted(self):
-        if self.env.user.has_group('base.group_system'):
+        if self.env.user.has_group('account.group_account_manager'):
             if self.holiday_id:
                 date = self.holiday_id.request_date_from
             else:
@@ -103,15 +115,17 @@ class AdvancedSalaryMonthly(models.Model):
             if not self.contract_id:
                 amount_monthly = round(self.amount / self.count_cut, 3)
                 for c in range(1, self.count_cut+1):
-                    self.env['advanced.salary'].create({
+                    advanced = self.env['advanced.salary'].create({
                         'advanced_salary_monthly': self.id,
                         'hr_employee': self.hr_employee.id,
                         'amount': amount_monthly,
+                        'journal_id': self.journal_id.id,
+                        'account_id': self.account_id.id,
                         'date': date,
-                        'state': 'posted',
                     })
+                    advanced.action_accepted()
                     date = date + relativedelta(months=1)
-                self.state = "posted"
+                self.state = "accepted"
             else:
                 salary = self.contract_id.wage
                 salary_per_day = round(salary/30,2)
@@ -120,36 +134,44 @@ class AdvancedSalaryMonthly(models.Model):
                 amount_holidays = holidays * salary_per_day
                 current_amount = amount_holidays
                 if  amount_holidays <= salary:
-                    self.env['advanced.salary'].create({
+                    advanced = self.env['advanced.salary'].create({
                         'advanced_salary_monthly': self.id,
                         'hr_employee': self.hr_employee.id,
                         'amount': amount_holidays,
+                        'journal_id': self.journal_id.id,
+                        'account_id': self.account_id.id,
                         'date': date,
-                        'state': 'posted',
                     })
+                    advanced.action_accepted()
+
                 elif amount_holidays > salary:
                     for num in range(0, holidays_per_30+1):
                         if current_amount >= salary:
-                            self.env['advanced.salary'].create({
+                            advanced = self.env['advanced.salary'].create({
                                 'advanced_salary_monthly': self.id,
                                 'hr_employee': self.hr_employee.id,
                                 'amount': salary,
+                                'journal_id': self.journal_id.id,
+                                'account_id': self.account_id.id,
                                 'date': date,
-                                'state': 'posted',
                             })
+                            advanced.action_accepted()
+
                             current_amount = current_amount - salary
                         elif current_amount < salary and current_amount >= 0.0:
-                            self.env['advanced.salary'].create({
+                            advanced = self.env['advanced.salary'].create({
                                 'advanced_salary_monthly': self.id,
                                 'hr_employee': self.hr_employee.id,
                                 'amount': current_amount,
+                                'journal_id': self.journal_id.id,
+                                'account_id': self.account_id.id,
                                 'date': date,
-                                'state': 'posted',
                             })
+                            advanced.action_accepted()
                             current_amount = current_amount - salary
                         date = date + relativedelta(months=1)
 
-                self.state = "posted"
+                self.state = "accepted"
 
 
 
@@ -160,7 +182,7 @@ class AdvancedSalaryMonthly(models.Model):
         else:
             raise UserError(
                 _(
-                    "لا يمكنك الموافقة صلاحية الادارة فقط"
+                    "لا يمكنك الموافقة صلاحية مسؤول المحاسبة"
                 )
 
             )
@@ -170,20 +192,6 @@ class AdvancedSalaryMonthly(models.Model):
         return self.write({'state': 'cancel'})
 
 
-    def post_advanced(self):
-        amount_monthly = round(self.amount/self.count_cut,3)
-        date = self.date
-        for c in range(1,self.count_cut):
-            self.env['advanced.salary'].create({
-                'advanced_salary_monthly': self.id,
-                'hr_employee': self.hr_employee.id,
-                'amount': amount_monthly,
-                'date': date,
-                'state': 'posted',
-            })
-            date = date + relativedelta(month=1)
-
-        self.state = "posted"
     def draft_advanced(self):
         for line in self.advanced_salary:
             line.draft_advanced()
@@ -217,6 +225,7 @@ class AdvancedSalary(models.Model):
     amount = fields.Float(string="قيمة السلفة")
 
     journal_id = fields.Many2one('account.journal', string="اليوميه")
+    account_id = fields.Many2one('account.account', string="الحساب")
     move_id = fields.Many2one('account.move', string="القيد",readonly=True)
     analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', )
 
@@ -224,9 +233,9 @@ class AdvancedSalary(models.Model):
         ('draft', 'Draft'),
         ('hr_manager_accept', 'Hr Mananger Accept'),
         ('finance_manager', 'Finance Manager'),
+        ('director', 'Director'),
         ('accepted', 'Final Accept'),
         ("refuse", "Refuse"),
-        ("posted", "Posted"),
     ],
         string="State",
         default="draft",
@@ -248,7 +257,7 @@ class AdvancedSalary(models.Model):
                         'name': rec.order_number,
                         'debit': rec.amount,
                         'credit': 0.0,
-                        'account_id': rec.journal_id.default_debit_account_id.id,
+                        'account_id': rec.account_id.id,
                         'partner_id':rec.hr_employee.address_id.id,
                     }),
                     (0, 0, {
@@ -315,7 +324,17 @@ class AdvancedSalary(models.Model):
                 )
 
             )
+    def action_director(self):
+        if self.env.user.has_group('base.group_system'):
 
+            return self.write({'state': 'director'})
+        else:
+            raise UserError(
+                _(
+                    "لا يمكنك الموافقة صلاحية الادارة فقط"
+                )
+
+            )
     def action_hr_manager_accept(self):
         if self.env.user.has_group('hr.group_hr_manager'):
             return self.write({'state': 'hr_manager_accept'})
@@ -330,7 +349,7 @@ class AdvancedSalary(models.Model):
 
 
     def action_accepted(self):
-        if self.env.user.has_group('base.group_system'):
+        if self.env.user.has_group('account.group_account_manager'):
             AccountMove = self.env['account.move'].with_context(default_type='entry')
             if not self.move_id:
                 moves = AccountMove.create(self.return_movelines())
@@ -340,7 +359,7 @@ class AdvancedSalary(models.Model):
                 self.move_id.button_draft()
                 move_line_vals = []
                 line1 = (0, 0, {'name': self.order_number, 'debit': self.amount, 'credit': 0,
-                                'account_id': self.journal_id.default_debit_account_id.id,'partner_id':self.hr_employee.address_id.id,
+                                'account_id': self.account_id.id,'partner_id':self.hr_employee.address_id.id,
                                 })
                 line2 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': self.amount,
                                 'account_id': self.journal_id.default_credit_account_id.id,'partner_id':self.hr_employee.address_id.id,
@@ -351,11 +370,11 @@ class AdvancedSalary(models.Model):
                 self.move_id.line_ids = move_line_vals
                 self.move_id.post()
 
-            self.state = "posted"
+            self.state = "accepted"
         else:
             raise UserError(
                 _(
-                    "لا يمكنك الموافقة صلاحية الادارة فقط"
+                    "لا يمكنك الموافقة صلاحية مسؤول المحاسبة"
                 )
 
             )
@@ -365,8 +384,6 @@ class AdvancedSalary(models.Model):
         return self.write({'state': 'cancel'})
 
 
-    def post_advanced(self):
-        self.state = "posted"
     def draft_advanced(self):
         self.move_id.button_draft()
         lines = self.env['account.move.line'].search([('move_id', '=', self.move_id.id)])
@@ -389,7 +406,9 @@ class AdvancedSalary(models.Model):
 
 class PenaltyName(models.Model):
     _name = "penalty.name"
-    name = fields.Char(string="اسم العقوية")
+    name = fields.Char(string="اسم العقوية",required=True)
+    account_debit_id = fields.Many2one('account.account', string="حساب المدين",required=True)
+    account_credit_id = fields.Many2one('account.account', string="حساب الدائن",required=True)
 
     def unlink(self):
         for me in self:
@@ -421,7 +440,9 @@ class PenaltySalary(models.Model):
     date = fields.Date(string="التاريخ")
     amount = fields.Float(string="القيمة")
 
-    journal_id = fields.Many2one('account.journal', string="اليوميه")
+    journal_id = fields.Many2one('account.journal', string="يومية القيود")
+    account_debit_id = fields.Many2one('account.account', string="حساب المدين")
+    account_credit_id = fields.Many2one('account.account', string="حساب الدائن")
     move_id = fields.Many2one('account.move', string="القيد",readonly=True)
     analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', )
 
@@ -429,13 +450,15 @@ class PenaltySalary(models.Model):
         ('draft', 'Draft'),
         ('hr_manager_accept', 'Hr Mananger Accept'),
         ('finance_manager', 'Finance Manager'),
+        ('director', 'Director'),
         ('accepted', 'Final Accept'),
         ("refuse", "Refuse"),
-        ("posted", "Posted"),
     ],
         string="State",
         default="draft",
     )
+
+
 
     def return_movelines(self):
         all_move_vals = []
@@ -450,14 +473,14 @@ class PenaltySalary(models.Model):
                         'name': rec.order_number,
                         'debit': rec.amount,
                         'credit': 0.0,
-                        'account_id': rec.journal_id.default_debit_account_id.id,
+                        'account_id': rec.account_debit_id.id,
                         'partner_id':rec.hr_employee.address_id.id,
                     }),
                     (0, 0, {
                         'name': rec.order_number,
                         'debit': 0.0,
                         'credit': rec.amount,
-                        'account_id': rec.journal_id.default_credit_account_id.id,
+                        'account_id': rec.account_credit_id.id,
                         'analytic_account_id': rec.analytic_account_id.id,
                         'partner_id': rec.hr_employee.address_id.id,
                     }),
@@ -528,10 +551,21 @@ class PenaltySalary(models.Model):
 
             )
 
+    def action_director(self):
+        if self.env.user.has_group('base.group_system'):
+            self.account_credit_id = self.penalty_name.account_credit_id.id
+            self.account_debit_id = self.penalty_name.account_debit_id.id
+            return self.write({'state': 'director'})
+        else:
+            raise UserError(
+                _(
+                    "لا يمكنك الموافقة صلاحية الادارة فقط"
+                )
 
+            )
 
     def action_accepted(self):
-        if self.env.user.has_group('base.group_system'):
+        if self.env.user.has_group('account.group_account_manager'):
             AccountMove = self.env['account.move'].with_context(default_type='entry')
             if not self.move_id:
                 moves = AccountMove.create(self.return_movelines())
@@ -541,10 +575,10 @@ class PenaltySalary(models.Model):
                 self.move_id.button_draft()
                 move_line_vals = []
                 line1 = (0, 0, {'name': self.order_number, 'debit': self.amount, 'credit': 0,
-                                'account_id': self.journal_id.default_debit_account_id.id,'partner_id':self.hr_employee.address_id.id,
+                                'account_id': self.account_debit_id.id,'partner_id':self.hr_employee.address_id.id,
                                 })
                 line2 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': self.amount,
-                                'account_id': self.journal_id.default_credit_account_id.id,'partner_id':self.hr_employee.address_id.id,
+                                'account_id': self.account_credit_id.id,'partner_id':self.hr_employee.address_id.id,
                                 'analytic_account_id': self.analytic_account_id.id
                                 })
                 move_line_vals.append(line1)
@@ -552,17 +586,17 @@ class PenaltySalary(models.Model):
                 self.move_id.line_ids = move_line_vals
                 self.move_id.post()
 
-            self.state = "posted"
+            self.state = "accepted"
         else:
             raise UserError(
                 _(
-                    "لا يمكنك الموافقة صلاحية الادارة فقط"
+                    "لا يمكنك الموافقة صلاحية مسؤول المحاسبة"
                 )
 
             )
 
     def post_advanced(self):
-        self.state = "posted"
+        self.state = "accepted"
     def draft_advanced(self):
         self.move_id.button_draft()
         lines = self.env['account.move.line'].search([('move_id', '=', self.move_id.id)])

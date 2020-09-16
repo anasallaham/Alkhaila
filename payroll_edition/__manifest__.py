@@ -22,6 +22,7 @@
         'views/hr_employee.xml',
         'views/hr_salary_rule.xml',
         'views/advanced_salary.xml',
+        'views/end_employee.xml',
 
         'views/sequance.xml',
         'views/iqama_renew_sequence.xml',

@@ -1,0 +1,109 @@
+<odoo>
+    <data>
+
+        <record id="end_employee_tree" model="ir.ui.view">
+            <field name="name">end.employee.tree</field>
+            <field name="model">end.employee</field>
+            <field name="arch" type="xml">
+                <tree string="end employee  Tree">
+                    <field name="employee_id"/>
+                    <field name="date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="end_employee_form" model="ir.ui.view">
+            <field name="name">end.employee.form</field>
+            <field name="model">end.employee</field>
+            <field name="arch" type="xml">
+                <form string="end_employee  Form">
+                    <header>
+                        <button name="action_finance_manager" string="finance manager"
+                                type="object" class="btn-primary"
+                                attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
+
+
+                        <button name="action_hr_manager_accept" string="موافقة الموارد البشرية"
+                                type="object" class="btn-primary"
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+
+                        <button name="action_director" string="Director Accept"
+                                type="object" class="btn-primary"
+                                attrs="{'invisible': [('state', '!=', 'finance_manager')]}"/>
+                        <button name="action_accepted" string="الموافقة النهائية"
+                                type="object" class="btn-primary"
+                                attrs="{'invisible': [('state', '!=', 'director')]}"/>
+
+                        <!--
+                                                <button name="action_cancel" states="draft" type="object" string="الغاء"/>
+                        -->
+                        <button name="draft_advanced" attrs="{'invisible': [('state', 'in', ['draft','accepted'])]}" type="object"
+                                string="الرجوع الى مسودة"/>
+
+                        <button name="refuse_go"
+                                attrs="{'invisible': [('state', 'in', ['draft','accepted','director','refuse'])]}"
+                                type="object" string="رفض"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,hr_manager_accept,finance_manager,director,accepted"/>
+                    </header>
+
+                    <sheet>
+
+                        <group>
+                            <group>
+                                <field name="order_number"/>
+                                <field name="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="type_end" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="ensbeh_eos" />
+                                <field name="sum_lastes" />
+                                <field name="date_in" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="date_stop" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </group>
+                            <group >
+
+                                <field name="years_in" readonly="1"/>
+                                <field name="months_in" readonly="1"/>
+                                <field name="days_in" readonly="1"/>
+                                <field name="days_paid_holidays" readonly="1"/>
+                                <field name="amount_days_paid_holidays" readonly="1"/>
+                            </group>
+                            <group>
+
+                                <field name="payslip_id" attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')],'invisible': [('state', 'not in', ['director','accepted'])]}"/>
+                            </group>
+
+                        </group>
+                    </sheet>
+
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_end_employee" model="ir.actions.act_window">
+            <field name="name">end_employee</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">end.employee</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="end_employee_tree"/>
+        </record>
+
+
+        <menuitem name="المخالصات"
+                  id="menu_base_end_employee"
+                  action="action_end_employee"
+                  parent="hr.menu_hr_employee_payroll"
+                  sequence="20"/>
+
+
+    </data>
+</odoo>

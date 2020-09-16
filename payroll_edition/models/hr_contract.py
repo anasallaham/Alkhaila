@@ -6,12 +6,14 @@ class HrContract(models.Model):
     _inherit = 'hr.contract'
 
     addition_ture = fields.Boolean(string="احتساب اضافي؟")
-    delay_ture = fields.Boolean(string="احتساب الخصومات؟")
-    hous = fields.Integer(string="نسبة بدل سكن",default=25,readonly=True)
-    amount_hous = fields.Integer(string="قيمة بدل السكن", compute='_compute_amount_hous', store=True)
+    addition_nsbeh = fields.Integer(string="نسبة الاضافي",default=1)
 
-    moving = fields.Integer(string="نسبة بدل المواصلات",default=10,readonly=True)
-    amount_moving = fields.Integer(string="قيمة بدل المواصلات", compute='_compute_amount_moving', store=True)
+    delay_ture = fields.Boolean(string="احتساب الخصومات؟")
+    delay_nsbeh = fields.Integer(string="نسبة الخصومات",default=1)
+
+    hous = fields.Integer(string="نسبة العلاوات الاخرى",default=0,readonly=False)
+    amount_hous = fields.Integer(string="قيمة العلاوات الاخرى", compute='_compute_amount_hous', store=True)
+
 
 
     @api.depends('hous','wage')
@@ -19,8 +21,3 @@ class HrContract(models.Model):
         for me in self:
             me.amount_hous = me.hous/100 * me.wage
 
-    @api.depends('moving','wage')
-    def _compute_amount_moving(self):
-        for me in self:
-
-            me.amount_moving = me.moving/100 * me.wage

@@ -50,8 +50,8 @@ class HrPayslip(models.Model):
     def _compute_addition_amount(self):
         for s in self:
             if s.contract_id.addition_ture:
-                s.addition_amount = (s.addition_sum * 60) * (
-                            s.contract_id.wage / 30 / s.contract_id.resource_calendar_id.hours_per_day / 60)
+                s.addition_amount = ((s.addition_sum * 60) * (
+                            s.contract_id.wage / 30 / s.contract_id.resource_calendar_id.hours_per_day / 60))*s.contract_id.addition_nsbeh
             else:
                 s.addition_amount = 0.0
 
@@ -59,8 +59,8 @@ class HrPayslip(models.Model):
     def _compute_delay_amount(self):
         for s in self:
             if s.contract_id.delay_ture:
-                s.delay_amount = (s.delay_sum * 60) * (
-                            s.contract_id.wage / 30 / s.contract_id.resource_calendar_id.hours_per_day / 60)
+                s.delay_amount = ((s.delay_sum * 60) * (
+                            s.contract_id.wage / 30 / s.contract_id.resource_calendar_id.hours_per_day / 60))*s.contract_id.delay_nsbeh
             else:
                 s.delay_amount = 0.0
 
@@ -69,7 +69,7 @@ class HrPayslip(models.Model):
         penalty_salary_ids = self.env["penalty.salary"].search(
             [
                 ("hr_employee", "=", self.employee_id.id),
-                ("state", "=", "posted"),
+                ("state", "=", "accepted"),
                 ("date", ">=", self.date_from), ("date", "<=", self.date_to),
             ]
         )
@@ -85,7 +85,7 @@ class HrPayslip(models.Model):
         advanced_salary_ids = self.env["advanced.salary"].search(
             [
                 ("hr_employee", "=", self.employee_id.id),
-                ("state", "=", "posted"),
+                ("state", "=", "accepted"),
                 ("date", ">=", self.date_from), ("date", "<=", self.date_to),
             ]
         )

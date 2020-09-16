@@ -31,9 +31,12 @@
                                 type="object" class="btn-primary"
                                 attrs="{'invisible': [('state', '!=', 'draft')]}"/>
 
-                        <button name="action_accepted" string="الموافقة النهائية"
+                        <button name="action_director" string="Director Accept"
                                 type="object" class="btn-primary"
                                 attrs="{'invisible': [('state', '!=', 'finance_manager')]}"/>
+                        <button name="action_accepted" string="الموافقة النهائية"
+                                type="object" class="btn-primary"
+                                attrs="{'invisible': [('state', '!=', 'director')]}"/>
 
                         <!--
                                                 <button name="action_cancel" states="draft" type="object" string="الغاء"/>
@@ -41,10 +44,10 @@
                         <button name="draft_advanced" attrs="{'invisible': [('state', '=', 'draft')]}" type="object"
                                 string="الرجوع الى مسودة"/>
 
-                        <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['draft','accepted','refuse'])]}"
+                        <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['draft','accepted','director','refuse'])]}"
                                 type="object" string="رفض"/>
                         <field name="state" widget="statusbar"
-                               statusbar_visible="draft,hr_manager_accept,finance_manager,accepted"/>
+                               statusbar_visible="draft,hr_manager_accept,finance_manager,director,accepted"/>
                     </header>
 
                     <sheet>
@@ -57,16 +60,18 @@
                                 <field name="type_exit_entry" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             </group>
                             <group>
-                                <field name="amount" readonly="1"/>
-                                <field name="count" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                <field name="journal_id" attrs="{'readonly': [('state', '!=', 'hr_manager_accept')],'required': [('state', '=', 'finance_manager')]}" groups="base.group_system"/>
+                                <field name="amount" attrs="{'readonly': [('type_exit_entry', '=', 'single')]}"/>
+                                <field name="count" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('type_exit_entry', '=', 'single')],'invisible': [('type_exit_entry', '!=', 'single')]}"/>
+                                <field name="journal_id" attrs="{'readonly': [('state', '!=', 'hr_manager_accept')],'required': [('state', '=', 'hr_manager_accept')]}" groups="base.group_system"/>
+                                <field name="account_id" attrs="{'readonly': [('state', '!=', 'hr_manager_accept')],'required': [('state', '=', 'hr_manager_accept')]}" groups="base.group_system"/>
+                                <field name="account_advanced_id" attrs="{'readonly': [('state', '!=', 'hr_manager_accept')],'required': [('state', '=', 'hr_manager_accept'),('type_exit_entry', '=', 'single')],'invisible': [('type_exit_entry', '!=', 'single')]}" groups="base.group_system"/>
                                 <field name="analytic_account_id" attrs="{'readonly': [('state', 'in', ['accepted','refuse'])]}"/>
 
                             </group>
 
                         </group>
                         <notebook>
-                            <page string="السلف">
+                            <page string="السلف" attrs="{'invisible': [('type_exit_entry', '!=', 'single')]}">
                                 <field name="advanced_salary" readonly="1">
                                     <tree>
                                         <field name="date"/>

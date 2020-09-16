@@ -15,25 +15,28 @@ class ExitEntry(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     order_number  = fields.Char(string="Number",readonly=True)
-    date = fields.Date(string=" تاريخ")
+    date = fields.Date(string=" تاريخ",required=True)
 
     employee_id  = fields.Many2one('hr.employee',string="الموظف",required=True)
-    amount = fields.Float(string="القيمة كاملة", compute='_compute_amount', store=True,readonly=True)
-    count = fields.Integer(string="عدد الاشهر",required=True)
+    amount = fields.Float(string="القيمة كاملة", compute='_compute_amount', store=True)
+    count = fields.Integer(string="عدد الاشهر",readonly=True)
     advanced_salary = fields.One2many('advanced.salary','exit_entry_id', string="السلف")
     journal_id = fields.Many2one('account.journal', string="اليوميه")
+    account_id = fields.Many2one('account.account', string="الحساب")
+    account_advanced_id = fields.Many2one('account.account', string="حساب السلف")
     move_id = fields.Many2one('account.move', string="القيد",readonly=True)
     analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', )
 
     type_exit_entry = fields.Selection([
         ('single', 'Single'),
         ('multi', 'Multi'),
-    ], string='النوع' ,required=True)
+    ], string='النوع' ,required=True,default="single")
 
     state = fields.Selection([
         ('draft', 'Draft'),
         ('hr_manager_accept', 'Hr Mananger Accept'),
         ('finance_manager', 'Finance Manager'),
+        ('director', 'Director'),
         ('accepted', 'Final Accept'),
         ('cancel', 'Cancelled'),
         ("refuse", "Refuse"),
@@ -94,7 +97,14 @@ class ExitEntry(models.Model):
     @api.depends('count')
     def _compute_amount(self):
         for me in self:
-            me.amount = 100 * me.count
+            if me.type_exit_entry == "single":
+                if me.count > 12:
+                    raise UserError(
+                        _("الحد الاقصى 12 شهر")
+
+                    )
+                me.amount = 100 * me.count
+
 
 
     def action_finance_manager(self):
@@ -105,6 +115,17 @@ class ExitEntry(models.Model):
             raise UserError(
                 _(
                     "لا يمكنك الموافقة صلاحية مسؤول المحاسبة"
+                )
+
+            )
+    def action_director(self):
+        if self.env.user.has_group('base.group_system'):
+
+            return self.write({'state': 'director'})
+        else:
+            raise UserError(
+                _(
+                    "لا يمكنك الموافقة صلاحية الادارة فقط"
                 )
 
             )
@@ -125,19 +146,18 @@ class ExitEntry(models.Model):
         if self.env.user.has_group('base.group_system'):
             self.employee_id.type_exit_entry = self.type_exit_entry
             self.to_street()
-            if self.count > 2:
-                date = self.date
-                for r in range(2,self.count):
-                    advanced = self.env['advanced.salary'].create({
-                        'exit_entry_id': self.id,
-                        'hr_employee': self.employee_id.id,
-                        'amount': 100,
-                        'journal_id': self.journal_id.id,
-                        'analytic_account_id': self.analytic_account_id.id,
-                        'date': date,
-                    })
-                    advanced.action_accepted()
-                    date = date + relativedelta(months=1)
+            testamount = self.amount - 200
+            if self.type_exit_entry == "single" and testamount > 0:
+                advanced = self.env['advanced.salary'].create({
+                            'exit_entry_id': self.id,
+                            'hr_employee': self.employee_id.id,
+                            'amount': testamount,
+                            'journal_id': self.journal_id.id,
+                            'account_id': self.account_advanced_id.id,
+                            'analytic_account_id': self.analytic_account_id.id,
+                            'date': self.date,
+                        })
+                advanced.action_accepted()
             return self.write({'state': 'accepted'})
         else:
             raise UserError(
@@ -145,6 +165,30 @@ class ExitEntry(models.Model):
                     "لا يمكنك الموافقة صلاحية الادارة فقط"
                 )
 
+    # def action_accepted(self):
+    #     if self.env.user.has_group('base.group_system'):
+    #         self.employee_id.type_exit_entry = self.type_exit_entry
+    #         self.to_street()
+    #         if self.count > 2:
+    #             date = self.date
+    #             for r in range(2,self.count):
+    #                 advanced = self.env['advanced.salary'].create({
+    #                     'exit_entry_id': self.id,
+    #                     'hr_employee': self.employee_id.id,
+    #                     'amount': 100,
+    #                     'journal_id': self.journal_id.id,
+    #                     'analytic_account_id': self.analytic_account_id.id,
+    #                     'date': date,
+    #                 })
+    #                 advanced.action_accepted()
+    #                 date = date + relativedelta(months=1)
+    #         return self.write({'state': 'accepted'})
+    #     else:
+    #         raise UserError(
+    #             _(
+    #                 "لا يمكنك الموافقة صلاحية الادارة فقط"
+    #             )
+    #
             )
 
 
@@ -156,8 +200,12 @@ class ExitEntry(models.Model):
     def return_movelines(self):
         all_move_vals = []
         for exitentry in self:
-            if exitentry.amount  >= 200 :
-                amount = 200
+
+            if self.type_exit_entry == 'single':
+                if exitentry.amount  >= 200 :
+                    amount = 200
+                else:
+                    amount = exitentry.amount
             else:
                 amount = exitentry.amount
 
@@ -170,7 +218,7 @@ class ExitEntry(models.Model):
                         'name': exitentry.order_number,
                         'debit': amount,
                         'credit': 0.0,
-                        'account_id': exitentry.journal_id.default_debit_account_id.id,
+                        'account_id': exitentry.account_id.id,
                         'partner_id':self.employee_id.address_id.id,
                     }),
                     (0, 0, {
@@ -195,15 +243,18 @@ class ExitEntry(models.Model):
                 moves.post()
                 self.move_id = moves.id
             else:
-                if self.amount >= 200:
-                    amount = 200
+                if self.type_exit_entry == "single":
+                    if self.amount >= 200:
+                        amount = 200
+                    else:
+                        amount = self.amount
                 else:
                     amount = self.amount
 
                 self.move_id.button_draft()
                 move_line_vals = []
                 line1 = (0, 0, {'name': self.order_number, 'debit': amount, 'credit': 0,
-                                'account_id': self.journal_id.default_debit_account_id.id,'partner_id':self.employee_id.address_id.id,
+                                'account_id': self.account_id.id,'partner_id':self.employee_id.address_id.id,
                                 })
                 line2 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': amount,
                                 'account_id': self.journal_id.default_credit_account_id.id,'partner_id':self.employee_id.address_id.id,
