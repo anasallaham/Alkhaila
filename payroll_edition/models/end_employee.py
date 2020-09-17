@@ -25,7 +25,7 @@ class EndEmployee(models.Model):
     ensbeh_eos = fields.Float(string="نسبة EOS",readonly=True, related='employee_id.ensbeh_eos')
     sum_lastes = fields.Float(string="مكافئة انتهاء الخدمة",readonly=True, compute='_compute_years_in', store=True)
     date_stop  = fields.Date(string="تاريخ الانهاء ",required=True)
-    type_end = fields.Selection([('Resignation','مستقيل'),('end_of_contract','End of contract'),('termination2','Termination')],string="انهاء الموظف",required=True)
+    type_end = fields.Selection([('Resignation','مستقيل'),('end_of_contract','End of contract'),('termination2','Termination')],string="الية الانهاء",required=True)
     date_in  = fields.Date(string="تاريخ التعيين ",related="employee_id.joining_date")
     years_in  = fields.Integer(string="السنوات ", compute='_compute_years_in', store=True)
     months_in  = fields.Integer(string="الاشهر ", compute='_compute_years_in', store=True)

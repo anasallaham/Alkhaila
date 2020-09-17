@@ -13,7 +13,7 @@ class Employee(models.Model):
     date_stop  = fields.Date(string="تاريخ الانهاء ")
 
 
-    type_employee_end = fields.Selection([('Resignation','مستقيل'),('end_of_contract','End of contract'),('termination2','Termination')],string="انهاء الموظف")
+    type_employee_end = fields.Selection([('Resignation','مستقيل'),('end_of_contract','End of contract'),('termination2','Termination')],string="الية الانهاء")
 
 
     advanced_salary_ids = fields.One2many('advanced.salary','hr_employee',string="السلف")
