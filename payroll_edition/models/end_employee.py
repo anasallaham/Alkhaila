@@ -206,6 +206,7 @@ class EndEmployee(models.Model):
                 move_line_vals = []
                 line1 = (0, 0, {'name': self.order_number, 'debit': amount, 'credit': 0,
                                 'account_id': self.account_id.id, 'partner_id': self.employee_id.address_id.id,
+                                'analytic_account_id': self.analytic_account_id.id
                                 })
                 line2 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': amount,
                                 'account_id': self.journal_id.default_credit_account_id.id,

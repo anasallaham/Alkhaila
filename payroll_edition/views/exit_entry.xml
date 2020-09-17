@@ -62,10 +62,10 @@
                             <group>
                                 <field name="amount" attrs="{'readonly': [('type_exit_entry', '=', 'single')]}"/>
                                 <field name="count" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('type_exit_entry', '=', 'single')],'invisible': [('type_exit_entry', '!=', 'single')]}"/>
-                                <field name="journal_id" attrs="{'readonly': [('state', '!=', 'hr_manager_accept')],'required': [('state', '=', 'hr_manager_accept')]}" groups="base.group_system"/>
-                                <field name="account_id" attrs="{'readonly': [('state', '!=', 'hr_manager_accept')],'required': [('state', '=', 'hr_manager_accept')]}" groups="base.group_system"/>
-                                <field name="account_advanced_id" attrs="{'readonly': [('state', '!=', 'hr_manager_accept')],'required': [('state', '=', 'hr_manager_accept'),('type_exit_entry', '=', 'single')],'invisible': [('type_exit_entry', '!=', 'single')]}" groups="base.group_system"/>
-                                <field name="analytic_account_id" attrs="{'readonly': [('state', 'in', ['accepted','refuse'])]}"/>
+                                <field name="journal_id" attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}" groups="base.group_system"/>
+                                <field name="account_id" attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}" groups="base.group_system"/>
+                                <field name="account_advanced_id" attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director'),('type_exit_entry', '=', 'single')],'invisible': [('type_exit_entry', '!=', 'single')]}" groups="base.group_system"/>
+                                <field name="analytic_account_id" attrs="{'readonly': [('state', '!=', 'director')]}"/>
 
                             </group>
 

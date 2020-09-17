@@ -14,12 +14,11 @@ class HrPayslip(models.Model):
     addition_amount = fields.Float(string="قيمة الاضافي", compute='_compute_addition_amount', store=True, readonly=True)
     delay_amount = fields.Float(string="قيمة الخصومات", compute='_compute_delay_amount', store=True, readonly=True)
 
-    advanced_salary_ids = fields.Many2many('advanced.salary', string="السلف",readonly=True)
+    advanced_salary_ids = fields.Many2many('advanced.salary', string="السلف", readonly=True)
     amount_advanced_salary = fields.Float(string="مجموع السلف", readonly=True)
 
-    penalty_salary_ids = fields.Many2many('penalty.salary', string="العقوبات",readonly=True)
+    penalty_salary_ids = fields.Many2many('penalty.salary', string="العقوبات", readonly=True)
     amount_penalty_salary = fields.Float(string="مجموع العقوبات", readonly=True)
-
 
     @api.depends('hr_attendance_save_ids')
     def _compute_addition_sum(self):
@@ -51,7 +50,8 @@ class HrPayslip(models.Model):
         for s in self:
             if s.contract_id.addition_ture:
                 s.addition_amount = ((s.addition_sum * 60) * (
-                            s.contract_id.wage / 30 / s.contract_id.resource_calendar_id.hours_per_day / 60))*s.contract_id.addition_nsbeh
+                    (s.contract_id.wage+s.contract_id.amount_hous+s.contract_id.amount_trasportation+s.contract_id.amount_mobile+s.contract_id.amount_anuther_allow) / 30 / s.contract_id.resource_calendar_id.hours_per_day / 60)) * (
+                                                s.contract_id.addition_nsbeh / 100.0)
             else:
                 s.addition_amount = 0.0
 
@@ -60,7 +60,8 @@ class HrPayslip(models.Model):
         for s in self:
             if s.contract_id.delay_ture:
                 s.delay_amount = ((s.delay_sum * 60) * (
-                            s.contract_id.wage / 30 / s.contract_id.resource_calendar_id.hours_per_day / 60))*s.contract_id.delay_nsbeh
+                        (s.contract_id.wage+s.contract_id.amount_hous+s.contract_id.amount_trasportation+s.contract_id.amount_mobile+s.contract_id.amount_anuther_allow)  / 30 / s.contract_id.resource_calendar_id.hours_per_day / 60)) * (
+                                             s.contract_id.delay_nsbeh / 100.0)
             else:
                 s.delay_amount = 0.0
 
@@ -79,9 +80,6 @@ class HrPayslip(models.Model):
         self.penalty_salary_ids = [(6, 0, penalty_salary_ids.ids)]
         self.amount_penalty_salary = sum_salarypenalty
 
-
-
-
         advanced_salary_ids = self.env["advanced.salary"].search(
             [
                 ("hr_employee", "=", self.employee_id.id),
@@ -94,7 +92,6 @@ class HrPayslip(models.Model):
             sum_salary += line.amount
         self.advanced_salary_ids = [(6, 0, advanced_salary_ids.ids)]
         self.amount_advanced_salary = sum_salary
-
 
         date_diff = relativedelta(datetime.today(), self.employee_id.joining_date)
         day = date_diff.days
@@ -117,8 +114,8 @@ class HrPayslip(models.Model):
             # employee_attendance_ids = self.env['hr.attendance'].browse(IDS)
 
             select = "select COALESCE( sum(worked_hours),0) as sum from hr_attendance where employee_id = %s and check_in >= %r and check_in < %r" % (
-            self.employee_id.id, str(current_date),
-            str(datetime.strptime(str(current_date), '%Y-%m-%d').date() + relativedelta(days=+ 1)))
+                self.employee_id.id, str(current_date),
+                str(datetime.strptime(str(current_date), '%Y-%m-%d').date() + relativedelta(days=+ 1)))
             self.env.cr.execute(select)
             results = self.env.cr.dictfetchall()[0]['sum']
             second = (results * 60 * 60) - (self.contract_id.resource_calendar_id.hours_per_day * 60 * 60)

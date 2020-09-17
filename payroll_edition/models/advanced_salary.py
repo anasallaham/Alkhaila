@@ -18,6 +18,12 @@ class AdvancedSalaryMonthly(models.Model):
     amount = fields.Float(string="القيمة الكلية")
     journal_id = fields.Many2one('account.journal', string="اليوميه")
     account_id = fields.Many2one('account.account', string="الحساب")
+    analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', )
+
+    journal_id_advanced = fields.Many2one('account.journal', string="يومية السلف")
+    account_id_advanced  = fields.Many2one('account.account', string="حساب السلف")
+    analytic_account_id_advanced  = fields.Many2one('account.analytic.account', 'Analytic Account Advanced', )
+    move_id = fields.Many2one('account.move', string="القيد",readonly=True)
     holiday_id = fields.Many2one('hr.leave',string="مرتبط باجازة")
     contract_id = fields.Many2one('hr.contract',string="العقد")
     state = fields.Selection([
@@ -108,6 +114,11 @@ class AdvancedSalaryMonthly(models.Model):
 
     def action_accepted(self):
         if self.env.user.has_group('account.group_account_manager'):
+
+
+
+
+
             if self.holiday_id:
                 date = self.holiday_id.request_date_from
             else:
@@ -119,13 +130,13 @@ class AdvancedSalaryMonthly(models.Model):
                         'advanced_salary_monthly': self.id,
                         'hr_employee': self.hr_employee.id,
                         'amount': amount_monthly,
-                        'journal_id': self.journal_id.id,
-                        'account_id': self.account_id.id,
+                        'journal_id': self.journal_id_advanced.id,
+                        'account_id': self.account_id_advanced.id,
+                        'analytic_account_id': self.analytic_account_id_advanced.id,
                         'date': date,
                     })
                     advanced.action_accepted()
                     date = date + relativedelta(months=1)
-                self.state = "accepted"
             else:
                 salary = self.contract_id.wage
                 salary_per_day = round(salary/30,2)
@@ -138,8 +149,9 @@ class AdvancedSalaryMonthly(models.Model):
                         'advanced_salary_monthly': self.id,
                         'hr_employee': self.hr_employee.id,
                         'amount': amount_holidays,
-                        'journal_id': self.journal_id.id,
-                        'account_id': self.account_id.id,
+                        'journal_id': self.journal_id_advanced.id,
+                        'account_id': self.account_id_advanced.id,
+                        'analytic_account_id': self.analytic_account_id_advanced.id,
                         'date': date,
                     })
                     advanced.action_accepted()
@@ -151,8 +163,9 @@ class AdvancedSalaryMonthly(models.Model):
                                 'advanced_salary_monthly': self.id,
                                 'hr_employee': self.hr_employee.id,
                                 'amount': salary,
-                                'journal_id': self.journal_id.id,
-                                'account_id': self.account_id.id,
+                                'journal_id': self.journal_id_advanced.id,
+                                'account_id': self.account_id_advanced.id,
+                                'analytic_account_id': self.analytic_account_id_advanced.id,
                                 'date': date,
                             })
                             advanced.action_accepted()
@@ -163,15 +176,39 @@ class AdvancedSalaryMonthly(models.Model):
                                 'advanced_salary_monthly': self.id,
                                 'hr_employee': self.hr_employee.id,
                                 'amount': current_amount,
-                                'journal_id': self.journal_id.id,
-                                'account_id': self.account_id.id,
+                                'journal_id': self.journal_id_advanced.id,
+                                'account_id': self.account_id_advanced.id,
+                                'analytic_account_id': self.analytic_account_id_advanced.id,
                                 'date': date,
                             })
                             advanced.action_accepted()
                             current_amount = current_amount - salary
                         date = date + relativedelta(months=1)
 
-                self.state = "accepted"
+
+            AccountMove = self.env['account.move'].with_context(default_type='entry')
+            if not self.move_id:
+                moves = AccountMove.create(self.return_movelines())
+                moves.post()
+                self.move_id = moves.id
+            else:
+                self.move_id.button_draft()
+                move_line_vals = []
+                line1 = (0, 0, {'name': self.order_number, 'debit': self.amount, 'credit': 0,
+                                'account_id': self.account_id.id,'partner_id':self.hr_employee.address_id.id,
+                                'analytic_account_id': self.analytic_account_id.id
+                                })
+                line2 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': self.amount,
+                                'account_id': self.journal_id.default_credit_account_id.id,'partner_id':self.hr_employee.address_id.id,
+                                'analytic_account_id': self.analytic_account_id.id
+                                })
+                move_line_vals.append(line1)
+                move_line_vals.append(line2)
+                self.move_id.line_ids = move_line_vals
+                self.move_id.post()
+
+
+            self.state = "accepted"
 
 
 
@@ -186,6 +223,36 @@ class AdvancedSalaryMonthly(models.Model):
                 )
 
             )
+
+    def return_movelines(self):
+        all_move_vals = []
+        for rec in self:
+
+            move_vals = {
+                'date': rec.date,
+                'ref': rec.order_number,
+                'journal_id': rec.journal_id.id,
+                'line_ids': [
+                    (0, 0, {
+                        'name': rec.order_number,
+                        'debit': rec.amount,
+                        'credit': 0.0,
+                        'account_id': rec.account_id.id,
+                        'analytic_account_id': rec.analytic_account_id.id,
+                        'partner_id':rec.hr_employee.address_id.id,
+                    }),
+                    (0, 0, {
+                        'name': rec.order_number,
+                        'debit': 0.0,
+                        'credit': rec.amount,
+                        'account_id': rec.journal_id.default_credit_account_id.id,
+                        'analytic_account_id': rec.analytic_account_id.id,
+                        'partner_id': rec.hr_employee.address_id.id,
+                    }),
+                ],
+            }
+            all_move_vals.append(move_vals)
+            return all_move_vals
 
 
     def action_cancel(self):
@@ -258,6 +325,7 @@ class AdvancedSalary(models.Model):
                         'debit': rec.amount,
                         'credit': 0.0,
                         'account_id': rec.account_id.id,
+                        'analytic_account_id': rec.analytic_account_id.id,
                         'partner_id':rec.hr_employee.address_id.id,
                     }),
                     (0, 0, {
@@ -360,6 +428,7 @@ class AdvancedSalary(models.Model):
                 move_line_vals = []
                 line1 = (0, 0, {'name': self.order_number, 'debit': self.amount, 'credit': 0,
                                 'account_id': self.account_id.id,'partner_id':self.hr_employee.address_id.id,
+                                'analytic_account_id': self.analytic_account_id.id
                                 })
                 line2 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': self.amount,
                                 'account_id': self.journal_id.default_credit_account_id.id,'partner_id':self.hr_employee.address_id.id,
@@ -474,6 +543,7 @@ class PenaltySalary(models.Model):
                         'debit': rec.amount,
                         'credit': 0.0,
                         'account_id': rec.account_debit_id.id,
+                        'analytic_account_id': rec.analytic_account_id.id,
                         'partner_id':rec.hr_employee.address_id.id,
                     }),
                     (0, 0, {
@@ -576,6 +646,7 @@ class PenaltySalary(models.Model):
                 move_line_vals = []
                 line1 = (0, 0, {'name': self.order_number, 'debit': self.amount, 'credit': 0,
                                 'account_id': self.account_debit_id.id,'partner_id':self.hr_employee.address_id.id,
+                                'analytic_account_id': self.analytic_account_id.id
                                 })
                 line2 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': self.amount,
                                 'account_id': self.account_credit_id.id,'partner_id':self.hr_employee.address_id.id,

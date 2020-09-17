@@ -219,7 +219,8 @@ class ExitEntry(models.Model):
                         'debit': amount,
                         'credit': 0.0,
                         'account_id': exitentry.account_id.id,
-                        'partner_id':self.employee_id.address_id.id,
+                        'analytic_account_id': exitentry.analytic_account_id.id,
+                        'partner_id':exitentry.employee_id.address_id.id,
                     }),
                     (0, 0, {
                         'name': exitentry.order_number,
@@ -227,7 +228,7 @@ class ExitEntry(models.Model):
                         'credit': amount,
                         'account_id': exitentry.journal_id.default_credit_account_id.id,
                         'analytic_account_id': exitentry.analytic_account_id.id,
-                        'partner_id': self.employee_id.address_id.id,
+                        'partner_id': exitentry.employee_id.address_id.id,
                     }),
                 ],
             }
@@ -238,31 +239,31 @@ class ExitEntry(models.Model):
         AccountMove = self.env['account.move'].with_context(default_type='entry')
         for rec in self:
 
-            if not self.move_id:
+            if not rec.move_id:
                 moves = AccountMove.create(rec.return_movelines())
                 moves.post()
-                self.move_id = moves.id
+                rec.move_id = moves.id
             else:
-                if self.type_exit_entry == "single":
-                    if self.amount >= 200:
+                if rec.type_exit_entry == "single":
+                    if rec.amount >= 200:
                         amount = 200
                     else:
-                        amount = self.amount
+                        amount = rec.amount
                 else:
-                    amount = self.amount
+                    amount = rec.amount
 
-                self.move_id.button_draft()
+                rec.move_id.button_draft()
                 move_line_vals = []
-                line1 = (0, 0, {'name': self.order_number, 'debit': amount, 'credit': 0,
-                                'account_id': self.account_id.id,'partner_id':self.employee_id.address_id.id,
+                line1 = (0, 0, {'name': rec.order_number, 'debit': amount, 'credit': 0,
+                                'analytic_account_id': rec.analytic_account_id.id,'account_id': rec.account_id.id,'partner_id':rec.employee_id.address_id.id,
                                 })
-                line2 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': amount,
-                                'account_id': self.journal_id.default_credit_account_id.id,'partner_id':self.employee_id.address_id.id,
-                                'analytic_account_id': self.analytic_account_id.id
+                line2 = (0, 0, {'name': rec.order_number, 'debit': 0, 'credit': amount,
+                                'account_id': rec.journal_id.default_credit_account_id.id,'partner_id':rec.employee_id.address_id.id,
+                                'analytic_account_id': rec.analytic_account_id.id
                                 })
                 move_line_vals.append(line1)
                 move_line_vals.append(line2)
-                self.move_id.line_ids = move_line_vals
-                self.move_id.post()
+                rec.move_id.line_ids = move_line_vals
+                rec.move_id.post()
         return True
 

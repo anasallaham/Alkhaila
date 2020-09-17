@@ -14,6 +14,11 @@
             <field name="advantages" position="after">
                 <field name="hous"/>
                 <field name="amount_hous"/>
+                <field name="trasportation"/>
+                <field name="amount_trasportation"/>
+                <field name="amount_mobile"/>
+                <field name="anuther_allow"/>
+                <field name="amount_anuther_allow"/>
 
             </field>
 
