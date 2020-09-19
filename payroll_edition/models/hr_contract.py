@@ -21,8 +21,7 @@ class HrContract(models.Model):
     amount_mobile = fields.Integer(string="قيمة بدل الهاتف")
 
 
-    anuther_allow = fields.Integer(string="نسبة العلاوات الاخرى",default=0,readonly=False)
-    amount_anuther_allow = fields.Integer(string="قيمة العلاوات الاخرى", compute='_compute_amount_anuther_allow', store=True)
+    amount_anuther_allow = fields.Integer(string="قيمة العلاوات الاخرى")
 
 
     @api.depends('hous','wage')
@@ -35,8 +34,4 @@ class HrContract(models.Model):
         for me in self:
             me.amount_trasportation = me.trasportation/100 * me.wage
 
-    @api.depends('anuther_allow','wage')
-    def _compute_amount_anuther_allow(self):
-        for me in self:
-            me.amount_anuther_allow = me.anuther_allow/100 * me.wage
 

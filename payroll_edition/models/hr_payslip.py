@@ -66,69 +66,70 @@ class HrPayslip(models.Model):
                 s.delay_amount = 0.0
 
     def compute_sheet(self):
+        for me in self:
 
-        penalty_salary_ids = self.env["penalty.salary"].search(
-            [
-                ("hr_employee", "=", self.employee_id.id),
-                ("state", "=", "accepted"),
-                ("date", ">=", self.date_from), ("date", "<=", self.date_to),
-            ]
-        )
-        sum_salarypenalty = 0.0
-        for line in penalty_salary_ids:
-            sum_salarypenalty += line.amount
-        self.penalty_salary_ids = [(6, 0, penalty_salary_ids.ids)]
-        self.amount_penalty_salary = sum_salarypenalty
+            penalty_salary_ids = me.env["penalty.salary"].search(
+                [
+                    ("hr_employee", "=", me.employee_id.id),
+                    ("state", "=", "accepted"),
+                    ("date", ">=", me.date_from), ("date", "<=", me.date_to),
+                ]
+            )
+            sum_salarypenalty = 0.0
+            for line in penalty_salary_ids:
+                sum_salarypenalty += line.amount
+            me.penalty_salary_ids = [(6, 0, penalty_salary_ids.ids)]
+            me.amount_penalty_salary = sum_salarypenalty
 
-        advanced_salary_ids = self.env["advanced.salary"].search(
-            [
-                ("hr_employee", "=", self.employee_id.id),
-                ("state", "=", "accepted"),
-                ("date", ">=", self.date_from), ("date", "<=", self.date_to),
-            ]
-        )
-        sum_salary = 0.0
-        for line in advanced_salary_ids:
-            sum_salary += line.amount
-        self.advanced_salary_ids = [(6, 0, advanced_salary_ids.ids)]
-        self.amount_advanced_salary = sum_salary
+            advanced_salary_ids = me.env["advanced.salary"].search(
+                [
+                    ("hr_employee", "=", me.employee_id.id),
+                    ("state", "=", "accepted"),
+                    ("date", ">=", me.date_from), ("date", "<=", me.date_to),
+                ]
+            )
+            sum_salary = 0.0
+            for line in advanced_salary_ids:
+                sum_salary += line.amount
+            me.advanced_salary_ids = [(6, 0, advanced_salary_ids.ids)]
+            me.amount_advanced_salary = sum_salary
 
-        date_diff = relativedelta(datetime.today(), self.employee_id.joining_date)
-        day = date_diff.days
-        month = date_diff.months
-        year = date_diff.years
-        if year < 5:
-            self.employee_id.ensbeh_eos = 0.5
-        else:
-            self.employee_id.ensbeh_eos = 1
-
-        super(HrPayslip, self).compute_sheet()
-        self.hr_attendance_save_ids.unlink()
-
-        self.model = self.env["hr.attendance.save"]
-
-        current_date = self.date_from
-        while (current_date <= self.date_to):
-            # IDS = self.env['hr.attendance']._search(
-            #     [('employee_id', '=', self.employee_id.id), ('check_in', '>=', current_date), ('check_in', '<',  (datetime.strptime(str(current_date), '%Y-%m-%d').date() + relativedelta(days= + 1))) ])
-            # employee_attendance_ids = self.env['hr.attendance'].browse(IDS)
-
-            select = "select COALESCE( sum(worked_hours),0) as sum from hr_attendance where employee_id = %s and check_in >= %r and check_in < %r" % (
-                self.employee_id.id, str(current_date),
-                str(datetime.strptime(str(current_date), '%Y-%m-%d').date() + relativedelta(days=+ 1)))
-            self.env.cr.execute(select)
-            results = self.env.cr.dictfetchall()[0]['sum']
-            second = (results * 60 * 60) - (self.contract_id.resource_calendar_id.hours_per_day * 60 * 60)
-            if second > 0.0:
-                edafy_second = second / 60 / 60
-                edafy_delay = 0.0
+            date_diff = relativedelta(datetime.today(), me.employee_id.joining_date)
+            day = date_diff.days
+            month = date_diff.months
+            year = date_diff.years
+            if year < 5:
+                me.employee_id.ensbeh_eos = 0.5
             else:
-                edafy_second = 0.0
-                edafy_delay = (second * -1) / 60 / 60
-            self.model.create({'date': current_date, "employee_id": self.employee_id.id, "hr_payslip_id": self.id,
-                               "hours_per_day": self.contract_id.resource_calendar_id.hours_per_day,
-                               "time_work": results, "addition": edafy_second, "delays": edafy_delay})
-            current_date = (datetime.strptime(str(current_date), '%Y-%m-%d').date() + relativedelta(days=+ 1))
+                me.employee_id.ensbeh_eos = 1
+
+            super(HrPayslip, me).compute_sheet()
+            me.hr_attendance_save_ids.unlink()
+
+            me.model = me.env["hr.attendance.save"]
+
+            current_date = me.date_from
+            while (current_date <= me.date_to):
+                # IDS = me.env['hr.attendance']._search(
+                #     [('employee_id', '=', me.employee_id.id), ('check_in', '>=', current_date), ('check_in', '<',  (datetime.strptime(str(current_date), '%Y-%m-%d').date() + relativedelta(days= + 1))) ])
+                # employee_attendance_ids = me.env['hr.attendance'].browse(IDS)
+
+                select = "select COALESCE( sum(worked_hours),0) as sum from hr_attendance where employee_id = %s and check_in >= %r and check_in < %r" % (
+                    me.employee_id.id, str(current_date),
+                    str(datetime.strptime(str(current_date), '%Y-%m-%d').date() + relativedelta(days=+ 1)))
+                me.env.cr.execute(select)
+                results = me.env.cr.dictfetchall()[0]['sum']
+                second = (results * 60 * 60) - (me.contract_id.resource_calendar_id.hours_per_day * 60 * 60)
+                if second > 0.0:
+                    edafy_second = second / 60 / 60
+                    edafy_delay = 0.0
+                else:
+                    edafy_second = 0.0
+                    edafy_delay = (second * -1) / 60 / 60
+                me.model.create({'date': current_date, "employee_id": me.employee_id.id, "hr_payslip_id": me.id,
+                                   "hours_per_day": me.contract_id.resource_calendar_id.hours_per_day,
+                                   "time_work": results, "addition": edafy_second, "delays": edafy_delay})
+                current_date = (datetime.strptime(str(current_date), '%Y-%m-%d').date() + relativedelta(days=+ 1))
         res = super(HrPayslip, self).compute_sheet()
 
         return res
