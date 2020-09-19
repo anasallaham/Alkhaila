@@ -10,19 +10,16 @@ class AdvancedSalaryMonthly(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     order_number  = fields.Char(string="Number",readonly=True)
-    note = fields.Char(string="الوصف")
+    note = fields.Char(string="الوصف",required=True)
     advanced_salary = fields.One2many('advanced.salary','advanced_salary_monthly', string="السلف")
-    hr_employee = fields.Many2one('hr.employee', string="الموظف")
-    date = fields.Date(string=" تاريخ")
+    hr_employee = fields.Many2one('hr.employee', string="الموظف",required=True)
+    date = fields.Date(string=" تاريخ",required=True)
     count_cut = fields.Integer(string="عدد الاقساط")
-    amount = fields.Float(string="القيمة الكلية")
+    amount = fields.Float(string="القيمة الكلية",required=True)
     journal_id = fields.Many2one('account.journal', string="اليوميه")
     account_id = fields.Many2one('account.account', string="الحساب")
     analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', )
 
-    journal_id_advanced = fields.Many2one('account.journal', string="يومية السلف")
-    account_id_advanced  = fields.Many2one('account.account', string="حساب السلف")
-    analytic_account_id_advanced  = fields.Many2one('account.analytic.account', 'Analytic Account Advanced', )
     move_id = fields.Many2one('account.move', string="القيد",readonly=True)
     holiday_id = fields.Many2one('hr.leave',string="مرتبط باجازة")
     contract_id = fields.Many2one('hr.contract',string="العقد")
@@ -114,11 +111,6 @@ class AdvancedSalaryMonthly(models.Model):
 
     def action_accepted(self):
         if self.env.user.has_group('account.group_account_manager'):
-
-
-
-
-
             if self.holiday_id:
                 date = self.holiday_id.request_date_from
             else:
@@ -130,12 +122,9 @@ class AdvancedSalaryMonthly(models.Model):
                         'advanced_salary_monthly': self.id,
                         'hr_employee': self.hr_employee.id,
                         'amount': amount_monthly,
-                        'journal_id': self.journal_id_advanced.id,
-                        'account_id': self.account_id_advanced.id,
-                        'analytic_account_id': self.analytic_account_id_advanced.id,
                         'date': date,
                     })
-                    advanced.action_accepted()
+                    advanced.state = 'accepted'
                     date = date + relativedelta(months=1)
             else:
                 salary = self.contract_id.wage
@@ -149,12 +138,9 @@ class AdvancedSalaryMonthly(models.Model):
                         'advanced_salary_monthly': self.id,
                         'hr_employee': self.hr_employee.id,
                         'amount': amount_holidays,
-                        'journal_id': self.journal_id_advanced.id,
-                        'account_id': self.account_id_advanced.id,
-                        'analytic_account_id': self.analytic_account_id_advanced.id,
                         'date': date,
                     })
-                    advanced.action_accepted()
+                    advanced.state = 'accepted'
 
                 elif amount_holidays > salary:
                     for num in range(0, holidays_per_30+1):
@@ -163,12 +149,9 @@ class AdvancedSalaryMonthly(models.Model):
                                 'advanced_salary_monthly': self.id,
                                 'hr_employee': self.hr_employee.id,
                                 'amount': salary,
-                                'journal_id': self.journal_id_advanced.id,
-                                'account_id': self.account_id_advanced.id,
-                                'analytic_account_id': self.analytic_account_id_advanced.id,
                                 'date': date,
                             })
-                            advanced.action_accepted()
+                            advanced.state = 'accepted'
 
                             current_amount = current_amount - salary
                         elif current_amount < salary and current_amount >= 0.0:
@@ -176,12 +159,9 @@ class AdvancedSalaryMonthly(models.Model):
                                 'advanced_salary_monthly': self.id,
                                 'hr_employee': self.hr_employee.id,
                                 'amount': current_amount,
-                                'journal_id': self.journal_id_advanced.id,
-                                'account_id': self.account_id_advanced.id,
-                                'analytic_account_id': self.analytic_account_id_advanced.id,
                                 'date': date,
                             })
-                            advanced.action_accepted()
+                            advanced.state = 'accepted'
                             current_amount = current_amount - salary
                         date = date + relativedelta(months=1)
 
@@ -283,13 +263,13 @@ class AdvancedSalary(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     order_number  = fields.Char(string="Number",readonly=True)
-    note = fields.Char(string="الوصف")
+    note = fields.Char(string="الوصف",required=True)
 
     advanced_salary_monthly = fields.Many2one('advanced.salary.monthly', string="الموظف")
     exit_entry_id = fields.Many2one('exit.entry', string="exit entry")
-    hr_employee = fields.Many2one('hr.employee', string="الموظف")
-    date = fields.Date(string="التاريخ")
-    amount = fields.Float(string="قيمة السلفة")
+    hr_employee = fields.Many2one('hr.employee', string="الموظف",required=True)
+    date = fields.Date(string="التاريخ",required=True)
+    amount = fields.Float(string="قيمة السلفة",required=True)
 
     journal_id = fields.Many2one('account.journal', string="اليوميه")
     account_id = fields.Many2one('account.account', string="الحساب")
@@ -502,12 +482,12 @@ class PenaltySalary(models.Model):
 
 
     order_number  = fields.Char(string="Number",readonly=True)
-    note = fields.Char(string="الوصف")
+    note = fields.Char(string="الوصف",required=True)
 
-    penalty_name = fields.Many2one('penalty.name', string="العقوبة")
-    hr_employee = fields.Many2one('hr.employee', string="الموظف")
-    date = fields.Date(string="التاريخ")
-    amount = fields.Float(string="القيمة")
+    penalty_name = fields.Many2one('penalty.name', string="العقوبة",required=True)
+    hr_employee = fields.Many2one('hr.employee', string="الموظف",required=True)
+    date = fields.Date(string="التاريخ",required=True)
+    amount = fields.Float(string="القيمة",required=True)
 
     journal_id = fields.Many2one('account.journal', string="يومية القيود")
     account_debit_id = fields.Many2one('account.account', string="حساب المدين")

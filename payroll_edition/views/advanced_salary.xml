@@ -306,15 +306,6 @@
                                    groups="base.group_system"/>
                             <field name="analytic_account_id" attrs="{'readonly': [('state', '!=', 'director')]}"/>
                         </group>
-                        <group>
-                            <field name="journal_id_advanced"
-                                   attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}"
-                                   groups="base.group_system"/>
-                            <field name="account_id_advanced"
-                                   attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}"
-                                   groups="base.group_system"/>
-                            <field name="analytic_account_id_advanced" attrs="{'readonly': [('state', '!=', 'director')]}"/>
-                        </group>
                     </group>
                     <notebook>
                         <page string="تفصيل السلف">
