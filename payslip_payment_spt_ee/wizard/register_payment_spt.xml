@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="register_payment_form_view_spt" model="ir.ui.view">
+            <field name="name">register.payment.form.view.spt</field>
+            <field name="model">register.payment.spt</field>
+            <field name="arch" type="xml">
+                <form string="Register Payment">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" readonly='1'/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="journal_id" widget="selection"/>
+                                <field name="payment_method_id" invisible="1"/>
+                                <field name="amount"/>
+                            </group>
+                            <group>
+                                <field name="payment_date"/>
+                                <field name="communication"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string='Validate' name="payment_payslip_spt" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+</odoo>
