@@ -175,11 +175,11 @@ class AdvancedSalaryMonthly(models.Model):
                 self.move_id.button_draft()
                 move_line_vals = []
                 line1 = (0, 0, {'name': self.order_number, 'debit': self.amount, 'credit': 0,
-                                'account_id': self.account_id.id,'partner_id':self.hr_employee.address_id.id,
+                                'account_id': self.account_id.id,'partner_id':self.hr_employee.address_home_id.id,
                                 'analytic_account_id': self.analytic_account_id.id
                                 })
                 line2 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': self.amount,
-                                'account_id': self.journal_id.default_credit_account_id.id,'partner_id':self.hr_employee.address_id.id,
+                                'account_id': self.journal_id.default_credit_account_id.id,'partner_id':self.hr_employee.address_home_id.id,
                                 'analytic_account_id': self.analytic_account_id.id
                                 })
                 move_line_vals.append(line1)
@@ -219,7 +219,7 @@ class AdvancedSalaryMonthly(models.Model):
                         'credit': 0.0,
                         'account_id': rec.account_id.id,
                         'analytic_account_id': rec.analytic_account_id.id,
-                        'partner_id':rec.hr_employee.address_id.id,
+                        'partner_id':rec.hr_employee.address_home_id.id,
                     }),
                     (0, 0, {
                         'name': rec.order_number,
@@ -227,7 +227,7 @@ class AdvancedSalaryMonthly(models.Model):
                         'credit': rec.amount,
                         'account_id': rec.journal_id.default_credit_account_id.id,
                         'analytic_account_id': rec.analytic_account_id.id,
-                        'partner_id': rec.hr_employee.address_id.id,
+                        'partner_id': rec.hr_employee.address_home_id.id,
                     }),
                 ],
             }
@@ -263,7 +263,7 @@ class AdvancedSalary(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     order_number  = fields.Char(string="Number",readonly=True)
-    note = fields.Char(string="الوصف",required=True)
+    note = fields.Char(string="الوصف",required=False)
 
     advanced_salary_monthly = fields.Many2one('advanced.salary.monthly', string="الموظف")
     exit_entry_id = fields.Many2one('exit.entry', string="exit entry")
@@ -306,7 +306,7 @@ class AdvancedSalary(models.Model):
                         'credit': 0.0,
                         'account_id': rec.account_id.id,
                         'analytic_account_id': rec.analytic_account_id.id,
-                        'partner_id':rec.hr_employee.address_id.id,
+                        'partner_id':rec.hr_employee.address_home_id.id,
                     }),
                     (0, 0, {
                         'name': rec.order_number,
@@ -314,7 +314,7 @@ class AdvancedSalary(models.Model):
                         'credit': rec.amount,
                         'account_id': rec.journal_id.default_credit_account_id.id,
                         'analytic_account_id': rec.analytic_account_id.id,
-                        'partner_id': rec.hr_employee.address_id.id,
+                        'partner_id': rec.hr_employee.address_home_id.id,
                     }),
                 ],
             }
@@ -407,11 +407,11 @@ class AdvancedSalary(models.Model):
                 self.move_id.button_draft()
                 move_line_vals = []
                 line1 = (0, 0, {'name': self.order_number, 'debit': self.amount, 'credit': 0,
-                                'account_id': self.account_id.id,'partner_id':self.hr_employee.address_id.id,
+                                'account_id': self.account_id.id,'partner_id':self.hr_employee.address_home_id.id,
                                 'analytic_account_id': self.analytic_account_id.id
                                 })
                 line2 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': self.amount,
-                                'account_id': self.journal_id.default_credit_account_id.id,'partner_id':self.hr_employee.address_id.id,
+                                'account_id': self.journal_id.default_credit_account_id.id,'partner_id':self.hr_employee.address_home_id.id,
                                 'analytic_account_id': self.analytic_account_id.id
                                 })
                 move_line_vals.append(line1)
@@ -524,7 +524,7 @@ class PenaltySalary(models.Model):
                         'credit': 0.0,
                         'account_id': rec.account_debit_id.id,
                         'analytic_account_id': rec.analytic_account_id.id,
-                        'partner_id':rec.hr_employee.address_id.id,
+                        'partner_id':rec.hr_employee.address_home_id.id,
                     }),
                     (0, 0, {
                         'name': rec.order_number,
@@ -532,7 +532,7 @@ class PenaltySalary(models.Model):
                         'credit': rec.amount,
                         'account_id': rec.account_credit_id.id,
                         'analytic_account_id': rec.analytic_account_id.id,
-                        'partner_id': rec.hr_employee.address_id.id,
+                        'partner_id': rec.hr_employee.address_home_id.id,
                     }),
                 ],
             }
@@ -625,11 +625,11 @@ class PenaltySalary(models.Model):
                 self.move_id.button_draft()
                 move_line_vals = []
                 line1 = (0, 0, {'name': self.order_number, 'debit': self.amount, 'credit': 0,
-                                'account_id': self.account_debit_id.id,'partner_id':self.hr_employee.address_id.id,
+                                'account_id': self.account_debit_id.id,'partner_id':self.hr_employee.address_home_id.id,
                                 'analytic_account_id': self.analytic_account_id.id
                                 })
                 line2 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': self.amount,
-                                'account_id': self.account_credit_id.id,'partner_id':self.hr_employee.address_id.id,
+                                'account_id': self.account_credit_id.id,'partner_id':self.hr_employee.address_home_id.id,
                                 'analytic_account_id': self.analytic_account_id.id
                                 })
                 move_line_vals.append(line1)
