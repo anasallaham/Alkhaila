@@ -27,9 +27,32 @@ class register_payment_spt(models.TransientModel):
     def payment_payslip_spt(self):
         for record in self:
             if record.payslip_id.connection_spt():
-                method = record.payslip_id.get_method('payment_payslip_spt')
-                if method['method']:
-                    localdict = {'self':record,'user_obj':record.env.user,'UserError': UserError,'_':_}
-                    exec(method['method'], localdict)
+                # method = record.payslip_id.get_method('payment_payslip_spt')
+                # if method['method']:
+                #     localdict = {'self':record,'user_obj':record.env.user,'UserError': UserError,'_':_}
+                #     exec(method['method'], localdict)
+                if not self.payslip_id.employee_id.address_home_id.id:
+                    raise UserError(_('Partner not found In Employee (Please Related Partner In Current Employee)!'))
+                payment = self.env['account.payment'].create({
+                    'name': self.name,
+                    'partner_id': self.payslip_id.employee_id.address_home_id.id,
+                    'amount': self.payslip_id.net_salary,
+                    'payment_date': self.payment_date,
+                    'communication': self.communication,
+                    'payslip_id': self.payslip_id.id,
+                    'partner_type': 'supplier',
+                    'payment_type': 'outbound',
+                    'journal_id': self.journal_id.id,
+                    'payment_method_id': self.payment_method_id.id,
+                    'company_id': self.payslip_id.employee_id.company_id.id,
+                    'currency_id': self.payslip_id.employee_id.company_id.currency_id.id,
+                })
+                payment.post()
+                line_to_reconcile = self.env['account.move.line']
+                for line in payment.move_line_ids + self.payslip_id.move_id.line_ids:
+                    if line.account_id.internal_type == 'payable':
+                        line_to_reconcile |= line
+                line_to_reconcile.reconcile()
+                self.payslip_id.state = 'paid'
 
      
