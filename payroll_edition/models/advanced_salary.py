@@ -14,6 +14,7 @@ class AdvancedSalaryMonthly(models.Model):
     advanced_salary = fields.One2many('advanced.salary','advanced_salary_monthly', string="السلف")
     hr_employee = fields.Many2one('hr.employee', string="الموظف",required=True)
     date = fields.Date(string=" تاريخ",required=True)
+    date_first_cut = fields.Date(string=" تاريخ اول اقتطاع",required=True)
     count_cut = fields.Integer(string="عدد الاقساط")
     amount = fields.Float(string="القيمة الكلية",required=True)
     journal_id = fields.Many2one('account.journal', string="اليوميه")
@@ -114,7 +115,7 @@ class AdvancedSalaryMonthly(models.Model):
             if self.holiday_id:
                 date = self.holiday_id.request_date_from
             else:
-                date = self.date
+                date = self.date_first_cut
             if not self.contract_id:
                 amount_monthly = round(self.amount / self.count_cut, 3)
                 for c in range(1, self.count_cut+1):
