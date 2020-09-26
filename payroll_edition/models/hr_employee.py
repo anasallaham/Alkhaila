@@ -13,6 +13,7 @@ class Employee(models.Model):
     date_stop  = fields.Date(string="تاريخ الانهاء ")
 
 
+    studio_gosi_number = fields.Char(string="Gosi Number")
     type_employee_end = fields.Selection([('Resignation','مستقيل'),('end_of_contract','End of contract'),('termination2','Termination')],string="الية الانهاء")
 
 

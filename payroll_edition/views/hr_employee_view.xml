@@ -11,6 +11,7 @@
                 </xpath>
                 <xpath expr="//field[@name='identification_id']" position="after">
                     <field name="medical_insurance"/>
+                    <field name="studio_gosi_number"/>
                 </xpath>
 
 
@@ -20,8 +21,6 @@
                        <field name="iqama_start_date"/>
                        <field name="iqama_end_date"/>
                     </group>
-
-
                     <group string="Exit Entry">
                        <field name="type_exit_entry" readonly="1"/>
                     </group>
