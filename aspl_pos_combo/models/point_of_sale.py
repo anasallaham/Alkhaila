@@ -39,6 +39,7 @@ class PosOrder(models.Model):
                 del order_line[2]['combo_ext_line_info']
                 new_order_line.append(order_line)
             else:
+                del order_line[2]['combo_ext_line_info']
                 new_order_line.append(order_line)
         res.update({
             'lines': new_order_line,
