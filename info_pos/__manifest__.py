@@ -13,13 +13,13 @@
     'category': 'Point of Sale',
     'summary': 'INFO POS.',
     'description': """
-This module allows user to use combo feature in restaurant
+INFO POS
 """,
     'author': 'Abdelraheem.',
     'website': '',
     'version': '13.0.2',
     'depends': ['base', 'point_of_sale'],
-    'images': ['static/description/main_screenshot.png'],
+    'images': [''],
     "data": [
 
     ],

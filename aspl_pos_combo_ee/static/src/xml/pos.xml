@@ -11,7 +11,7 @@
         </t>
     </t>
 
-    <t t-name="POSComboProductPopup">
+    <!-- <t t-name="POSComboProductPopup">
         <div class="modal-dialog">
             <div class="popup popup-textinput pos_combo_product_popup">
                 <p class="title">Combo Product</p>
@@ -67,16 +67,7 @@
                                                 <div class="categ_name">
                                                     <div>
                                                         <t t-esc="record.pos_category_id[1]"/>
-                                                    </div>                               
-                                                    <div>
-                                                        Selected Quantity : 
-                                                        <t t-if="record.display_item">
-                                                            <t t-esc="record.display_item"/>
-                                                        </t>
-                                                        <t t-else="">
-                                                            0
-                                                        </t>
-                                                    </div>                                              
+                                                    </div>
                                                     <div class="blinking" style="text-align:right;">
                                                         <span style="padding-right: 10px;">
                                                             Choose Any <t t-esc="record.no_of_items"/>
@@ -109,6 +100,124 @@
 	                                                    </span>
 	                                                </t>
 	                                            </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </t>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer">
+                    <div class="button confirm">
+                        OK
+                    </div>
+                    <div class="button cancel">
+                        Cancel
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t> -->
+
+    <t t-name="POSComboProductPopup">
+        <div class="modal-dialog">
+            <div class="popup popup-textinput pos_combo_product_popup">
+                <p class="title">Combo Product</p>
+                <div class="combo_product_container">
+                    <div class="sub_product_container">
+                        <div class="combo_product_header">
+                            <span>
+                                Required Products
+                            </span>
+                            <div class="collaps_div fix_products">
+                                <i class="fa fa-angle-up"></i>
+                            </div>
+                        </div>
+                        <div class="combo_header_body">
+                            <t t-if="widget.new_combo_products_details">
+                                <t t-foreach="widget.new_combo_products_details" t-as="record">
+                                    <t t-if="record.require">
+                                        <t t-foreach="record.product_details" t-as="product_detail">
+                                            <t t-set="product" t-value="widget.pos.db.get_product_by_id(product_detail.product_id)"/>
+                                            <span class='product product_content fix_product selected' t-att-data-product-id="product.id">
+                                                <div class="product-img">
+                                                    <img t-att-src='widget.pos.gui.screen_instances.products.product_list_widget.get_product_image_url(product)' />
+                                                    <span class="product-qty">
+                                                        <t t-esc="product_detail.used_time"/>
+                                                    </span>
+                                                    <div class="selected_product">
+                                                        Selected
+                                                    </div>
+                                                </div>
+                                                <div class="product-name">
+                                                    <t t-esc="product.display_name" />
+                                                </div>
+                                            </span>
+                                        </t>
+                                    </t>
+                                </t>
+                            </t>
+                        </div>
+                        <div class="combo_product_header2">
+                            <span>
+                                Optional Products
+                            </span>
+                            <div class="collaps_div selective_products">
+                                <i class="fa fa-angle-up"></i>
+                            </div>
+                        </div>
+                        <div class="combo_header2_body">
+                            <t t-if="widget.new_combo_products_details">
+                                <t t-foreach="widget.new_combo_products_details" t-as="record">
+                                    <t t-if="!record.require">
+                                        <div class="category_data" t-att-categ-id="record.pos_category_id[0]">
+                                            <div class="categ_tile">
+                                                <div class="categ_name">
+                                                    <div>
+                                                        <t t-esc="record.pos_category_id[1]"/>
+                                                    </div>                               
+                                                    <div>
+                                                        Selected Quantity : 
+                                                        <t t-if="record.display_item">
+                                                            <t t-esc="record.display_item"/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            0
+                                                        </t>
+                                                    </div>                                              
+                                                    <div class="blinking" style="text-align:right;">
+                                                        <span style="padding-right: 10px;">
+                                                            Choose Any <t t-esc="record.no_of_items"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="products_list" t-att-id="record.pos_category_id[0]">
+                                                    <t t-foreach="record.product_details" t-as="product_detail">
+                                                        <t t-set="product" t-value="widget.pos.db.get_product_by_id(product_detail.product_id)"/>
+                                                        <span t-att-class="product_detail.used_time > 0 ? 'product product_content selective_product selected' : 'product product_content selective_product'"
+                                                              t-att-data-product-id="product.id" 
+                                                              t-att-data-categ-id="record.pos_category_id[0]"
+                                                              t-att-data-line-id="record.id"
+                                                              t-att-title="product.display_name">
+                                                            <div class="product-img">
+                                                                <img t-att-src='widget.pos.gui.screen_instances.products.product_list_widget.get_product_image_url(product)' />
+                                                                <span class="product-qty">
+                                                                    <t t-esc="product_detail.used_time"/>
+                                                                </span>
+                                                                <span class="product-remove">
+                                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                                </span>
+                                                                <div class="selected_product">
+                                                                    Selected
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-name">
+                                                                <t t-esc="product.display_name"/>
+                                                            </div>
+                                                        </span>
+                                                    </t>
+                                                </div>
                                             </div>
                                         </div>
                                     </t>
@@ -160,24 +269,23 @@
 
     <t t-extend="OrderReceipt">
         <t t-jquery='div[class="orderlines"]' t-operation='replace'>
-            <table class='orderlines'>
-                <colgroup>
-                    <col width='50%' />
-                    <col width='25%' />
-                    <col width='25%' />
-                </colgroup>
-                <tr t-foreach="orderlines" t-as="orderline">
-                    <td>
+            <div class='orderlines'>
+                <div t-foreach="orderlines" t-as="orderline">
+                    <div>
                         <t t-esc="orderline.get_product().display_name"/>
+                        <span>
+                            <t t-esc="orderline.get_quantity_str_with_unit()"/>
+                        </span>
+                        <span style="float:right;">
+                            <t t-esc="widget.format_currency(orderline.get_display_price())"/>
+                        </span>
                         <t t-if="orderline.get_combo_prod_info()">
-                            <table>
-	                            <tr t-foreach="orderline.get_combo_prod_info()" t-as="prod_info"> 
-	                                <td>
+                            <div>
+	                            <div t-foreach="orderline.get_combo_prod_info()" t-as="prod_info">
+	                                <div>
 	                                    <span class="pos-disc-font">
-	                                        &#8594; <t t-esc="prod_info.product.display_name"/>
-	                                        <t t-esc="prod_info.qty"/>
-                                            <t t-if="widget.pos.config.hide_uom">
-                                                <span>Quantity</span>
+	                                        <span><t t-esc="prod_info.product.display_name"/></span>
+	                                        <t t-esc="prod_info.qty"/><t t-if="widget.pos.config.hide_uom"> Quantity
                                             </t>
                                             <t t-if="!widget.pos.config.hide_uom">
                                                  <t t-if="prod_info.product.uom_id[0]">
@@ -185,33 +293,27 @@
                                                  </t>
                                             </t>
 	                                    </span>
-	                                </td>
-	                            </tr>
-                            </table>
+	                                </div>
+	                            </div>
+                            </div>
                         </t>  
                          <t t-if="orderline.get_discount() > 0">
                             <div class="pos-disc-font">
                                 With a <t t-esc="orderline.get_discount()"/>% discount
                             </div>
                         </t>
-                    </td>
-                    <td class="pos-right-align" valign="top">
-                        <t t-esc="orderline.get_quantity_str_with_unit()"/>
-                    </td>
-                    <td class="pos-right-align" valign="top">
-                        <t t-esc="widget.format_currency(orderline.get_display_price())"/>
-                    </td>
-                </tr>
-            </table>
+                    </div>
+                </div>
+            </div>
         </t>
     </t>
 
-    <t t-extend="XmlReceipt">
+    <t t-extend="OrderReceipt">
         <t t-jquery="[t-if='!simple']" t-operation="after">
             <t t-if="line.combo_prod_info">
                 <t t-foreach="line.combo_prod_info" t-as="combo_detail">
-                    <line indent='1'>
-		               <left>
+                    <span indent='1'>
+		               <span>
 		                   <t t-esc="combo_detail.product.display_name"/>
 		                   <t t-esc="combo_detail.qty"/>
                            <t t-if="!widget.pos.config.hide_uom">
@@ -219,8 +321,8 @@
                                       <t t-esc="combo_detail.product.uom_id[1]"/>
                                  </t>
                            </t>
-		               </left>
-	              </line>
+		               </span>
+	              </span>
 	          </t>
             </t>
         </t>

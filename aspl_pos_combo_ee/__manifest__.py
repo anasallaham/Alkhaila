@@ -9,7 +9,7 @@
 #
 #################################################################################
 {
-    'name': 'POS Combo',
+    'name': 'POS Combo (Enterprise)',
     'category': 'Point of Sale',
     'summary': 'This module allows user to use combo feature in restaurant.',
     'description': """
@@ -17,9 +17,9 @@ This module allows user to use combo feature in restaurant
 """,
     'author': 'Acespritech Solutions Pvt. Ltd.',
     'website': 'http://www.acespritech.com',
-    'price': 10, 
+    'price': 15, 
     'currency': 'EUR',
-    'version': '1.0.2',
+    'version': '1.0.1',
     'depends': ['base', 'pos_restaurant'],
     'images': ['static/description/main_screenshot.png'],
     "data": [
