@@ -34,6 +34,9 @@
                 <t t-if="order.get_client()">
                     Customer: <t t-esc="order.get_client().name"/><br />
                  </t>
+                <t t-if='receipt.selected_delivery_type_name'>
+                        Delivery Type: <t t-esc="receipt.selected_delivery_type_name"/>
+                </t>
                 <t t-if='receipt.header_html'>
                     <t t-raw='receipt.header_html'/>
                 </t>
@@ -59,7 +62,8 @@
                     <t t-if='simple'>
                         <div><t t-esc='line.product_name_wrapped[0]' />
                             <span t-esc='widget.format_currency_no_symbol(line.price_display)'
-                                  class="price_display pos-receipt-right-align"/></div>
+                                  class="price_display pos-receipt-right-align"/>
+                        </div>
                         <t t-call="OrderReceiptWrappedProductNameLines"/></t>
                     <t t-if='!simple'>
                         <div t-esc='line.product_name_wrapped[0]'/>
@@ -80,11 +84,6 @@
                         <t t-if='line.discount !== 0'>
                             <div class="pos-receipt-left-padding">
                                 Discount: <t t-esc='line.discount'/>%
-                            </div>
-                        </t>
-                        <t t-if='line.note'>
-                            <div class="pos-receipt-left-padding">
-                                Note: <t t-esc='line.note'/>
                             </div>
                         </t>
                         <div class="pos-receipt-left-padding">
