@@ -1,0 +1,79 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* hw_escpos_network_printer
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-11-08 02:01+0000\n"
+"PO-Revision-Date: 2019-11-08 02:01+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hw_escpos_network_printer
+#: code:addons/hw_escpos_network_printer/controllers/hw_escpos.py:0
+#, python-format
+msgid "         TOTAL"
+msgstr ""
+
+#. module: hw_escpos_network_printer
+#: code:addons/hw_escpos_network_printer/controllers/hw_escpos.py:0
+#, python-format
+msgid "        CHANGE"
+msgstr ""
+
+#. module: hw_escpos_network_printer
+#: code:addons/hw_escpos_network_printer/controllers/hw_escpos.py:0
+#, python-format
+msgid "Discounts"
+msgstr ""
+
+#. module: hw_escpos_network_printer
+#: model:ir.model.fields,field_description:hw_escpos_network_printer.field_pos_config__iface_enable_network_printing
+msgid "Enable IP Network Printing"
+msgstr ""
+
+#. module: hw_escpos_network_printer
+#: model:ir.model.fields,field_description:hw_escpos_network_printer.field_pos_config__iface_network_printer_ip_address
+msgid "IP Address"
+msgstr ""
+
+#. module: hw_escpos_network_printer
+#: model_terms:ir.ui.view,arch_db:hw_escpos_network_printer.pos_config_view_form_inherit_network_printer
+msgid "IP Network Printing"
+msgstr ""
+
+#. module: hw_escpos_network_printer
+#: model:ir.model.fields,help:hw_escpos_network_printer.field_pos_config__iface_enable_network_printing
+msgid ""
+"If you enable network printing,            Printing via IoT Box will be "
+"given second priority"
+msgstr ""
+
+#. module: hw_escpos_network_printer
+#: model:ir.model,name:hw_escpos_network_printer.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr ""
+
+#. module: hw_escpos_network_printer
+#: model:ir.model.fields,field_description:hw_escpos_network_printer.field_pos_config__iface_network_printer_port
+msgid "Port"
+msgstr ""
+
+#. module: hw_escpos_network_printer
+#: code:addons/hw_escpos_network_printer/controllers/hw_escpos.py:0
+#, python-format
+msgid "Subtotal"
+msgstr ""
+
+#. module: hw_escpos_network_printer
+#: model_terms:ir.ui.view,arch_db:hw_escpos_network_printer.pos_config_view_form_inherit_network_printer
+msgid ""
+"Use an IP network printer to print your receipts.If you enable this, then "
+"priority will be given to network printer over IoT Box printer if any."
+msgstr ""
