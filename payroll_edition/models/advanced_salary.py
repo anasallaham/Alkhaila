@@ -15,6 +15,7 @@ class AdvancedSalaryMonthly(models.Model):
     hr_employee = fields.Many2one('hr.employee', string="الموظف",required=True)
     date = fields.Date(string=" تاريخ",required=True)
     date_first_cut = fields.Date(string=" تاريخ اول اقتطاع",required=True)
+    date_payed = fields.Date(string="تاريخ الدفع")
     count_cut = fields.Integer(string="عدد الاقساط")
     amount = fields.Float(string="القيمة الكلية",required=True)
     journal_id = fields.Many2one('account.journal', string="اليوميه")
@@ -124,6 +125,7 @@ class AdvancedSalaryMonthly(models.Model):
                         'hr_employee': self.hr_employee.id,
                         'amount': amount_monthly,
                         'date': date,
+                        'date_payed': self.date_payed,
                     })
                     advanced.state = 'accepted'
                     date = date + relativedelta(months=1)
@@ -140,6 +142,7 @@ class AdvancedSalaryMonthly(models.Model):
                         'hr_employee': self.hr_employee.id,
                         'amount': amount_holidays,
                         'date': date,
+                        'date_payed': self.date_payed,
                     })
                     advanced.state = 'accepted'
 
@@ -151,6 +154,7 @@ class AdvancedSalaryMonthly(models.Model):
                                 'hr_employee': self.hr_employee.id,
                                 'amount': salary,
                                 'date': date,
+                                'date_payed': self.date_payed,
                             })
                             advanced.state = 'accepted'
 
@@ -161,6 +165,7 @@ class AdvancedSalaryMonthly(models.Model):
                                 'hr_employee': self.hr_employee.id,
                                 'amount': current_amount,
                                 'date': date,
+                                'date_payed': self.date_payed,
                             })
                             advanced.state = 'accepted'
                             current_amount = current_amount - salary
@@ -174,6 +179,7 @@ class AdvancedSalaryMonthly(models.Model):
                 self.move_id = moves.id
             else:
                 self.move_id.button_draft()
+                self.move_id.date = self.date_payed
                 move_line_vals = []
                 line1 = (0, 0, {'name': self.order_number, 'debit': self.amount, 'credit': 0,
                                 'account_id': self.account_id.id,'partner_id':self.hr_employee.address_home_id.id,
@@ -187,8 +193,6 @@ class AdvancedSalaryMonthly(models.Model):
                 move_line_vals.append(line2)
                 self.move_id.line_ids = move_line_vals
                 self.move_id.post()
-
-
             self.state = "accepted"
 
 
@@ -210,7 +214,7 @@ class AdvancedSalaryMonthly(models.Model):
         for rec in self:
 
             move_vals = {
-                'date': rec.date,
+                'date': rec.date_payed,
                 'ref': rec.order_number,
                 'journal_id': rec.journal_id.id,
                 'line_ids': [
@@ -269,7 +273,8 @@ class AdvancedSalary(models.Model):
     advanced_salary_monthly = fields.Many2one('advanced.salary.monthly', string="الموظف")
     exit_entry_id = fields.Many2one('exit.entry', string="exit entry")
     hr_employee = fields.Many2one('hr.employee', string="الموظف",required=True)
-    date = fields.Date(string="التاريخ",required=True)
+    date = fields.Date(string="تاريخ التحرير",required=True)
+    date_payed = fields.Date(string="تاريخ الدفع")
     amount = fields.Float(string="قيمة السلفة",required=True)
 
     journal_id = fields.Many2one('account.journal', string="اليوميه")
@@ -297,7 +302,7 @@ class AdvancedSalary(models.Model):
         for rec in self:
 
             move_vals = {
-                'date': rec.date,
+                'date': rec.date_payed,
                 'ref': rec.order_number,
                 'journal_id': rec.journal_id.id,
                 'line_ids': [
@@ -406,6 +411,7 @@ class AdvancedSalary(models.Model):
                 self.move_id = moves.id
             else:
                 self.move_id.button_draft()
+                self.move_id.date = self.date_payed
                 move_line_vals = []
                 line1 = (0, 0, {'name': self.order_number, 'debit': self.amount, 'credit': 0,
                                 'account_id': self.account_id.id,'partner_id':self.hr_employee.address_home_id.id,
@@ -488,6 +494,7 @@ class PenaltySalary(models.Model):
     penalty_name = fields.Many2one('penalty.name', string="العقوبة",required=True)
     hr_employee = fields.Many2one('hr.employee', string="الموظف",required=True)
     date = fields.Date(string="التاريخ",required=True)
+    date_payed = fields.Date(string="تاريخ الدفع")
     amount = fields.Float(string="القيمة",required=True)
 
     journal_id = fields.Many2one('account.journal', string="يومية القيود")
@@ -515,7 +522,7 @@ class PenaltySalary(models.Model):
         for rec in self:
 
             move_vals = {
-                'date': rec.date,
+                'date': rec.date_payed,
                 'ref': rec.order_number,
                 'journal_id': rec.journal_id.id,
                 'line_ids': [

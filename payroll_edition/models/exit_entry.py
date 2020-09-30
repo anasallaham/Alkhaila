@@ -16,6 +16,7 @@ class ExitEntry(models.Model):
 
     order_number  = fields.Char(string="Number",readonly=True)
     date = fields.Date(string=" تاريخ",required=True)
+    date_payed = fields.Date(string=" تاريخ الدفع")
 
     employee_id  = fields.Many2one('hr.employee',string="الموظف",required=True)
     amount = fields.Float(string="القيمة كاملة", compute='_compute_amount', store=True)
@@ -156,6 +157,7 @@ class ExitEntry(models.Model):
                             'account_id': self.account_advanced_id.id,
                             'analytic_account_id': self.analytic_account_id.id,
                             'date': self.date,
+                            'date_payed': self.date_payed,
                         })
                 advanced.action_accepted()
             return self.write({'state': 'accepted'})
@@ -210,7 +212,7 @@ class ExitEntry(models.Model):
                 amount = exitentry.amount
 
             move_vals = {
-                'date': exitentry.date,
+                'date': exitentry.date_payed,
                 'ref': exitentry.order_number,
                 'journal_id': exitentry.journal_id.id,
                 'line_ids': [
@@ -253,6 +255,7 @@ class ExitEntry(models.Model):
                     amount = rec.amount
 
                 rec.move_id.button_draft()
+                rec.move_id.date = rec.date_payed
                 move_line_vals = []
                 line1 = (0, 0, {'name': rec.order_number, 'debit': amount, 'credit': 0,
                                 'analytic_account_id': rec.analytic_account_id.id,'account_id': rec.account_id.id,'partner_id':rec.employee_id.address_id.id,

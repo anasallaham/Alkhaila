@@ -11,6 +11,7 @@
                     <field name="amount"/>
                     <field name="count"/>
                     <field name="date"/>
+                    <field name="date_payed"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -57,6 +58,7 @@
                                 <field name="order_number"/>
                                 <field name="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="date_payed" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="type_exit_entry" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             </group>
                             <group>
@@ -64,7 +66,7 @@
                                 <field name="count" attrs="{'readonly': [('state', '!=', 'draft')],'required': [('type_exit_entry', '=', 'single')],'invisible': [('type_exit_entry', '!=', 'single')]}"/>
                                 <field name="journal_id" attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}" groups="base.group_system"/>
                                 <field name="account_id" attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}" groups="base.group_system"/>
-                                <field name="account_advanced_id" attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director'),('type_exit_entry', '=', 'single')],'invisible': [('type_exit_entry', '!=', 'single')]}" groups="base.group_system"/>
+                                <field name="account_advanced_id" attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director'),('type_exit_entry', '=', 'single'),('amount','>',200)],'invisible': [('type_exit_entry', '!=', 'single')]}" groups="base.group_system"/>
                                 <field name="analytic_account_id" attrs="{'readonly': [('state', '!=', 'director')]}"/>
 
                             </group>

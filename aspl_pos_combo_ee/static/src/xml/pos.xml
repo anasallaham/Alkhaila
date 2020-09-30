@@ -268,17 +268,8 @@
     </t>
 
     <t t-extend="OrderReceipt">
-        <t t-jquery='div[class="orderlines"]' t-operation='replace'>
-            <div class='orderlines'>
-                <div t-foreach="orderlines" t-as="orderline">
-                    <div>
-                        <t t-esc="orderline.get_product().display_name"/>
-                        <span>
-                            <t t-esc="orderline.get_quantity_str_with_unit()"/>
-                        </span>
-                        <span style="float:right;">
-                            <t t-esc="widget.format_currency(orderline.get_display_price())"/>
-                        </span>
+        <t t-jquery="t[t-foreach*='receipt.orderlines'][t-as*='line']" t-operation="append">
+            <tr t-foreach="order.orderlines.models" t-as="orderline">
                         <t t-if="orderline.get_combo_prod_info()">
                             <div>
 	                            <div t-foreach="orderline.get_combo_prod_info()" t-as="prod_info">
@@ -296,15 +287,8 @@
 	                                </div>
 	                            </div>
                             </div>
-                        </t>  
-                         <t t-if="orderline.get_discount() > 0">
-                            <div class="pos-disc-font">
-                                With a <t t-esc="orderline.get_discount()"/>% discount
-                            </div>
                         </t>
-                    </div>
-                </div>
-            </div>
+            </tr>
         </t>
     </t>
 
