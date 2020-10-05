@@ -7,13 +7,14 @@
                                         NEW
                     <t t-esc='changes.time.hours'/>:<t t-esc='changes.time.minutes'/>
                     <br/>
-                            Delivery Type: <t t-esc="receipt.selected_delivery_type_name"/>
+                            Delivery Type: <t t-esc="changes.selected_delivery_type_name"/>
                     <br/>
-                            <div>Served by <t t-esc='receipt.cashier'/></div>
+                            <div>Served by <t t-esc='changes.cashier'/></div>
                 </t>
 
     </t>
 
+    
 
     <t t-extend="OrderReceipt">
         <t t-jquery='img[class="pos-receipt-logo"]' t-operation='replace'/>
