@@ -18,7 +18,7 @@ INFO POS
     'author': 'Abdelraheem.',
     'website': '',
     'version': '13.0.2',
-    'depends': ['base', 'point_of_sale', 'pos_restaurant', 'pos_delivery_type'],
+    'depends': ['base', 'point_of_sale', 'pos_restaurant'],
     'images': [''],
     "data": [
 

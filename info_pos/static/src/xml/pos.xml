@@ -2,6 +2,19 @@
 <templates id="template" xml:space="preserve">
 
 
+    <t t-extend="OrderChangeReceipt">
+                <t t-jquery='div[class="pos-receipt-title"]' t-operation='replace'>
+                                        NEW
+                    <t t-esc='changes.time.hours'/>:<t t-esc='changes.time.minutes'/>
+                    <br/>
+                            Delivery Type: <t t-esc="changes.selected_delivery_type_name"/>
+                    <br/>
+                            <div>Served by <t t-esc='changes.cashier'/></div>
+                </t>
+
+    </t>
+
+
     <t t-extend="OrderReceipt">
         <t t-jquery='img[class="pos-receipt-logo"]' t-operation='replace'/>
         <t t-jquery='h2[class="pos-receipt-center-align"]' t-operation='replace'/>
