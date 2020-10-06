@@ -162,7 +162,15 @@ odoo.define('aspl_pos_combo_ee.pos', function (require) {
     printChanges: async function(){
         var printers = this.pos.printers;
         for(var i = 0; i < printers.length; i++){
-            var delivery = this.pos.delivery_type[i].name;
+                var order = this.pos.get_order();
+                var selected_delivery_type = order.selected_delivery_type;
+
+            console.log("Delivery"+JSON.stringify(this.pos.delivery_type))
+            console.log("selected_delivery_typeselected_delivery_type"+selected_delivery_type)
+            console.log("222"+JSON.stringify(this.pos.delivery_type[parseInt(selected_delivery_type)]))
+            console.log("222"+this.pos.delivery_type[parseInt(selected_delivery_type)].name)
+
+            var delivery = this.pos.delivery_type[parseInt(selected_delivery_type)].name;
             var changes = this.computeChanges(printers[i].config.product_categories_ids);
             if ( changes['new'].length > 0 || changes['cancelled'].length > 0){
                 var receipt = QWeb.render('OrderChangeReceipt',{changes:changes, widget:this, delivery:delivery});
