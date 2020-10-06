@@ -9,7 +9,9 @@
                     <br/>
                             Delivery Type: <t t-esc="delivery"/>
                     <br/>
+<!--
                             <div>Served by <t t-esc='user'/></div>
+-->
                 </t>
     </t>
 

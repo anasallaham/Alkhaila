@@ -65,6 +65,7 @@ odoo.define('aspl_pos_combo_ee.pos', function (require) {
             var add = [];
             var rem = [];
             var line_hash;
+
             for ( line_hash in current_res) {
                 var curr = current_res[line_hash];
                 var old  = old_res[line_hash];
@@ -144,17 +145,13 @@ odoo.define('aspl_pos_combo_ee.pos', function (require) {
                 hours   = hours.length < 2 ? ('0' + hours) : hours;
             var minutes = '' + d.getMinutes();
                 minutes = minutes.length < 2 ? ('0' + minutes) : minutes;
-console.log("ww",JSON.stringify(this.pos.db.get_order()))
-console.log("json",JSON.stringify(json))
-console.log("this.pos.delivery_type",JSON.stringify(this.pos.delivery_type[i].name))
+
             return {
                 'new': add,
                 'cancelled': rem,
                 'table': json.table || false,
                 'floor': json.floor || false,
                 'name': json.name  || 'unknown order',
-                'user': this.pos.user.name  ,
-                'delivery': this.pos.delivery_type[i].name  ,
                 'time': {
                     'hours':   hours,
                     'minutes': minutes,
@@ -162,6 +159,17 @@ console.log("this.pos.delivery_type",JSON.stringify(this.pos.delivery_type[i].na
             };
 
         },
+    printChanges: async function(){
+        var printers = this.pos.printers;
+        for(var i = 0; i < printers.length; i++){
+            var delivery = JSON.stringify(this.pos.delivery_type[i].name);
+            var changes = this.computeChanges(printers[i].config.product_categories_ids);
+            if ( changes['new'].length > 0 || changes['cancelled'].length > 0){
+                var receipt = QWeb.render('OrderChangeReceipt',{changes:changes, widget:this, delivery:delivery});
+                await printers[i].print_receipt(receipt);
+            }
+        }
+    },
 	});
 
 	var _super_orderline = models.Orderline.prototype;
