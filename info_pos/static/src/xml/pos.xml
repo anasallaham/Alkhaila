@@ -7,11 +7,10 @@
                                         NEW
                     <t t-esc='changes.time.hours'/>:<t t-esc='changes.time.minutes'/>
                     <br/>
-                            Delivery Type: <t t-esc="order.selected_delivery_type_name"/>
+                            Delivery Type: <t t-esc="delivery"/>
                     <br/>
-                            <div>Served by <t t-esc='order.cashier'/></div>
+                            <div>Served by <t t-esc='user'/></div>
                 </t>
-
     </t>
 
 
