@@ -5,6 +5,9 @@ odoo.define('aspl_pos_combo_ee.pos', function (require) {
 	var gui = require('point_of_sale.gui');
 	var screens = require('point_of_sale.screens');
 	var PopupWidget = require('point_of_sale.popups');
+var core = require('web.core');
+
+var QWeb = core.qweb;
 
 	models.load_fields("product.product", ['is_combo','product_combo_ids']);
 
@@ -159,25 +162,27 @@ odoo.define('aspl_pos_combo_ee.pos', function (require) {
             };
 
         },
-    printChanges: async function(){
+            printChanges: async function(){
         var printers = this.pos.printers;
+
+            var order = this.pos.get_order();
+
+            var selected_delivery_type = order.selected_delivery_type;
+            var delivery = this.pos.delivery_type[parseInt(selected_delivery_type)].name
+            console.log("Delivery  "+delivery)
+
+
+
         for(var i = 0; i < printers.length; i++){
-                var order = this.pos.get_order();
-                var selected_delivery_type = order.selected_delivery_type;
-
-            console.log("Delivery"+JSON.stringify(this.pos.delivery_type))
-            console.log("selected_delivery_typeselected_delivery_type"+selected_delivery_type)
-            console.log("222"+JSON.stringify(this.pos.delivery_type[parseInt(selected_delivery_type)]))
-            console.log("222"+this.pos.delivery_type[parseInt(selected_delivery_type)].name)
-
-            var delivery = this.pos.delivery_type[parseInt(selected_delivery_type)].name;
             var changes = this.computeChanges(printers[i].config.product_categories_ids);
             if ( changes['new'].length > 0 || changes['cancelled'].length > 0){
-                var receipt = QWeb.render('OrderChangeReceipt',{changes:changes, widget:this, delivery:delivery});
+                var receipt = QWeb.render('OrderChangeReceipt',{changes:changes, widget:this,delivery:delivery});
                 await printers[i].print_receipt(receipt);
             }
         }
     },
+
+
 	});
 
 	var _super_orderline = models.Orderline.prototype;
