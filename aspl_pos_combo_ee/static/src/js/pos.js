@@ -162,7 +162,7 @@ odoo.define('aspl_pos_combo_ee.pos', function (require) {
     printChanges: async function(){
         var printers = this.pos.printers;
         for(var i = 0; i < printers.length; i++){
-            var delivery = JSON.stringify(this.pos.delivery_type[i].name);
+            var delivery = this.pos.delivery_type[i].name;
             var changes = this.computeChanges(printers[i].config.product_categories_ids);
             if ( changes['new'].length > 0 || changes['cancelled'].length > 0){
                 var receipt = QWeb.render('OrderChangeReceipt',{changes:changes, widget:this, delivery:delivery});
