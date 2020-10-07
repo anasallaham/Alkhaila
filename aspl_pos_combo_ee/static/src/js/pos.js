@@ -166,9 +166,11 @@ var QWeb = core.qweb;
         var printers = this.pos.printers;
 
             var order = this.pos.get_order();
-
+            console.log("wwws "+JSON.stringify(this.pos.db))
+            console.log("wwws "+this.pos.db.cache.cashier.name)
             var selected_delivery_type = order.selected_delivery_type;
             var delivery = this.pos.delivery_type[parseInt(selected_delivery_type)].name
+            var user_cashier = this.pos.db.cache.cashier.name
             console.log("Delivery  "+delivery)
 
 
@@ -176,7 +178,7 @@ var QWeb = core.qweb;
         for(var i = 0; i < printers.length; i++){
             var changes = this.computeChanges(printers[i].config.product_categories_ids);
             if ( changes['new'].length > 0 || changes['cancelled'].length > 0){
-                var receipt = QWeb.render('OrderChangeReceipt',{changes:changes, widget:this,delivery:delivery});
+                var receipt = QWeb.render('OrderChangeReceipt',{changes:changes, widget:this,delivery:delivery,user_cashier:user_cashier});
                 await printers[i].print_receipt(receipt);
             }
         }

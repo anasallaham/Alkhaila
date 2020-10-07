@@ -9,7 +9,7 @@
                     <br/>
                             Delivery Type: <t t-esc="delivery"/>
                     <br/>
-                            Delivery Type22: MOhammad
+                            Cashier: <t t-esc="user_cashier"/>
                     <br/>
 <!--
                             <div>Served by <t t-esc='user'/></div>
