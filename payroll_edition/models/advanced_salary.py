@@ -3,6 +3,7 @@ from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
 from odoo import api, fields, models, tools, _
 import math
+from datetime import date, datetime,timedelta
 
 class AdvancedSalaryMonthly(models.Model):
     _name = "advanced.salary.monthly"
@@ -41,7 +42,36 @@ class AdvancedSalaryMonthly(models.Model):
     def create(self, vals):
         if 'order_number' not in vals:
             vals['order_number'] = self.env['ir.sequence'].next_by_code('advanced.salary.monthly')
-        return super(AdvancedSalaryMonthly, self).create(vals)
+        res = super(AdvancedSalaryMonthly, self).create(vals)
+        modelid = (self.env['ir.model'].search([('model', '=', 'advanced.salary.monthly')])).id
+        select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+            'Administrator', 'Employees')
+        self.env.cr.execute(select)
+        results = self.env.cr.dictfetchall()
+        print("wwresults", results)
+        users = []
+        for obj in results:
+            users.append(obj['uid'])
+        print("users", users)
+        user_id = (self.env['res.users'].search([('id', 'in', users)]))
+        activity = self.env['mail.activity']
+        for user in user_id:
+
+            activity_ins = activity.create(
+                {'res_id': res.id,
+                 'res_model_id': modelid,
+                 'res_model': 'advanced.salary.monthly',
+                 'activity_type_id': (res.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                 'summary': '',
+                 'note': '',
+                 'date_deadline': date.today() + timedelta(days=5),
+                 'activity_category': 'default',
+                 'previous_activity_type_id': False,
+                 'recommended_activity_type_id': False,
+                 'user_id': user.id
+                 })
+
+        return res
 
 
     def refuse_go(self):
@@ -80,6 +110,39 @@ class AdvancedSalaryMonthly(models.Model):
 
     def action_finance_manager(self):
         if self.env.user.has_group('account.group_account_manager'):
+            activity_old = (self.env['mail.activity'].search([('res_model', '=', 'advanced.salary.monthly'),('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
+
+
+            modelid = (self.env['ir.model'].search([('model', '=', 'advanced.salary.monthly')])).id
+            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+                'Advisor', 'Accounting')
+            self.env.cr.execute(select)
+            results = self.env.cr.dictfetchall()
+            print("wwresults", results)
+            users = []
+            for obj in results:
+                users.append(obj['uid'])
+            print("users", users)
+            user_id = (self.env['res.users'].search([('id', 'in', users)]))
+            activity = self.env['mail.activity']
+            for user in user_id:
+
+                activity_ins = activity.create(
+                    {'res_id': self.id,
+                     'res_model_id': modelid,
+                     'res_model': 'advanced.salary.monthly',
+                     'activity_type_id': (self.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                     'summary': '',
+                     'note': '',
+                     'date_deadline': date.today() + timedelta(days=5),
+                     'activity_category': 'default',
+                     'previous_activity_type_id': False,
+                     'recommended_activity_type_id': False,
+                     'user_id': user.id
+                     })
+
             return self.write({'state': 'finance_manager'})
         else:
             raise UserError(
@@ -91,6 +154,38 @@ class AdvancedSalaryMonthly(models.Model):
 
     def action_hr_manager_accept(self):
         if self.env.user.has_group('hr.group_hr_manager'):
+            activity_old = (self.env['mail.activity'].search([('res_model', '=', 'advanced.salary.monthly'),('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
+
+            modelid = (self.env['ir.model'].search([('model', '=', 'advanced.salary.monthly')])).id
+            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+                'Advisor', 'Accounting')
+            self.env.cr.execute(select)
+            results = self.env.cr.dictfetchall()
+            print("wwresults", results)
+            users = []
+            for obj in results:
+                users.append(obj['uid'])
+            print("users", users)
+            user_id = (self.env['res.users'].search([('id', 'in', users)]))
+            activity = self.env['mail.activity']
+            for user in user_id:
+
+                activity_ins = activity.create(
+                    {'res_id': self.id,
+                     'res_model_id': modelid,
+                     'res_model': 'advanced.salary.monthly',
+                     'activity_type_id': (self.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                     'summary': '',
+                     'note': '',
+                     'date_deadline': date.today() + timedelta(days=5),
+                     'activity_category': 'default',
+                     'previous_activity_type_id': False,
+                     'recommended_activity_type_id': False,
+                     'user_id': user.id
+                     })
+
             return self.write({'state': 'hr_manager_accept'})
         else:
             raise UserError(
@@ -101,6 +196,38 @@ class AdvancedSalaryMonthly(models.Model):
             )
     def action_director(self):
         if self.env.user.has_group('base.group_system'):
+            activity_old = (self.env['mail.activity'].search([('res_model', '=', 'advanced.salary.monthly'),('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
+
+
+            modelid = (self.env['ir.model'].search([('model', '=', 'advanced.salary.monthly')])).id
+            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+                'Settings', 'Administration')
+            self.env.cr.execute(select)
+            results = self.env.cr.dictfetchall()
+            print("wwresults", results)
+            users = []
+            for obj in results:
+                users.append(obj['uid'])
+            print("users", users)
+            user_id = (self.env['res.users'].search([('id', 'in', users)]))
+            activity = self.env['mail.activity']
+            for user in user_id:
+
+                activity_ins = activity.create(
+                    {'res_id': self.id,
+                     'res_model_id': modelid,
+                     'res_model': 'advanced.salary.monthly',
+                     'activity_type_id': (self.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                     'summary': '',
+                     'note': '',
+                     'date_deadline': date.today() + timedelta(days=5),
+                     'activity_category': 'default',
+                     'previous_activity_type_id': False,
+                     'recommended_activity_type_id': False,
+                     'user_id': user.id
+                     })
 
             return self.write({'state': 'director'})
         else:
@@ -193,6 +320,10 @@ class AdvancedSalaryMonthly(models.Model):
                 move_line_vals.append(line2)
                 self.move_id.line_ids = move_line_vals
                 self.move_id.post()
+            activity_old = (self.env['mail.activity'].search([('res_model', '=', 'advanced.salary.monthly'),('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
+
             self.state = "accepted"
 
 
@@ -248,6 +379,35 @@ class AdvancedSalaryMonthly(models.Model):
         for line in self.advanced_salary:
             line.draft_advanced()
             line.unlink()
+        modelid = (self.env['ir.model'].search([('model', '=', 'advanced.salary.monthly')])).id
+        select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+            'Administrator', 'Employees')
+        self.env.cr.execute(select)
+        results = self.env.cr.dictfetchall()
+        print("wwresults", results)
+        users = []
+        for obj in results:
+            users.append(obj['uid'])
+        print("users", users)
+        user_id = (self.env['res.users'].search([('id', 'in', users)]))
+        activity = self.env['mail.activity']
+        for user in user_id:
+
+            activity_ins = activity.create(
+                {'res_id': self.id,
+                 'res_model_id': modelid,
+                 'res_model': 'advanced.salary.monthly',
+                 'activity_type_id': (self.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                 'summary': '',
+                 'note': '',
+                 'date_deadline': date.today() + timedelta(days=5),
+                 'activity_category': 'default',
+                 'previous_activity_type_id': False,
+                 'recommended_activity_type_id': False,
+                 'user_id': user.id
+                 })
+
+
         self.state = "draft"
 
     def unlink(self):
@@ -332,7 +492,36 @@ class AdvancedSalary(models.Model):
     def create(self, vals):
         if 'order_number' not in vals:
             vals['order_number'] = self.env['ir.sequence'].next_by_code('advanced.salary')
-        return super(AdvancedSalary, self).create(vals)
+        res = super(AdvancedSalary, self).create(vals)
+        modelid = (self.env['ir.model'].search([('model', '=', 'advanced.salary')])).id
+        select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+            'Administrator', 'Employees')
+        self.env.cr.execute(select)
+        results = self.env.cr.dictfetchall()
+        print("wwresults", results)
+        users = []
+        for obj in results:
+            users.append(obj['uid'])
+        print("users", users)
+        user_id = (self.env['res.users'].search([('id', 'in', users)]))
+        activity = self.env['mail.activity']
+        for user in user_id:
+
+            activity_ins = activity.create(
+                {'res_id': res.id,
+                 'res_model_id': modelid,
+                 'res_model': 'advanced.salary',
+                 'activity_type_id': (res.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                 'summary': '',
+                 'note': '',
+                 'date_deadline': date.today() + timedelta(days=5),
+                 'activity_category': 'default',
+                 'previous_activity_type_id': False,
+                 'recommended_activity_type_id': False,
+                 'user_id': user.id
+                 })
+
+        return res
 
     def refuse_go(self):
         if self.state == "draft":
@@ -370,6 +559,39 @@ class AdvancedSalary(models.Model):
 
     def action_finance_manager(self):
         if self.env.user.has_group('account.group_account_manager'):
+            activity_old = (self.env['mail.activity'].search([('res_model', '=', 'advanced.salary'),('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
+
+
+            modelid = (self.env['ir.model'].search([('model', '=', 'advanced.salary')])).id
+            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+                'Advisor', 'Accounting')
+            self.env.cr.execute(select)
+            results = self.env.cr.dictfetchall()
+            print("wwresults", results)
+            users = []
+            for obj in results:
+                users.append(obj['uid'])
+            print("users", users)
+            user_id = (self.env['res.users'].search([('id', 'in', users)]))
+            activity = self.env['mail.activity']
+            for user in user_id:
+
+                activity_ins = activity.create(
+                    {'res_id': self.id,
+                     'res_model_id': modelid,
+                     'res_model': 'advanced.salary',
+                     'activity_type_id': (self.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                     'summary': '',
+                     'note': '',
+                     'date_deadline': date.today() + timedelta(days=5),
+                     'activity_category': 'default',
+                     'previous_activity_type_id': False,
+                     'recommended_activity_type_id': False,
+                     'user_id': user.id
+                     })
+
             return self.write({'state': 'finance_manager'})
         else:
             raise UserError(
@@ -380,6 +602,38 @@ class AdvancedSalary(models.Model):
             )
     def action_director(self):
         if self.env.user.has_group('base.group_system'):
+            activity_old = (self.env['mail.activity'].search([('res_model', '=', 'advanced.salary'),('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
+
+
+            modelid = (self.env['ir.model'].search([('model', '=', 'advanced.salary')])).id
+            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+                'Settings', 'Administration')
+            self.env.cr.execute(select)
+            results = self.env.cr.dictfetchall()
+            print("wwresults", results)
+            users = []
+            for obj in results:
+                users.append(obj['uid'])
+            print("users", users)
+            user_id = (self.env['res.users'].search([('id', 'in', users)]))
+            activity = self.env['mail.activity']
+            for user in user_id:
+
+                activity_ins = activity.create(
+                    {'res_id': self.id,
+                     'res_model_id': modelid,
+                     'res_model': 'advanced.salary',
+                     'activity_type_id': (self.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                     'summary': '',
+                     'note': '',
+                     'date_deadline': date.today() + timedelta(days=5),
+                     'activity_category': 'default',
+                     'previous_activity_type_id': False,
+                     'recommended_activity_type_id': False,
+                     'user_id': user.id
+                     })
 
             return self.write({'state': 'director'})
         else:
@@ -391,6 +645,38 @@ class AdvancedSalary(models.Model):
             )
     def action_hr_manager_accept(self):
         if self.env.user.has_group('hr.group_hr_manager'):
+            activity_old = (self.env['mail.activity'].search([('res_model', '=', 'advanced.salary'),('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
+
+            modelid = (self.env['ir.model'].search([('model', '=', 'advanced.salary')])).id
+            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+                'Advisor', 'Accounting')
+            self.env.cr.execute(select)
+            results = self.env.cr.dictfetchall()
+            print("wwresults", results)
+            users = []
+            for obj in results:
+                users.append(obj['uid'])
+            print("users", users)
+            user_id = (self.env['res.users'].search([('id', 'in', users)]))
+            activity = self.env['mail.activity']
+            for user in user_id:
+
+                activity_ins = activity.create(
+                    {'res_id': self.id,
+                     'res_model_id': modelid,
+                     'res_model': 'advanced.salary',
+                     'activity_type_id': (self.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                     'summary': '',
+                     'note': '',
+                     'date_deadline': date.today() + timedelta(days=5),
+                     'activity_category': 'default',
+                     'previous_activity_type_id': False,
+                     'recommended_activity_type_id': False,
+                     'user_id': user.id
+                     })
+
             return self.write({'state': 'hr_manager_accept'})
         else:
             raise UserError(
@@ -425,6 +711,9 @@ class AdvancedSalary(models.Model):
                 move_line_vals.append(line2)
                 self.move_id.line_ids = move_line_vals
                 self.move_id.post()
+            activity_old = (self.env['mail.activity'].search([('res_model', '=', 'advanced.salary'),('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
 
             self.state = "accepted"
         else:
@@ -444,6 +733,34 @@ class AdvancedSalary(models.Model):
         self.move_id.button_draft()
         lines = self.env['account.move.line'].search([('move_id', '=', self.move_id.id)])
         lines.unlink()
+        modelid = (self.env['ir.model'].search([('model', '=', 'advanced.salary')])).id
+        select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+            'Administrator', 'Employees')
+        self.env.cr.execute(select)
+        results = self.env.cr.dictfetchall()
+        print("wwresults", results)
+        users = []
+        for obj in results:
+            users.append(obj['uid'])
+        print("users", users)
+        user_id = (self.env['res.users'].search([('id', 'in', users)]))
+        activity = self.env['mail.activity']
+        for user in user_id:
+
+            activity_ins = activity.create(
+                {'res_id': self.id,
+                 'res_model_id': modelid,
+                 'res_model': 'advanced.salary',
+                 'activity_type_id': (self.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                 'summary': '',
+                 'note': '',
+                 'date_deadline': date.today() + timedelta(days=5),
+                 'activity_category': 'default',
+                 'previous_activity_type_id': False,
+                 'recommended_activity_type_id': False,
+                 'user_id': user.id
+                 })
+
         self.state = "draft"
 
     def unlink(self):
@@ -551,7 +868,34 @@ class PenaltySalary(models.Model):
     def create(self, vals):
         if 'order_number' not in vals:
             vals['order_number'] = self.env['ir.sequence'].next_by_code('penalty.salary')
-        return super(PenaltySalary, self).create(vals)
+        res = super(PenaltySalary, self).create(vals)
+        modelid = (self.env['ir.model'].search([('model', '=', 'penalty.salary')])).id
+        select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+            'Administrator', 'Employees')
+        self.env.cr.execute(select)
+        results = self.env.cr.dictfetchall()
+        print("wwresults", results)
+        users = []
+        for obj in results:
+            users.append(obj['uid'])
+        print("users", users)
+        user_id = (self.env['res.users'].search([('id', 'in', users)]))
+        activity = self.env['mail.activity']
+        for user in user_id:
+
+            activity_ins = activity.create(
+                {'res_id': res.id,
+                 'res_model_id': modelid,
+                 'res_model': 'penalty.salary',
+                 'activity_type_id': (res.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                 'summary': '',
+                 'note': '',
+                 'date_deadline': date.today() + timedelta(days=5),
+                 'activity_category': 'default',
+                 'previous_activity_type_id': False,
+                 'recommended_activity_type_id': False,
+                 'user_id': user.id
+                 })
 
     def refuse_go(self):
         if self.state == "draft":
@@ -589,6 +933,39 @@ class PenaltySalary(models.Model):
 
     def action_finance_manager(self):
         if self.env.user.has_group('account.group_account_manager'):
+            activity_old = (self.env['mail.activity'].search([('res_model', '=', 'penalty.salary'),('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
+
+
+            modelid = (self.env['ir.model'].search([('model', '=', 'penalty.salary')])).id
+            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+                'Advisor', 'Accounting')
+            self.env.cr.execute(select)
+            results = self.env.cr.dictfetchall()
+            print("wwresults", results)
+            users = []
+            for obj in results:
+                users.append(obj['uid'])
+            print("users", users)
+            user_id = (self.env['res.users'].search([('id', 'in', users)]))
+            activity = self.env['mail.activity']
+            for user in user_id:
+
+                activity_ins = activity.create(
+                    {'res_id': self.id,
+                     'res_model_id': modelid,
+                     'res_model': 'penalty.salary',
+                     'activity_type_id': (self.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                     'summary': '',
+                     'note': '',
+                     'date_deadline': date.today() + timedelta(days=5),
+                     'activity_category': 'default',
+                     'previous_activity_type_id': False,
+                     'recommended_activity_type_id': False,
+                     'user_id': user.id
+                     })
+
             return self.write({'state': 'finance_manager'})
         else:
             raise UserError(
@@ -600,6 +977,38 @@ class PenaltySalary(models.Model):
 
     def action_hr_manager_accept(self):
         if self.env.user.has_group('hr.group_hr_manager'):
+            activity_old = (self.env['mail.activity'].search([('res_model', '=', 'penalty.salary'),('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
+
+            modelid = (self.env['ir.model'].search([('model', '=', 'penalty.salary')])).id
+            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+                'Advisor', 'Accounting')
+            self.env.cr.execute(select)
+            results = self.env.cr.dictfetchall()
+            print("wwresults", results)
+            users = []
+            for obj in results:
+                users.append(obj['uid'])
+            print("users", users)
+            user_id = (self.env['res.users'].search([('id', 'in', users)]))
+            activity = self.env['mail.activity']
+            for user in user_id:
+
+                activity_ins = activity.create(
+                    {'res_id': self.id,
+                     'res_model_id': modelid,
+                     'res_model': 'penalty.salary',
+                     'activity_type_id': (self.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                     'summary': '',
+                     'note': '',
+                     'date_deadline': date.today() + timedelta(days=5),
+                     'activity_category': 'default',
+                     'previous_activity_type_id': False,
+                     'recommended_activity_type_id': False,
+                     'user_id': user.id
+                     })
+
             return self.write({'state': 'hr_manager_accept'})
         else:
             raise UserError(
@@ -613,6 +1022,39 @@ class PenaltySalary(models.Model):
         if self.env.user.has_group('base.group_system'):
             self.account_credit_id = self.penalty_name.account_credit_id.id
             self.account_debit_id = self.penalty_name.account_debit_id.id
+            activity_old = (self.env['mail.activity'].search([('res_model', '=', 'penalty.salary'),('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
+
+
+            modelid = (self.env['ir.model'].search([('model', '=', 'penalty.salary')])).id
+            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+                'Settings', 'Administration')
+            self.env.cr.execute(select)
+            results = self.env.cr.dictfetchall()
+            print("wwresults", results)
+            users = []
+            for obj in results:
+                users.append(obj['uid'])
+            print("users", users)
+            user_id = (self.env['res.users'].search([('id', 'in', users)]))
+            activity = self.env['mail.activity']
+            for user in user_id:
+
+                activity_ins = activity.create(
+                    {'res_id': self.id,
+                     'res_model_id': modelid,
+                     'res_model': 'penalty.salary',
+                     'activity_type_id': (self.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                     'summary': '',
+                     'note': '',
+                     'date_deadline': date.today() + timedelta(days=5),
+                     'activity_category': 'default',
+                     'previous_activity_type_id': False,
+                     'recommended_activity_type_id': False,
+                     'user_id': user.id
+                     })
+
             return self.write({'state': 'director'})
         else:
             raise UserError(
@@ -644,6 +1086,10 @@ class PenaltySalary(models.Model):
                 move_line_vals.append(line2)
                 self.move_id.line_ids = move_line_vals
                 self.move_id.post()
+            activity_old = (self.env['mail.activity'].search([('res_model', '=', 'penalty.salary'),('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
+
 
             self.state = "accepted"
         else:
@@ -660,6 +1106,34 @@ class PenaltySalary(models.Model):
         self.move_id.button_draft()
         lines = self.env['account.move.line'].search([('move_id', '=', self.move_id.id)])
         lines.unlink()
+        modelid = (self.env['ir.model'].search([('model', '=', 'penalty.salary')])).id
+        select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+            'Administrator', 'Employees')
+        self.env.cr.execute(select)
+        results = self.env.cr.dictfetchall()
+        print("wwresults", results)
+        users = []
+        for obj in results:
+            users.append(obj['uid'])
+        print("users", users)
+        user_id = (self.env['res.users'].search([('id', 'in', users)]))
+        activity = self.env['mail.activity']
+        for user in user_id:
+
+            activity_ins = activity.create(
+                {'res_id': self.id,
+                 'res_model_id': modelid,
+                 'res_model': 'penalty.salary',
+                 'activity_type_id': (self.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                 'summary': '',
+                 'note': '',
+                 'date_deadline': date.today() + timedelta(days=5),
+                 'activity_category': 'default',
+                 'previous_activity_type_id': False,
+                 'recommended_activity_type_id': False,
+                 'user_id': user.id
+                 })
+
         self.state = "draft"
 
 

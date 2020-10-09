@@ -7,6 +7,7 @@ from dateutil.relativedelta import relativedelta
 from datetime import datetime, date, time
 from odoo import api, fields, models, _
 from odoo.exceptions import RedirectWarning, UserError, ValidationError, AccessError
+from datetime import date, datetime,timedelta
 
 
 class ExitEntry(models.Model):
@@ -53,6 +54,36 @@ class ExitEntry(models.Model):
         lines.unlink()
         for adv in self.advanced_salary:
             adv.draft_advanced()
+
+
+        modelid = (self.env['ir.model'].search([('model', '=', 'exit.entry')])).id
+        select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % ('Administrator','Employees')
+        self.env.cr.execute(select)
+        results = self.env.cr.dictfetchall()
+        print ("wwresults",results)
+        users = []
+        for obj in results:
+            users.append(obj['uid'])
+        print ("users",users)
+        user_id = (self.env['res.users'].search([('id', 'in', users)]))
+
+        activity = self.env['mail.activity']
+        for user in user_id:
+
+            activity_ins = activity.create(
+                {'res_id': self.id,
+                 'res_model_id': modelid,
+                 'res_model': 'exit.entry',
+                 'activity_type_id': (self.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                 'summary': '',
+                 'note': '',
+                 'date_deadline': date.today() + timedelta(days=5),
+                 'activity_category': 'default',
+                 'previous_activity_type_id': False,
+                 'recommended_activity_type_id': False,
+                 'user_id': user.id
+                 })
+
         self.state = "draft"
 
     def refuse_go(self):
@@ -93,8 +124,40 @@ class ExitEntry(models.Model):
     def create(self, vals):
         if 'order_number' not in vals:
             vals['order_number'] = self.env['ir.sequence'].next_by_code('exit.entry')
-        return super(ExitEntry, self).create(vals)
+        res = super(ExitEntry, self).create(vals)
 
+
+        modelid = (self.env['ir.model'].search([('model', '=', 'exit.entry')])).id
+
+
+        select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % ('Administrator','Employees')
+        self.env.cr.execute(select)
+        results = self.env.cr.dictfetchall()
+        print ("wwresults",results)
+        users = []
+        for obj in results:
+            users.append(obj['uid'])
+        print ("users",users)
+        user_id = (self.env['res.users'].search([('id', 'in', users)]))
+
+
+        activity = self.env['mail.activity']
+        for user in user_id:
+
+            activity_ins = activity.create(
+                {'res_id': res.id,
+                 'res_model_id': modelid,
+                 'res_model': 'exit.entry',
+                 'activity_type_id': (res.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                 'summary': '',
+                 'note': '',
+                 'date_deadline': date.today() + timedelta(days=5),
+                 'activity_category': 'default',
+                 'previous_activity_type_id': False,
+                 'recommended_activity_type_id': False,
+                 'user_id': user.id
+                 })
+        return res
     @api.depends('count')
     def _compute_amount(self):
         for me in self:
@@ -110,7 +173,38 @@ class ExitEntry(models.Model):
 
     def action_finance_manager(self):
         if self.env.user.has_group('account.group_account_manager'):
+            activity_old = (self.env['mail.activity'].search([('res_model', '=', 'exit.entry'),('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
 
+
+            modelid = (self.env['ir.model'].search([('model', '=', 'exit.entry')])).id
+            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+            'Advisor', 'Accounting')
+            self.env.cr.execute(select)
+            results = self.env.cr.dictfetchall()
+            print("wwresults", results)
+            users = []
+            for obj in results:
+                users.append(obj['uid'])
+            print("users", users)
+            user_id = (self.env['res.users'].search([('id', 'in', users)]))
+            activity = self.env['mail.activity']
+            for user in user_id:
+
+                activity_ins = activity.create(
+                    {'res_id': self.id,
+                     'res_model_id': modelid,
+                     'res_model': 'exit.entry',
+                     'activity_type_id': (self.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                     'summary': '',
+                     'note': '',
+                     'date_deadline': date.today() + timedelta(days=5),
+                     'activity_category': 'default',
+                     'previous_activity_type_id': False,
+                     'recommended_activity_type_id': False,
+                     'user_id': user.id
+                     })
             return self.write({'state': 'finance_manager'})
         else:
             raise UserError(
@@ -121,7 +215,38 @@ class ExitEntry(models.Model):
             )
     def action_director(self):
         if self.env.user.has_group('base.group_system'):
+            activity_old = (self.env['mail.activity'].search([('res_model', '=', 'exit.entry'),('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
 
+
+            modelid = (self.env['ir.model'].search([('model', '=', 'exit.entry')])).id
+            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+            'Settings', 'Administration')
+            self.env.cr.execute(select)
+            results = self.env.cr.dictfetchall()
+            print("wwresults", results)
+            users = []
+            for obj in results:
+                users.append(obj['uid'])
+            print("users", users)
+            user_id = (self.env['res.users'].search([('id', 'in', users)]))
+            activity = self.env['mail.activity']
+            for user in user_id:
+
+                activity_ins = activity.create(
+                    {'res_id': self.id,
+                     'res_model_id': modelid,
+                     'res_model': 'exit.entry',
+                     'activity_type_id': (self.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                     'summary': '',
+                     'note': '',
+                     'date_deadline': date.today() + timedelta(days=5),
+                     'activity_category': 'default',
+                     'previous_activity_type_id': False,
+                     'recommended_activity_type_id': False,
+                     'user_id': user.id
+                     })
             return self.write({'state': 'director'})
         else:
             raise UserError(
@@ -133,6 +258,37 @@ class ExitEntry(models.Model):
 
     def action_hr_manager_accept(self):
         if self.env.user.has_group('hr.group_hr_manager'):
+            activity_old = (self.env['mail.activity'].search([('res_model', '=', 'exit.entry'),('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
+
+            modelid = (self.env['ir.model'].search([('model', '=', 'exit.entry')])).id
+            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+            'Advisor', 'Accounting')
+            self.env.cr.execute(select)
+            results = self.env.cr.dictfetchall()
+            print("wwresults", results)
+            users = []
+            for obj in results:
+                users.append(obj['uid'])
+            print("users", users)
+            user_id = (self.env['res.users'].search([('id', 'in', users)]))
+            activity = self.env['mail.activity']
+            for user in user_id:
+
+                activity_ins = activity.create(
+                    {'res_id': self.id,
+                     'res_model_id': modelid,
+                     'res_model': 'exit.entry',
+                     'activity_type_id': (self.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                     'summary': '',
+                     'note': '',
+                     'date_deadline': date.today() + timedelta(days=5),
+                     'activity_category': 'default',
+                     'previous_activity_type_id': False,
+                     'recommended_activity_type_id': False,
+                     'user_id': user.id
+                     })
             return self.write({'state': 'hr_manager_accept'})
         else:
             raise UserError(
@@ -160,6 +316,12 @@ class ExitEntry(models.Model):
                             'date_payed': self.date_payed,
                         })
                 advanced.action_accepted()
+            activity_old = (self.env['mail.activity'].search([('res_model', '=', 'exit.entry'),('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
+
+
+
             return self.write({'state': 'accepted'})
         else:
             raise UserError(

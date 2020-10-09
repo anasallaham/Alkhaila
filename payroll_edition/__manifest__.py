@@ -30,7 +30,8 @@
         'views/exit_entry.xml',
         'views/hr_employee_view.xml',
 
-        'security/ir.model.access.csv'
+        'security/ir.model.access.csv',
+        'data/data.xml'
     ],
     'installable': True,
     'application': False,
