@@ -1,0 +1,1366 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* payroll_edition
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-10-11 19:42+0000\n"
+"PO-Revision-Date: 2020-10-11 19:42+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: payroll_edition
+#: model:ir.ui.menu,name:payroll_edition.penalty_name_sub
+msgid " العقوبات"
+msgstr "Penalties"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__date
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__date
+msgid " تاريخ"
+msgstr "date"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__date
+msgid " تاريخ التحرير"
+msgstr "date edited"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__date_payed
+msgid " تاريخ الدفع"
+msgstr "Payment Date"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__date_first_cut
+msgid " تاريخ اول اقتطاع"
+msgstr "date of the first deduction"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_payslip__addition_sum
+msgid " ساعات الاضافي"
+msgstr "Extra hours"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_payslip__delay_sum
+msgid " ساعات الخصومات"
+msgstr "Discounts hours"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__iqama_newend_date
+msgid " نهاية الاقامة الجديدة"
+msgstr "end of the new residence"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__account_assetw
+msgid "Account Asset"
+msgstr "Account Asset"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__message_needaction
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__message_needaction
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__message_needaction
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__message_needaction
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__message_needaction
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__message_needaction
+msgid "Action Needed"
+msgstr "Action Needed"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__activity_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__activity_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__activity_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__activity_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__activity_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__activity_ids
+msgid "Activities"
+msgstr "Activities"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__activity_exception_decoration
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__activity_exception_decoration
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__activity_exception_decoration
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__activity_exception_decoration
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__activity_exception_decoration
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "Activity Exception Decoration"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__activity_state
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__activity_state
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__activity_state
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__activity_state
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__activity_state
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__activity_state
+msgid "Activity State"
+msgstr "Activity State"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__analytic_account_id
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__analytic_account_id
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__analytic_account_id
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__analytic_account_id
+msgid "Analytic Account"
+msgstr "Analytic Account"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__message_attachment_count
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__message_attachment_count
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__message_attachment_count
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__message_attachment_count
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__message_attachment_count
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__message_attachment_count
+msgid "Attachment Count"
+msgstr "Attachment Count"
+
+#. module: payroll_edition
+#: model:ir.model.fields.selection,name:payroll_edition.selection__end_employee__state__cancel
+#: model:ir.model.fields.selection,name:payroll_edition.selection__exit_entry__state__cancel
+#: model:ir.model.fields.selection,name:payroll_edition.selection__iqama_renew__state__cancel
+msgid "Cancelled"
+msgstr "Cancelled"
+
+#. module: payroll_edition
+#: model_terms:ir.actions.act_window,help:payroll_edition.action_iqama_renew
+msgid "Create Iqama Renew Order."
+msgstr "Create Iqama Renew Order"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__create_uid
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__create_uid
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__create_uid
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__create_uid
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_attendance_save__create_uid
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__create_uid
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_name__create_uid
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__create_uid
+msgid "Created by"
+msgstr "Created by"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__create_date
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__create_date
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__create_date
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__create_date
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_attendance_save__create_date
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__create_date
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_name__create_date
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__create_date
+msgid "Created on"
+msgstr "Created on"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__department_id
+msgid "Department"
+msgstr "Department"
+
+#. module: payroll_edition
+#: model:ir.model.fields.selection,name:payroll_edition.selection__advanced_salary__state__director
+#: model:ir.model.fields.selection,name:payroll_edition.selection__advanced_salary_monthly__state__director
+#: model:ir.model.fields.selection,name:payroll_edition.selection__end_employee__state__director
+#: model:ir.model.fields.selection,name:payroll_edition.selection__exit_entry__state__director
+#: model:ir.model.fields.selection,name:payroll_edition.selection__iqama_renew__state__director
+#: model:ir.model.fields.selection,name:payroll_edition.selection__penalty_salary__state__director
+msgid "Director"
+msgstr "Director"
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.advanced_salary_module_form_view
+#: model_terms:ir.ui.view,arch_db:payroll_edition.advanced_salary_monthly_module_form_view
+#: model_terms:ir.ui.view,arch_db:payroll_edition.end_employee_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.exit_entry_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.iqama_renew_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.penalty_salary_module_form_view
+msgid "Director Accept"
+msgstr "Director Accept"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__display_name
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__display_name
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__display_name
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__display_name
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_attendance_save__display_name
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__display_name
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_name__display_name
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__display_name
+msgid "Display Name"
+msgstr "Display Name"
+
+#. module: payroll_edition
+#: model:ir.model.fields.selection,name:payroll_edition.selection__advanced_salary__state__draft
+#: model:ir.model.fields.selection,name:payroll_edition.selection__advanced_salary_monthly__state__draft
+#: model:ir.model.fields.selection,name:payroll_edition.selection__end_employee__state__draft
+#: model:ir.model.fields.selection,name:payroll_edition.selection__exit_entry__state__draft
+#: model:ir.model.fields.selection,name:payroll_edition.selection__iqama_renew__state__draft
+#: model:ir.model.fields.selection,name:payroll_edition.selection__penalty_salary__state__draft
+msgid "Draft"
+msgstr "Draft"
+
+#. module: payroll_edition
+#: model:ir.model,name:payroll_edition.model_hr_employee
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__employee_id
+msgid "Employee"
+msgstr "Employee"
+
+#. module: payroll_edition
+#: model:ir.model,name:payroll_edition.model_hr_contract
+msgid "Employee Contract"
+msgstr "Employee Contract"
+
+#. module: payroll_edition
+#: model:ir.model.fields,help:payroll_edition.field_end_employee__date_in
+msgid "Employee joining date computed from the contract start date"
+msgstr "Employee joining date computed from the contract start date"
+
+#. module: payroll_edition
+#: model:ir.model.fields.selection,name:payroll_edition.selection__end_employee__type_end__end_of_contract
+#: model:ir.model.fields.selection,name:payroll_edition.selection__hr_employee__type_employee_end__end_of_contract
+msgid "End of contract"
+msgstr "End of contract"
+
+#. module: payroll_edition
+#: model:ir.ui.menu,name:payroll_edition.menu_base_exit_entry
+#: model_terms:ir.ui.view,arch_db:payroll_edition.sales_representive_view_employee_form
+msgid "Exit Entry"
+msgstr "Exit Entry"
+
+#. module: payroll_edition
+#: model:ir.model.fields.selection,name:payroll_edition.selection__advanced_salary__state__accepted
+#: model:ir.model.fields.selection,name:payroll_edition.selection__advanced_salary_monthly__state__accepted
+#: model:ir.model.fields.selection,name:payroll_edition.selection__end_employee__state__accepted
+#: model:ir.model.fields.selection,name:payroll_edition.selection__exit_entry__state__accepted
+#: model:ir.model.fields.selection,name:payroll_edition.selection__iqama_renew__state__accepted
+#: model:ir.model.fields.selection,name:payroll_edition.selection__penalty_salary__state__accepted
+msgid "Final Accept"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields.selection,name:payroll_edition.selection__advanced_salary__state__finance_manager
+#: model:ir.model.fields.selection,name:payroll_edition.selection__advanced_salary_monthly__state__finance_manager
+#: model:ir.model.fields.selection,name:payroll_edition.selection__end_employee__state__finance_manager
+#: model:ir.model.fields.selection,name:payroll_edition.selection__exit_entry__state__finance_manager
+#: model:ir.model.fields.selection,name:payroll_edition.selection__iqama_renew__state__finance_manager
+#: model:ir.model.fields.selection,name:payroll_edition.selection__penalty_salary__state__finance_manager
+msgid "Finance Manager"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__message_follower_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__message_follower_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__message_follower_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__message_follower_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__message_follower_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__message_channel_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__message_channel_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__message_channel_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__message_channel_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__message_channel_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__message_channel_ids
+msgid "Followers (Channels)"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__message_partner_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__message_partner_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__message_partner_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__message_partner_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__message_partner_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_employee__studio_gosi_number
+msgid "Gosi Number"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields.selection,name:payroll_edition.selection__advanced_salary__state__hr_manager_accept
+#: model:ir.model.fields.selection,name:payroll_edition.selection__advanced_salary_monthly__state__hr_manager_accept
+#: model:ir.model.fields.selection,name:payroll_edition.selection__end_employee__state__hr_manager_accept
+#: model:ir.model.fields.selection,name:payroll_edition.selection__exit_entry__state__hr_manager_accept
+#: model:ir.model.fields.selection,name:payroll_edition.selection__iqama_renew__state__hr_manager_accept
+#: model:ir.model.fields.selection,name:payroll_edition.selection__penalty_salary__state__hr_manager_accept
+msgid "Hr Mananger Accept"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__id
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__id
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__id
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__id
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_attendance_save__id
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__id
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_name__id
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__id
+msgid "ID"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_salary_rule__is_eos
+msgid "IS EOS?"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__activity_exception_icon
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__activity_exception_icon
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__activity_exception_icon
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__activity_exception_icon
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__activity_exception_icon
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__activity_exception_icon
+msgid "Icon"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary__activity_exception_icon
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary_monthly__activity_exception_icon
+#: model:ir.model.fields,help:payroll_edition.field_end_employee__activity_exception_icon
+#: model:ir.model.fields,help:payroll_edition.field_exit_entry__activity_exception_icon
+#: model:ir.model.fields,help:payroll_edition.field_iqama_renew__activity_exception_icon
+#: model:ir.model.fields,help:payroll_edition.field_penalty_salary__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary__message_needaction
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary__message_unread
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary_monthly__message_needaction
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary_monthly__message_unread
+#: model:ir.model.fields,help:payroll_edition.field_end_employee__message_needaction
+#: model:ir.model.fields,help:payroll_edition.field_end_employee__message_unread
+#: model:ir.model.fields,help:payroll_edition.field_exit_entry__message_needaction
+#: model:ir.model.fields,help:payroll_edition.field_exit_entry__message_unread
+#: model:ir.model.fields,help:payroll_edition.field_iqama_renew__message_needaction
+#: model:ir.model.fields,help:payroll_edition.field_iqama_renew__message_unread
+#: model:ir.model.fields,help:payroll_edition.field_penalty_salary__message_needaction
+#: model:ir.model.fields,help:payroll_edition.field_penalty_salary__message_unread
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary__message_has_error
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary__message_has_sms_error
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary_monthly__message_has_error
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary_monthly__message_has_sms_error
+#: model:ir.model.fields,help:payroll_edition.field_end_employee__message_has_error
+#: model:ir.model.fields,help:payroll_edition.field_end_employee__message_has_sms_error
+#: model:ir.model.fields,help:payroll_edition.field_exit_entry__message_has_error
+#: model:ir.model.fields,help:payroll_edition.field_exit_entry__message_has_sms_error
+#: model:ir.model.fields,help:payroll_edition.field_iqama_renew__message_has_error
+#: model:ir.model.fields,help:payroll_edition.field_iqama_renew__message_has_sms_error
+#: model:ir.model.fields,help:payroll_edition.field_penalty_salary__message_has_error
+#: model:ir.model.fields,help:payroll_edition.field_penalty_salary__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_employee__iqama_end_date
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__iqama_end_date
+msgid "Iqama End Date"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.actions.act_window,name:payroll_edition.action_iqama_renew
+msgid "Iqama Renew"
+msgstr ""
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.iqama_renew_form
+msgid "Iqama Renew Form"
+msgstr ""
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.iqama_renew_tree
+msgid "Iqama Renew Tree"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_employee__iqama_start_date
+msgid "Iqama Start Date"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__message_is_follower
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__message_is_follower
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__message_is_follower
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__message_is_follower
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__message_is_follower
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__message_is_follower
+msgid "Is Follower"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_employee__job_number
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__job_number
+msgid "Job Number"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__job_title
+msgid "Job Title"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary____last_update
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly____last_update
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee____last_update
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry____last_update
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_attendance_save____last_update
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew____last_update
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_name____last_update
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__write_uid
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__write_uid
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__write_uid
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__write_uid
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_attendance_save__write_uid
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__write_uid
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_name__write_uid
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__write_date
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__write_date
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__write_date
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__write_date
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_attendance_save__write_date
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__write_date
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_name__write_date
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__message_main_attachment_id
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__message_main_attachment_id
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__message_main_attachment_id
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__message_main_attachment_id
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__message_main_attachment_id
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_employee__medical_insurance
+msgid "Medical Insurance"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__message_has_error
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__message_has_error
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__message_has_error
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__message_has_error
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__message_has_error
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__message_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__message_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__message_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__message_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__message_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields.selection,name:payroll_edition.selection__exit_entry__type_exit_entry__multi
+#: model:ir.model.fields.selection,name:payroll_edition.selection__hr_employee__type_exit_entry__multi
+msgid "Multi"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__activity_date_deadline
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__activity_date_deadline
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__activity_date_deadline
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__activity_date_deadline
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__activity_date_deadline
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__activity_summary
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__activity_summary
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__activity_summary
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__activity_summary
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__activity_summary
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__activity_summary
+msgid "Next Activity Summary"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__activity_type_id
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__activity_type_id
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__activity_type_id
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__activity_type_id
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__activity_type_id
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__activity_type_id
+msgid "Next Activity Type"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__order_number
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__order_number
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__order_number
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__order_number
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__order_number
+msgid "Number"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__message_needaction_counter
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__message_needaction_counter
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__message_needaction_counter
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__message_needaction_counter
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__message_needaction_counter
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__message_has_error_counter
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__message_has_error_counter
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__message_has_error_counter
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__message_has_error_counter
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__message_has_error_counter
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary__message_needaction_counter
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary_monthly__message_needaction_counter
+#: model:ir.model.fields,help:payroll_edition.field_end_employee__message_needaction_counter
+#: model:ir.model.fields,help:payroll_edition.field_exit_entry__message_needaction_counter
+#: model:ir.model.fields,help:payroll_edition.field_iqama_renew__message_needaction_counter
+#: model:ir.model.fields,help:payroll_edition.field_penalty_salary__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary__message_has_error_counter
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary_monthly__message_has_error_counter
+#: model:ir.model.fields,help:payroll_edition.field_end_employee__message_has_error_counter
+#: model:ir.model.fields,help:payroll_edition.field_exit_entry__message_has_error_counter
+#: model:ir.model.fields,help:payroll_edition.field_iqama_renew__message_has_error_counter
+#: model:ir.model.fields,help:payroll_edition.field_penalty_salary__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary__message_unread_counter
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary_monthly__message_unread_counter
+#: model:ir.model.fields,help:payroll_edition.field_end_employee__message_unread_counter
+#: model:ir.model.fields,help:payroll_edition.field_exit_entry__message_unread_counter
+#: model:ir.model.fields,help:payroll_edition.field_iqama_renew__message_unread_counter
+#: model:ir.model.fields,help:payroll_edition.field_penalty_salary__message_unread_counter
+msgid "Number of unread messages"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__order_number
+msgid "Order Number"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model,name:payroll_edition.model_hr_payslip
+msgid "Pay Slip"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_employee__identification_id
+msgid "Personal Identification"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields.selection,name:payroll_edition.selection__advanced_salary__state__refuse
+#: model:ir.model.fields.selection,name:payroll_edition.selection__advanced_salary_monthly__state__refuse
+#: model:ir.model.fields.selection,name:payroll_edition.selection__end_employee__state__refuse
+#: model:ir.model.fields.selection,name:payroll_edition.selection__exit_entry__state__refuse
+#: model:ir.model.fields.selection,name:payroll_edition.selection__penalty_salary__state__refuse
+msgid "Refuse"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__activity_user_id
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__activity_user_id
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__activity_user_id
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__activity_user_id
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__activity_user_id
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__activity_user_id
+msgid "Responsible User"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__message_has_sms_error
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__message_has_sms_error
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__message_has_sms_error
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__message_has_sms_error
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__message_has_sms_error
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model,name:payroll_edition.model_hr_salary_rule
+msgid "Salary Rule"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields.selection,name:payroll_edition.selection__exit_entry__type_exit_entry__single
+#: model:ir.model.fields.selection,name:payroll_edition.selection__hr_employee__type_exit_entry__single
+msgid "Single"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__state
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__state
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__state
+msgid "State"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__state
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__state
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__state
+msgid "Status"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary__activity_state
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary_monthly__activity_state
+#: model:ir.model.fields,help:payroll_edition.field_end_employee__activity_state
+#: model:ir.model.fields,help:payroll_edition.field_exit_entry__activity_state
+#: model:ir.model.fields,help:payroll_edition.field_iqama_renew__activity_state
+#: model:ir.model.fields,help:payroll_edition.field_penalty_salary__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields.selection,name:payroll_edition.selection__end_employee__type_end__termination2
+#: model:ir.model.fields.selection,name:payroll_edition.selection__hr_employee__type_employee_end__termination2
+msgid "Termination"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model,name:payroll_edition.model_hr_leave
+msgid "Time Off"
+msgstr ""
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.advanced_salary_module_tree_view
+#: model_terms:ir.ui.view,arch_db:payroll_edition.advanced_salary_monthly_module_tree_view
+#: model_terms:ir.ui.view,arch_db:payroll_edition.hr_payslip_attendance_view_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.penalty_salary_module_tree_view
+msgid "Total"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary__activity_exception_decoration
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary_monthly__activity_exception_decoration
+#: model:ir.model.fields,help:payroll_edition.field_end_employee__activity_exception_decoration
+#: model:ir.model.fields,help:payroll_edition.field_exit_entry__activity_exception_decoration
+#: model:ir.model.fields,help:payroll_edition.field_iqama_renew__activity_exception_decoration
+#: model:ir.model.fields,help:payroll_edition.field_penalty_salary__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__message_unread
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__message_unread
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__message_unread
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__message_unread
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__message_unread
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__message_unread
+msgid "Unread Messages"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__message_unread_counter
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__message_unread_counter
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__message_unread_counter
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__message_unread_counter
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__message_unread_counter
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__website_message_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__website_message_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__website_message_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__website_message_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__website_message_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary__website_message_ids
+#: model:ir.model.fields,help:payroll_edition.field_advanced_salary_monthly__website_message_ids
+#: model:ir.model.fields,help:payroll_edition.field_end_employee__website_message_ids
+#: model:ir.model.fields,help:payroll_edition.field_exit_entry__website_message_ids
+#: model:ir.model.fields,help:payroll_edition.field_iqama_renew__website_message_ids
+#: model:ir.model.fields,help:payroll_edition.field_penalty_salary__website_message_ids
+msgid "Website communication history"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model,name:payroll_edition.model_advanced_salary
+msgid "advanced.salary"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model,name:payroll_edition.model_advanced_salary_monthly
+msgid "advanced.salary.monthly"
+msgstr ""
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.advanced_salary_module_form_view
+msgid "advanced_salary"
+msgstr ""
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.advanced_salary_monthly_module_form_view
+msgid "advanced_salary_monthly"
+msgstr ""
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.end_employee_tree
+msgid "end employee  Tree"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model,name:payroll_edition.model_end_employee
+msgid "end.employee"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.actions.act_window,name:payroll_edition.action_end_employee
+msgid "end_employee"
+msgstr ""
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.end_employee_form
+msgid "end_employee  Form"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__exit_entry_id
+msgid "exit entry"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model,name:payroll_edition.model_exit_entry
+msgid "exit.entry"
+msgstr ""
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.exit_entry_form
+msgid "exit_entry  Form"
+msgstr ""
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.exit_entry_tree
+msgid "exit_entry  Tree"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.actions.act_window,name:payroll_edition.action_exit_entry
+msgid "exit_entry Renew"
+msgstr ""
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.advanced_salary_module_form_view
+#: model_terms:ir.ui.view,arch_db:payroll_edition.advanced_salary_monthly_module_form_view
+#: model_terms:ir.ui.view,arch_db:payroll_edition.end_employee_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.exit_entry_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.iqama_renew_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.penalty_salary_module_form_view
+msgid "finance manager"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model,name:payroll_edition.model_hr_attendance_save
+msgid "hr.attendance.save"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_attendance_save__hr_payslip_id
+msgid "hr.payslip"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model,name:payroll_edition.model_iqama_renew
+msgid "iqama.renew"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model,name:payroll_edition.model_penalty_name
+msgid "penalty.name"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model,name:payroll_edition.model_penalty_salary
+msgid "penalty.salary"
+msgstr ""
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.penalty_name_module_form_view
+msgid "penalty_name"
+msgstr ""
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.penalty_salary_module_form_view
+msgid "penalty_salary"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_contract__addition_ture
+msgid "احتساب اضافي؟"
+msgstr "Additional calculation"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_contract__delay_ture
+msgid "احتساب الخصومات؟"
+msgstr ""
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__payslip_id
+msgid "احتساب الرواتب"
+msgstr "Calculating salaries"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_name__name
+msgid "اسم العقوية"
+msgstr "penalty name"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__months_in
+msgid "الاشهر "
+msgstr "months"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_attendance_save__addition
+msgid "الاضافي"
+msgstr "The extra"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__days_in
+msgid "الايام "
+msgstr "days"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_attendance_save__date
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__date
+msgid "التاريخ"
+msgstr "date"
+
+#. module: payroll_edition
+#: code:addons/payroll_edition/models/exit_entry.py:0
+#, python-format
+msgid "الحد الاقصى 12 شهر"
+msgstr "Maximum 12 months"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__account_id
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__account_id
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__account_id
+msgid "الحساب"
+msgstr "account"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_payslip__hr_attendance_save_ids
+msgid "الدوام"
+msgstr "Permanence"
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.advanced_salary_module_form_view
+#: model_terms:ir.ui.view,arch_db:payroll_edition.advanced_salary_monthly_module_form_view
+#: model_terms:ir.ui.view,arch_db:payroll_edition.end_employee_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.exit_entry_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.iqama_renew_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.penalty_salary_module_form_view
+msgid "الرجوع الى مسودة"
+msgstr "Back to a draft"
+
+#. module: payroll_edition
+#: model:ir.actions.act_window,name:payroll_edition.advanced_salary_action
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__advanced_salary
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__advanced_salary
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_employee__advanced_salary_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_payslip__advanced_salary_ids
+#: model:ir.ui.menu,name:payroll_edition.advanced_salary_root
+#: model:ir.ui.menu,name:payroll_edition.advanced_salary_sub
+#: model:ir.ui.menu,name:payroll_edition.advanced_salary_sub_sub
+#: model_terms:ir.ui.view,arch_db:payroll_edition.exit_entry_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.hr_payslip_attendance_view_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.view_employee_sum_eos_form_paid_leave_inherit
+msgid "السلف"
+msgstr "advances"
+
+#. module: payroll_edition
+#: model:ir.actions.act_window,name:payroll_edition.advanced_salary_monthly_action
+#: model:ir.ui.menu,name:payroll_edition.advanced_salary_monthly_sub_sub
+msgid "السلف الشهرية"
+msgstr "Monthly advances"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__years_in
+msgid "السنوات "
+msgstr "years"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__contract_id
+msgid "العقد"
+msgstr "Contract"
+
+#. module: payroll_edition
+#: model:ir.actions.act_window,name:payroll_edition.penalty_salary_action
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_employee__penalty_salary_ids
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_payslip__penalty_salary_ids
+#: model:ir.ui.menu,name:payroll_edition.penalty_name_root
+#: model:ir.ui.menu,name:payroll_edition.penalty_salary_sub_sub
+#: model_terms:ir.ui.view,arch_db:payroll_edition.view_employee_sum_eos_form_paid_leave_inherit
+msgid "العقوبات"
+msgstr "Penalties"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__penalty_name
+msgid "العقوبة"
+msgstr "Penalty"
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.hr_payslip_attendance_view_form
+msgid "العقويات"
+msgstr "Penalties"
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.iqama_renew_form
+msgid "الغاء"
+msgstr "cancel"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__move_id
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__move_id
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__move_id
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__move_id
+msgid "القيد"
+msgstr "move"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__amount
+msgid "القيمة"
+msgstr "amount"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__amount
+msgid "القيمة الكلية"
+msgstr "Total amount"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__amount
+msgid "القيمة كاملة"
+msgstr "Total amount"
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.advanced_salary_module_form_view
+#: model_terms:ir.ui.view,arch_db:payroll_edition.advanced_salary_monthly_module_form_view
+#: model_terms:ir.ui.view,arch_db:payroll_edition.exit_entry_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.penalty_salary_module_form_view
+msgid "القيود"
+msgstr "moves"
+
+#. module: payroll_edition
+#: model:ir.ui.menu,name:payroll_edition.menu_base_end_employee
+msgid "المخالصات"
+msgstr "Clearances"
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.advanced_salary_module_form_view
+#: model_terms:ir.ui.view,arch_db:payroll_edition.advanced_salary_monthly_module_form_view
+#: model_terms:ir.ui.view,arch_db:payroll_edition.end_employee_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.exit_entry_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.iqama_renew_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.penalty_salary_module_form_view
+msgid "الموافقة النهائية"
+msgstr "Final approval"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__advanced_salary_monthly
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__hr_employee
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__hr_employee
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__employee_id
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__employee_id
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_attendance_save__employee_id
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__hr_employee
+msgid "الموظف"
+msgstr "The employee"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__type_exit_entry
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_employee__type_exit_entry
+msgid "النوع"
+msgstr "Type"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__note
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__note
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__note
+msgid "الوصف"
+msgstr "the description"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__type_end
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_employee__type_employee_end
+msgid "الية الانهاء"
+msgstr "Termination mechanism"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__journal_id
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__journal_id
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__journal_id
+msgid "اليوميه"
+msgstr "journal"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_employee__end_employee_ids
+#: model_terms:ir.ui.view,arch_db:payroll_edition.view_employee_sum_eos_form_paid_leave_inherit
+msgid "انهاء الموظف"
+msgstr "End Employee"
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.hr_payslip_attendance_view_form
+msgid "ايام العمل"
+msgstr "Works Days"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_employee__hr_payslip_ids
+msgid "ايصالات المرتبات"
+msgstr "Salary receipts"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_iqama_renew__iqama_newstart_date
+msgid "بداية الاقامة الجديدة"
+msgstr "The beginning of the new residence"
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.sales_representive_view_employee_form
+msgid "تاريخ الاقامة"
+msgstr "Date of residence"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__date_stop
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_employee__date_stop
+msgid "تاريخ الانهاء "
+msgstr "End date"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__date
+msgid "تاريخ التحرير"
+msgstr "Edited Date"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__date_in
+msgid "تاريخ التعيين "
+msgstr "joining Date"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__date_payed
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__date_payed
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__date_payed
+msgid "تاريخ الدفع"
+msgstr "Payment Date"
+
+#. module: payroll_edition
+#: model:ir.ui.menu,name:payroll_edition.menu_base_iqama_renew
+msgid "تجديد الاقامة"
+msgstr "Renewal of residence"
+
+#. module: payroll_edition
+#: model:ir.actions.act_window,name:payroll_edition.penalty_name_action
+#: model:ir.ui.menu,name:payroll_edition.penalty_name_sub_sub
+msgid "تعريف العقوبات"
+msgstr "Definition of penalties"
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.advanced_salary_monthly_module_form_view
+msgid "تفصيل السلف"
+msgstr "Detail of advances"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_name__account_credit_id
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__account_credit_id
+msgid "حساب الدائن"
+msgstr "Creditor account"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__account_advanced_id
+msgid "حساب السلف"
+msgstr "Advance account"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_name__account_debit_id
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__account_debit_id
+msgid "حساب المدين"
+msgstr "Debtor account"
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.advanced_salary_module_form_view
+#: model_terms:ir.ui.view,arch_db:payroll_edition.advanced_salary_monthly_module_form_view
+#: model_terms:ir.ui.view,arch_db:payroll_edition.end_employee_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.exit_entry_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.penalty_salary_module_form_view
+msgid "رفض"
+msgstr "Refusal"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_attendance_save__time_work
+msgid "ساعات الدوام الفعلي"
+msgstr "Actual office hours"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_attendance_save__hours_per_day
+msgid "ساعات الدوام المطلوب"
+msgstr "Business hours required"
+
+#. module: payroll_edition
+#: code:addons/payroll_edition/models/hr_leave.py:0
+#, python-format
+msgid "صلاحية المسئول المباشر %s فقط"
+msgstr "The authority of the direct administrator"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_exit_entry__count
+msgid "عدد الاشهر"
+msgstr "Number of months"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__count_cut
+msgid "عدد الاقساط"
+msgstr "number of installments"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_employee__count_end_employee_ids
+msgid "عدد الانهاء"
+msgstr "Termination number"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__days_paid_holidays
+msgid "عدد الايام المدفوعة"
+msgstr "The number of days paid"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_employee__count_advanced_salary_ids
+msgid "عدد السلف"
+msgstr "The number of advances"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_employee__count_penalty_salary_ids
+msgid "عدد العقوبات"
+msgstr "The number of penalties"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_attendance_save__delays
+msgid "غرامات"
+msgstr "Fines"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_payslip__addition_amount
+msgid "قيمة الاضافي"
+msgstr "Amount Additional value"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__amount_days_paid_holidays
+msgid "قيمة الايام المدفوعة"
+msgstr "Days paid"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_payslip__delay_amount
+msgid "قيمة الخصومات"
+msgstr "Discounts value"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary__amount
+msgid "قيمة السلفة"
+msgstr "The value of the advance"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_contract__amount_anuther_allow
+msgid "قيمة العلاوات الاخرى"
+msgstr "The value of other bonuses"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_contract__amount_hous
+msgid "قيمة بدل السكن"
+msgstr "The value of the housing allowance"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_contract__amount_trasportation
+msgid "قيمة بدل المواصلات"
+msgstr "Transportation allowance value"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_contract__amount_mobile
+msgid "قيمة بدل الهاتف"
+msgstr "The value of the telephone allowance"
+
+#. module: payroll_edition
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#, python-format
+msgid "لا يمكنك الحذف لان الحالة ليست مسودة"
+msgstr "You cannot delete because the case is not a draft"
+
+#. module: payroll_edition
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#, python-format
+msgid "لا يمكنك الحذف لانه تم انشاء عقوبة مرتبطه"
+msgstr "You cannot delete because an associated penalty has been created"
+
+#. module: payroll_edition
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/end_employee.py:0
+#: code:addons/payroll_edition/models/end_employee.py:0
+#: code:addons/payroll_edition/models/end_employee.py:0
+#: code:addons/payroll_edition/models/exit_entry.py:0
+#: code:addons/payroll_edition/models/exit_entry.py:0
+#: code:addons/payroll_edition/models/exit_entry.py:0
+#: code:addons/payroll_edition/models/iqama_renew.py:0
+#: code:addons/payroll_edition/models/iqama_renew.py:0
+#, python-format
+msgid "لا يمكنك الموافقة صلاحية الادارة فقط"
+msgstr "You cannot only approve admin authority"
+
+#. module: payroll_edition
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/end_employee.py:0
+#: code:addons/payroll_edition/models/end_employee.py:0
+#: code:addons/payroll_edition/models/exit_entry.py:0
+#: code:addons/payroll_edition/models/exit_entry.py:0
+#: code:addons/payroll_edition/models/hr_leave.py:0
+#: code:addons/payroll_edition/models/iqama_renew.py:0
+#, python-format
+msgid "لا يمكنك الموافقة صلاحية مدير الموارد البشرية فقط"
+msgstr "You cannot only approve the authority of the Human Resources Director"
+
+#. module: payroll_edition
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/advanced_salary.py:0
+#: code:addons/payroll_edition/models/end_employee.py:0
+#: code:addons/payroll_edition/models/end_employee.py:0
+#: code:addons/payroll_edition/models/exit_entry.py:0
+#: code:addons/payroll_edition/models/exit_entry.py:0
+#: code:addons/payroll_edition/models/iqama_renew.py:0
+#, python-format
+msgid "لا يمكنك الموافقة صلاحية مسؤول المحاسبة"
+msgstr "You cannot approve the authority of the accounting administrator"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_payslip__amount_advanced_salary
+msgid "مجموع السلف"
+msgstr "Total advances"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_payslip__amount_penalty_salary
+msgid "مجموع العقوبات"
+msgstr "Total penalties"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_advanced_salary_monthly__holiday_id
+msgid "مرتبط باجازة"
+msgstr "Linked to a vacation"
+
+#. module: payroll_edition
+#: model:ir.model.fields.selection,name:payroll_edition.selection__end_employee__type_end__resignation
+#: model:ir.model.fields.selection,name:payroll_edition.selection__hr_employee__type_employee_end__resignation
+msgid "مستقيل"
+msgstr "resigned"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__sum_lastes
+msgid "مكافئة انتهاء الخدمة"
+msgstr "End of service bonus"
+
+#. module: payroll_edition
+#: model_terms:ir.ui.view,arch_db:payroll_edition.advanced_salary_module_form_view
+#: model_terms:ir.ui.view,arch_db:payroll_edition.advanced_salary_monthly_module_form_view
+#: model_terms:ir.ui.view,arch_db:payroll_edition.end_employee_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.exit_entry_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.iqama_renew_form
+#: model_terms:ir.ui.view,arch_db:payroll_edition.penalty_salary_module_form_view
+msgid "موافقة الموارد البشرية"
+msgstr "HR approval"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_end_employee__ensbeh_eos
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_employee__ensbeh_eos
+msgid "نسبة EOS"
+msgstr "Percentage EOS"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_contract__addition_nsbeh
+msgid "نسبة الاضافي%"
+msgstr "Overtime percentage"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_contract__delay_nsbeh
+msgid "نسبة الخصومات%"
+msgstr "Penalties percentage"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_contract__hous
+msgid "نسبة بدل السكن"
+msgstr Housing allowance ratio
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_hr_contract__trasportation
+msgid "نسبة بدل المواصلات"
+msgstr "Transportation allowance percentage"
+
+#. module: payroll_edition
+#: model:ir.model.fields,field_description:payroll_edition.field_penalty_salary__journal_id
+msgid "يومية القيود"
+msgstr "Journal of restrictions"
