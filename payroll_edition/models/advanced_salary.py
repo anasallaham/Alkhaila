@@ -896,7 +896,7 @@ class PenaltySalary(models.Model):
                  'recommended_activity_type_id': False,
                  'user_id': user.id
                  })
-
+        return res
     def refuse_go(self):
         if self.state == "draft":
             if self.env.user.has_group('hr.group_hr_manager'):
