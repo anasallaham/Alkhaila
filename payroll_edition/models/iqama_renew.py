@@ -42,7 +42,7 @@ class IqamaRenew(models.Model):
         modelid = (self.env['ir.model'].search([('model', '=', 'iqama.renew')])).id
         advanced_salary = (self.env['ir.model'].search([('model', '=', 'advanced.salary')])).id
         advanced_salary_monthly = (self.env['ir.model'].search([('model', '=', 'advanced.salary.monthly')])).id
-        penalty_name = (self.env['ir.model'].search([('model', '=', 'penalty.name')])).id
+        penalty_salary = (self.env['ir.model'].search([('model', '=', 'penalty.salary')])).id
         exit_entry = (self.env['ir.model'].search([('model', '=', 'exit.entry')])).id
         end_employee = (self.env['ir.model'].search([('model', '=', 'end.employee')])).id
 
@@ -70,8 +70,8 @@ class IqamaRenew(models.Model):
              })
         activity.create(
             {
-                'name': 'Penalty name',
-             'res_model_id': penalty_name,
+                'name': 'Penalty Salary',
+             'res_model_id': penalty_salary,
              'delay_unit': 'days',
              'delay_from': 'previous_activity',
              })
