@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="re_print_pos_order_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                                        <t t-call="web.external_layout">
+
+                    <div class="page" style="  text-align: center;   margin-left: 380px;">
+                                <img  src="/info_pos/static/src/img/index.jpeg" style="max-height:200px; max-width:200px;" alt="Logo" class="pos-receipt-logo"/>
+
+                        <div style="  text-align: center;">
+                            <t>
+                                <div>Kawtharworldsa</div>
+                            </t>
+                            <br/>
+                            <t>
+                                <div>Tel: 920008157</div>
+                            </t>
+                            <br/>
+                            <t>
+                                <div>Email: kawthar01@alkhaila.com</div>
+                            </t>
+                                    <div>--------------------------------</div>
+
+                            <t>
+                                <div>Order Date</div>
+                                <t t-esc="o.date_order"/>
+                            </t>
+                            <br/>
+                            <t t-if='o.partner_id'>
+                                Customer:
+                                <t t-esc="o.partner_id.name"/>
+                                <br/>
+                            </t>
+                            <t t-if='o.user_id'>
+                                <div class='cashier'>
+                                    <div>--------------------------------</div>
+                                    <div>Served by
+                                        <t t-esc='o.user_id.name'/>
+                                    </div>
+                                </div>
+                            </t>
+                            <br/>
+                            <br/>
+                        </div>
+                        <table class='receipt-orderlines'    style="display:inline;text-align: center;">
+                            <tr>
+                                <th style="border:1px solid #000000; width:50%; text-align: center; padding: 2px;">
+                                    Item Name
+                                </th>
+                                <th style="border:1px solid #000000; width:10%; text-align: center; center; padding: 2px;">
+                                    Qty
+                                </th>
+                                <th style="border:1px solid #000000; width:20%; text-align: center; center; padding: 2px;">
+                                    Price Unit
+                                </th>
+                                <th style="border:1px solid #000000; width:20%; text-align: center; center; padding: 2px;">
+                                    Total
+                                </th>
+                            </tr>
+                            <tr t-foreach="o.lines" t-as="line">
+                                <td>
+                                    <t t-esc='line.product_id.name'/>
+                                </td>
+                                <td>
+                                    <span t-esc='(line.qty)'/>
+                                </td>
+                                <td>
+                                    <span t-esc='round(line.price_unit,4)'/>
+                                </td>
+                                <td>
+                                    <span t-esc='round(line.price_subtotal_incl,4)'/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <br/>
+                        <br/>
+                        <br/>
+                        <div class="pos-receipt-amount">
+                            TOTAL
+                            <span t-esc='round(o.amount_total,4)' style="text-align: center;"/>
+                        </div>
+                        <div class="pos-receipt-right-align">---------------------------</div>
+                            <br/>
+                        <t t-foreach='o.payment_ids' t-as='line'>
+                            <t t-esc='line.payment_method_id.name'/>
+                            <span t-esc='round(line.amount,4)' style="text-align: center;"/>
+                        </t>
+                        <div class="pos-receipt-right-align">---------------------------</div>
+                        <br/>
+                        <div>
+                            Total Taxes
+                            <span t-esc='(o.amount_tax)' style="text-align: center;"/>
+                        </div>
+
+
+                    </div>
+                </t>
+                </t>
+            </t>
+        </template>
+        <report
+                id="re_print_pos_order"
+                model="pos.order"
+                string="طباعة الفاتورة"
+                report_type="qweb-pdf"
+                name="info_pos.re_print_pos_order_report"
+                file="info_pos.re_print_pos_order_report"
+        />
+    </data>
+</odoo>

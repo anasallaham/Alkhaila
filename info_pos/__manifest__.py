@@ -21,7 +21,7 @@ INFO POS
     'depends': ['base', 'point_of_sale', 'pos_restaurant', 'aspl_pos_combo_ee'],
     'images': [''],
     "data": [
-
+        "report/report.xml"
     ],
     'qweb': ['static/src/xml/pos.xml'],
     'installable': True,
