@@ -169,7 +169,10 @@ var QWeb = core.qweb;
             console.log("wwws "+JSON.stringify(this.pos.db))
             console.log("wwws "+this.pos.db.cache.cashier.name)
             var selected_delivery_type = order.selected_delivery_type;
-            var delivery = this.pos.delivery_type[parseInt(selected_delivery_type)].name
+            console.log("JSON.stringify(this.pos.db) "+JSON.stringify(this.pos.delivery_type) )
+            console.log("222222222222222222 "+selected_delivery_type )
+            console.log("33333333333333333 "+this.pos.delivery_type[parseInt(selected_delivery_type)-1].name )
+            var delivery = this.pos.delivery_type[parseInt(selected_delivery_type)-1].name
             var user_cashier = this.pos.db.cache.cashier.name
             console.log("Delivery  "+delivery)
 

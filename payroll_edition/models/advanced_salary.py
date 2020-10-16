@@ -254,6 +254,11 @@ class AdvancedSalaryMonthly(models.Model):
                         'date': date,
                         'date_payed': self.date_payed,
                     })
+                    rm_activety = (self.env['mail.activity'].search(
+                        [('res_model', '=', 'advanced.salary'), ('res_id', '=', advanced.id)]))
+                    for ac in rm_activety:
+                        ac.unlink()
+
                     advanced.state = 'accepted'
                     date = date + relativedelta(months=1)
             else:
@@ -271,6 +276,11 @@ class AdvancedSalaryMonthly(models.Model):
                         'date': date,
                         'date_payed': self.date_payed,
                     })
+                    rm_activety = (self.env['mail.activity'].search(
+                        [('res_model', '=', 'advanced.salary'), ('res_id', '=', advanced.id)]))
+                    for ac in rm_activety:
+                        ac.unlink()
+
                     advanced.state = 'accepted'
 
                 elif amount_holidays > salary:
@@ -283,6 +293,11 @@ class AdvancedSalaryMonthly(models.Model):
                                 'date': date,
                                 'date_payed': self.date_payed,
                             })
+                            rm_activety = (self.env['mail.activity'].search(
+                                [('res_model', '=', 'advanced.salary'), ('res_id', '=', advanced.id)]))
+                            for ac in rm_activety:
+                                ac.unlink()
+
                             advanced.state = 'accepted'
 
                             current_amount = current_amount - salary
@@ -294,6 +309,11 @@ class AdvancedSalaryMonthly(models.Model):
                                 'date': date,
                                 'date_payed': self.date_payed,
                             })
+                            rm_activety = (self.env['mail.activity'].search(
+                                [('res_model', '=', 'advanced.salary'), ('res_id', '=', advanced.id)]))
+                            for ac in rm_activety:
+                                ac.unlink()
+
                             advanced.state = 'accepted'
                             current_amount = current_amount - salary
                         date = date + relativedelta(months=1)
