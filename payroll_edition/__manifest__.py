@@ -29,6 +29,7 @@
         'views/iqama_renew_view.xml',
         'views/exit_entry.xml',
         'views/hr_employee_view.xml',
+        'views/hr_payroll_structure_type.xml',
 
         'security/ir.model.access.csv',
         'data/data.xml'

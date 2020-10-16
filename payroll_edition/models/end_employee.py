@@ -62,8 +62,13 @@ class EndEmployee(models.Model):
             self.months_in = difference_in_years.months
             self.days_in = difference_in_years.days
             if contract_id:
-                self.amount_days_paid_holidays = round(
-                    ((contract_id[0].wage + contract_id[0].amount_hous) / 30) * self.days_paid_holidays, 2)
+                print ("contract_id",contract_id)
+                if contract_id.structure_type_id.is_allow:
+                    amount_res = (contract_id[0].wage + contract_id[0].amount_hous + contract_id[0].amount_trasportation  + contract_id[0].amount_anuther_allow  )
+                else:
+                    amount_res = (contract_id[0].wage + contract_id[0].amount_anuther_allow  )
+
+                self.amount_days_paid_holidays = round((amount_res / 30) * self.days_paid_holidays, 2)
             else:
                 self.amount_days_paid_holidays = 0.0
 

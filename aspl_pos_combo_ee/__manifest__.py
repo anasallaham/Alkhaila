@@ -20,7 +20,7 @@ This module allows user to use combo feature in restaurant
     'price': 15, 
     'currency': 'EUR',
     'version': '1.0.1',
-    'depends': ['base', 'pos_restaurant', 'pos_delivery_type'],
+    'depends': ['base', 'pos_restaurant', 'pos_delivery_type', 'em_pos_orders_notes'],
     'images': ['static/description/main_screenshot.png'],
     "data": [
         'security/ir.model.access.csv',

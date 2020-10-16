@@ -336,6 +336,14 @@
                     <div><span font='b' bold='off' line-ratio='0.4' indent='1' width='30'>--- <t t-esc="change.note" /></span></div>
                     <line></line>
                 </t>
+                <t t-if="change.extra_note">
+                    <line>
+                        <left>EXTRA NOTE</left>
+                        <right>...</right>
+                    </line>
+                    <div><span font='b' bold='off' line-ratio='0.4' indent='1' width='30'>--- <t t-esc="change.extra_note" /></span></div>
+                    <line></line>
+                </t>
                 <div><span font='b' bold='off' line-ratio='0.4' indent='1'>
                     ---------------------------------------------------------------
                 </span></div>
@@ -362,6 +370,14 @@
                         <right>...</right>
                     </line>
                     <div><span font='b' bold='off' line-ratio='0.4' indent='1' width='30'>--- <t t-esc="change.note" /></span></div>
+                    <line></line>
+                </t>
+                <t t-if="change.extra_note">
+                    <line>
+                        <left>EXTRA NOTE</left>
+                        <right>...</right>
+                    </line>
+                    <div><span font='b' bold='off' line-ratio='0.4' indent='1' width='30'>--- <t t-esc="change.extra_note" /></span></div>
                     <line></line>
                 </t>
                 <div><span font='b' bold='off' line-ratio='0.4' indent='1'>
