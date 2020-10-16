@@ -42,6 +42,7 @@ var QWeb = core.qweb;
                 var note = line.get_note();
                 var product_id = line.get_product().id;
                 var extra_note = line.get_extra_note();
+                console.log("extra_note "+extra_note)
 
                 if (typeof resume[line_hash] === 'undefined') {
                     var combo_info = false;
@@ -106,6 +107,7 @@ var QWeb = core.qweb;
                         'extra_note': curr.extra_note,
                     });
                 }
+            console.log("rem "+rem)
             }
 
             for (line_hash in old_res) {
@@ -119,7 +121,7 @@ var QWeb = core.qweb;
                             'note':     old.note,
                             'qty':      old.qty,
                             'combo_info': old.combo_info,
-                            'extra_note': curr.extra_note,
+                            'extra_note': old.extra_note,
                         });
                     }
                 }
