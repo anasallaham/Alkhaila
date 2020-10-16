@@ -41,6 +41,7 @@ var QWeb = core.qweb;
                 var qty  = Number(line.get_quantity());
                 var note = line.get_note();
                 var product_id = line.get_product().id;
+                var extra_note = line.get_extra_note();
 
                 if (typeof resume[line_hash] === 'undefined') {
                     var combo_info = false;
@@ -53,6 +54,7 @@ var QWeb = core.qweb;
                         product_id: product_id,
                         product_name_wrapped: line.generate_wrapped_product_name(),
                         combo_info: combo_info || false,
+                        extra_note: extra_note || false,
                     };
                 } else {
                     resume[line_hash].qty += qty;
@@ -81,6 +83,7 @@ var QWeb = core.qweb;
                         'note':     curr.note,
                         'qty':      curr.qty,
                         'combo_info': curr.combo_info,
+                        'extra_note': curr.extra_note,
                     });
                 } else if (old.qty < curr.qty) {
                     add.push({
@@ -90,6 +93,7 @@ var QWeb = core.qweb;
                         'note':     curr.note,
                         'qty':      curr.qty - old.qty,
                         'combo_info': curr.combo_info,
+                        'extra_note': curr.extra_note,
                     });
                 } else if (old.qty > curr.qty) {
                     rem.push({
@@ -99,6 +103,7 @@ var QWeb = core.qweb;
                         'note':     curr.note,
                         'qty':      old.qty - curr.qty,
                         'combo_info': curr.combo_info,
+                        'extra_note': curr.extra_note,
                     });
                 }
             }
@@ -114,6 +119,7 @@ var QWeb = core.qweb;
                             'note':     old.note,
                             'qty':      old.qty,
                             'combo_info': old.combo_info,
+                            'extra_note': curr.extra_note,
                         });
                     }
                 }
@@ -186,6 +192,8 @@ var QWeb = core.qweb;
 
         for(var i = 0; i < printers.length; i++){
             var changes = this.computeChanges(printers[i].config.product_categories_ids);
+            console.log("changeschanges "+JSON.stringify(changes))
+
             if ( changes['new'].length > 0 || changes['cancelled'].length > 0){
                 var receipt = QWeb.render('OrderChangeReceipt',{changes:changes, widget:this,delivery:delivery,user_cashier:user_cashier});
                 await printers[i].print_receipt(receipt);
