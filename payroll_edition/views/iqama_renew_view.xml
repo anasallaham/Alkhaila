@@ -49,7 +49,7 @@
                             <group>
                                 <field name="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="job_title" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                <field name="iqama_end_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="iqama_end_date" attrs="{'readonly': [('state', '!=', 'draft')]}" invisible="1"/>
                             </group>
 
                             <group>
@@ -59,9 +59,30 @@
                             <group>
                                 <field name="iqama_newstart_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="iqama_newend_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                <field name="account_assetw" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="deferred_expense_models" attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}" domain="[('asset_type', '=', 'expense'), ('state', '=', 'model')]"/>
+                                <field name="deferred_expense" readonly="1"/>
                             </group>
                         </group>
+                        <group>
+                            <field name="amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="date_payed"
+                                   attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}"
+                                   groups="base.group_system"/>
+                            <field name="journal_id"
+                                   attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}"
+                                   groups="base.group_system"/>
+                            <field name="account_id"
+                                   attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}"
+                                   groups="base.group_system"/>
+
+                            <field name="analytic_account_id" attrs="{'readonly': [('state', '!=', 'director')]}"/>
+                        </group>
+                    <notebook>
+                        <page string="القيود">
+                            <field name="move_id"/>
+                        </page>
+
+                    </notebook>
                     </sheet>
 
                     <div class="oe_chatter">
