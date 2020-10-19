@@ -68,9 +68,8 @@
                                 <field name="account_id" attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}" groups="base.group_system"/>
                                 <field name="account_advanced_id" attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director'),('type_exit_entry', '=', 'single'),('amount','>',200)],'invisible': [('type_exit_entry', '!=', 'single')]}" groups="base.group_system"/>
                                 <field name="analytic_account_id" attrs="{'readonly': [('state', '!=', 'director')]}"/>
-
-                            </group>
                                 <field name="reason_refuse" attrs="{'readonly': [('state', '=', 'refuse')]}"/>
+                            </group>
 
 
                         </group>

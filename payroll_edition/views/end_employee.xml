@@ -66,9 +66,9 @@
                                 <field name="months_in" readonly="1"/>
                                 <field name="days_in" readonly="1"/>
                                 <field name="days_paid_holidays" readonly="1"/>
+                                <field name="reason_refuse" attrs="{'readonly': [('state', '=', 'refuse')]}"/>
                             </group>
                             <group>
-                                <field name="reason_refuse" attrs="{'readonly': [('state', '=', 'refuse')]}"/>
                                 <field name="payslip_id" attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')],'invisible': [('state', 'not in', ['director','accepted'])]}"/>
                             </group>
 
