@@ -8,7 +8,13 @@
                 <tree string="Iqama Renew Tree">
                     <field name="order_number"/>
                     <field name="employee_id"/>
-                    <field name="iqama_end_date"/>
+                    <field name="amount"/>
+                    <field name="iqama_newstart_date"/>
+                    <field name="iqama_newend_date"/>
+                    <field name="date_payed" />
+                    <field name="journal_id"/>
+                    <field name="account_id"/>
+                    <field name="state"/>
                 </tree>
             </field>
         </record>
@@ -33,12 +39,13 @@
                         <button name="action_accepted" string="الموافقة النهائية"
                                 type="object" class="btn-primary"
                                 attrs="{'invisible': [('state', '!=', 'director')]}"/>
-
-                        <button name="action_cancel"  states="draft" type="object" string="الغاء"/>
+                    <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['cancel','accepted','director','refuse'])]}"
+                            type="object" string="رفض"/>
+                        <button name="action_cancel" states="director" type="object" string="الغاء"/>
                         <button name="draft_advanced" attrs="{'invisible': [('state', '=', 'draft')]}" type="object"
                                 string="الرجوع الى مسودة"/>
                         <field name="state" widget="statusbar"
-                               statusbar_visible="draft,hr_manager_accept,finance_manager,director,accepted,cancel"/>
+                               statusbar_visible="draft,hr_manager_accept,finance_manager,director,accepted,cancel,refuse"/>
                     </header>
 
                     <sheet>
@@ -49,7 +56,8 @@
                             <group>
                                 <field name="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="job_title" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                <field name="iqama_end_date" attrs="{'readonly': [('state', '!=', 'draft')]}" invisible="1"/>
+                                <field name="iqama_end_date" attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                       invisible="1"/>
                             </group>
 
                             <group>
@@ -59,8 +67,12 @@
                             <group>
                                 <field name="iqama_newstart_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="iqama_newend_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                <field name="deferred_expense_models" attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}" domain="[('asset_type', '=', 'expense'), ('state', '=', 'model')]"/>
+                                <field name="deferred_expense_models"
+                                       attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}"
+                                       domain="[('asset_type', '=', 'expense'), ('state', '=', 'model')]"/>
                                 <field name="deferred_expense" readonly="1"/>
+                                <field name="reason_refuse" attrs="{'readonly': [('state', '=', 'refuse')]}"/>
+
                             </group>
                         </group>
                         <group>
@@ -77,12 +89,12 @@
 
                             <field name="analytic_account_id" attrs="{'readonly': [('state', '!=', 'director')]}"/>
                         </group>
-                    <notebook>
-                        <page string="القيود">
-                            <field name="move_id"/>
-                        </page>
+                        <notebook>
+                            <page string="القيود">
+                                <field name="move_id"/>
+                            </page>
 
-                    </notebook>
+                        </notebook>
                     </sheet>
 
                     <div class="oe_chatter">
@@ -90,7 +102,7 @@
                         <field name="activity_ids" widget="mail_activity"/>
                         <field name="message_ids" widget="mail_thread"/>
                     </div>
-                                </form>
+                </form>
 
             </field>
         </record>
@@ -108,7 +120,6 @@
                 </p>
             </field>
         </record>
-
 
 
         <menuitem name="تجديد الاقامة"

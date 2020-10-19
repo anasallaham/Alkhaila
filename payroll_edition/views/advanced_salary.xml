@@ -45,10 +45,11 @@
                             attrs="{'invisible': [('state', '!=', 'finance_manager')]}"/>
                     <button name="draft_advanced" attrs="{'invisible': [('state', '=', 'draft')]}" type="object"
                             string="الرجوع الى مسودة"/>
-                    <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['draft','accepted','refuse'])]}"
+                    <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['cancel','accepted','director','refuse'])]}"
                             type="object" string="رفض"/>
+                    <button name="action_cancel" states="director" type="object" string="الغاء"/>
                     <field name="state" widget="statusbar"
-                           statusbar_visible="draft,hr_manager_accept,finance_manager,director,accepted"/>
+                           statusbar_visible="draft,hr_manager_accept,finance_manager,director,accepted,cancel,refuse"/>
                 </header>
 
                 <sheet>
@@ -73,6 +74,8 @@
 
                             <field name="analytic_account_id" attrs="{'readonly': [('state', '!=', 'director')]}"/>
                         </group>
+                                <field name="reason_refuse" attrs="{'readonly': [('state', '=', 'refuse')]}"/>
+
                     </group>
                     <notebook>
                         <page string="القيود">
@@ -185,10 +188,11 @@
 
                     <button name="draft_advanced" attrs="{'invisible': [('state', '=', 'draft')]}" type="object"
                             string="الرجوع الى مسودة"/>
-                    <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['draft','accepted','refuse'])]}"
+                    <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['cancel','accepted','director','refuse'])]}"
                             type="object" string="رفض"/>
+                    <button name="action_cancel" states="director" type="object" string="الغاء"/>
                     <field name="state" widget="statusbar"
-                           statusbar_visible="draft,hr_manager_accept,finance_manager,director,accepted"/>
+                           statusbar_visible="draft,hr_manager_accept,finance_manager,director,accepted,cancel,refuse"/>
                 </header>
                 <sheet>
                     <group>
@@ -216,6 +220,8 @@
                             <field name="analytic_account_id" attrs="{'readonly': [('state', '!=', 'director')]}"/>
 
                         </group>
+                                <field name="reason_refuse" attrs="{'readonly': [('state', '=', 'refuse')]}"/>
+
                     </group>
                     <notebook>
                         <page string="القيود">
@@ -285,10 +291,11 @@
 
                     <button name="draft_advanced" attrs="{'invisible': [('state', '=', 'draft')]}" type="object"
                             string="الرجوع الى مسودة"/>
-                    <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['draft','accepted','refuse'])]}"
+                    <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['cancel','accepted','director','refuse'])]}"
                             type="object" string="رفض"/>
+                    <button name="action_cancel" states="director" type="object" string="الغاء"/>
                     <field name="state" widget="statusbar"
-                           statusbar_visible="draft,hr_manager_accept,finance_manager,director,accepted"/>
+                           statusbar_visible="draft,hr_manager_accept,finance_manager,director,accepted,cancel,refuse"/>
                 </header>
                 <sheet>
                     <group>
@@ -319,6 +326,8 @@
                                    groups="base.group_system"/>
                             <field name="analytic_account_id" attrs="{'readonly': [('state', '!=', 'director')]}"/>
                         </group>
+                                <field name="reason_refuse" attrs="{'readonly': [('state', '=', 'refuse')]}"/>
+
                     </group>
                     <notebook>
                         <page string="تفصيل السلف">

@@ -18,6 +18,7 @@ class IqamaRenew(models.Model):
     iqama_end_date = fields.Date(string="Old Iqama End Date " )
     iqama_newstart_date = fields.Date(string="بداية الاقامة الجديدة",required=True)
     iqama_newend_date = fields.Date(string=" نهاية الاقامة الجديدة",required=True)
+    reason_refuse = fields.Char(string="سبب الرفض")
 
 
     deferred_expense_models  = fields.Many2one('account.asset',string="Deferred Expense Models")
@@ -39,6 +40,7 @@ class IqamaRenew(models.Model):
         ('director', 'Director'),
         ('accepted', 'Final Accept'),
         ('cancel', 'Cancelled'),
+        ("refuse", "Refuse"),
     ], string='Status' ,default='draft')
 
 
@@ -261,6 +263,9 @@ class IqamaRenew(models.Model):
                 )
 
             )
+        activity_old = (self.env['mail.activity'].search([('res_model', '=', 'iqama.renew'), ('res_id', '=', self.id)]))
+        for ac in activity_old:
+            ac.action_done()
 
     def action_director(self):
         if self.env.user.has_group('base.group_system'):
@@ -306,8 +311,7 @@ class IqamaRenew(models.Model):
             return all_move_vals
 
     def action_accepted(self):
-        if self.env.user.has_group('account.group_account_manager'):
-
+        if self.env.user.has_group('account.group_account_user'):
             account_asset = self.env['account.asset']
             res_asset = account_asset.create(
                 {
@@ -359,9 +363,55 @@ class IqamaRenew(models.Model):
                 )
 
             )
+    def refuse_go(self):
+        if self.state == "draft":
+            if self.env.user.has_group('hr.group_hr_manager'):
+                self.state = "refuse"
+            else:
+                raise UserError(
+                    _(
+                        "لا يمكنك الموافقة صلاحية مدير الموارد البشرية فقط"
+                    )
+
+                )
+
+        elif self.state == "hr_manager_accept":
+            if self.env.user.has_group('account.group_account_manager'):
+                self.state = "refuse"
+            else:
+                raise UserError(
+                    _(
+                        "لا يمكنك الموافقة صلاحية مسؤول المحاسبة"
+                    )
+
+                )
+
+        elif self.state == "finance_manager":
+            if self.env.user.has_group('base.group_system'):
+                self.state = "refuse"
+            else:
+                raise UserError(
+                    _(
+                        "لا يمكنك الموافقة صلاحية الادارة فقط"
+                    )
+
+                )
+        if not self.reason_refuse:
+            raise UserError(
+                _(
+                    "يجب تعبئة حقل سبب الرفض"
+                ))
+
+        activity_old = (self.env['mail.activity'].search([('res_model', '=', 'exit.entry'), ('res_id', '=', self.id)]))
+        for ac in activity_old:
+            ac.action_done()
 
 
     def action_cancel(self):
+        activity_old = (self.env['mail.activity'].search([('res_model', '=', 'iqama.renew'), ('res_id', '=', self.id)]))
+        for ac in activity_old:
+            ac.action_done()
+
         return self.write({'state': 'cancel'})
 
 

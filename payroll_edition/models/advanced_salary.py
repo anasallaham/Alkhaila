@@ -22,6 +22,7 @@ class AdvancedSalaryMonthly(models.Model):
     journal_id = fields.Many2one('account.journal', string="اليوميه")
     account_id = fields.Many2one('account.account', string="الحساب")
     analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', )
+    reason_refuse = fields.Char(string="سبب الرفض")
 
     move_id = fields.Many2one('account.move', string="القيد",readonly=True)
     holiday_id = fields.Many2one('hr.leave',string="مرتبط باجازة")
@@ -107,6 +108,16 @@ class AdvancedSalaryMonthly(models.Model):
                     )
 
                 )
+        if not self.reason_refuse:
+            raise UserError(
+                _(
+                    "يجب تعبئة حقل سبب الرفض"
+                ))
+
+        activity_old = (
+            self.env['mail.activity'].search([('res_model', '=', 'advanced.salary.monthly'), ('res_id', '=', self.id)]))
+        for ac in activity_old:
+            ac.action_done()
 
     def action_finance_manager(self):
         if self.env.user.has_group('account.group_account_manager'):
@@ -239,7 +250,7 @@ class AdvancedSalaryMonthly(models.Model):
             )
 
     def action_accepted(self):
-        if self.env.user.has_group('account.group_account_manager'):
+        if self.env.user.has_group('account.group_account_user'):
             if self.holiday_id:
                 date = self.holiday_id.request_date_from
             else:
@@ -392,6 +403,11 @@ class AdvancedSalaryMonthly(models.Model):
 
 
     def action_cancel(self):
+        activity_old = (
+            self.env['mail.activity'].search([('res_model', '=', 'advanced.salary.monthly'), ('res_id', '=', self.id)]))
+        for ac in activity_old:
+            ac.action_done()
+
         return self.write({'state': 'cancel'})
 
 
@@ -449,7 +465,7 @@ class AdvancedSalary(models.Model):
 
     order_number  = fields.Char(string="Number",readonly=True)
     note = fields.Char(string="الوصف",required=False)
-
+    reason_refuse = fields.Char(string="سبب الرفض")
     advanced_salary_monthly = fields.Many2one('advanced.salary.monthly', string="الموظف")
     exit_entry_id = fields.Many2one('exit.entry', string="exit entry")
     hr_employee = fields.Many2one('hr.employee', string="الموظف",required=True)
@@ -576,6 +592,16 @@ class AdvancedSalary(models.Model):
                     )
 
                 )
+        if not self.reason_refuse:
+            raise UserError(
+                _(
+                    "يجب تعبئة حقل سبب الرفض"
+                ))
+
+        activity_old = (
+            self.env['mail.activity'].search([('res_model', '=', 'advanced.salary'), ('res_id', '=', self.id)]))
+        for ac in activity_old:
+            ac.action_done()
 
     def action_finance_manager(self):
         if self.env.user.has_group('account.group_account_manager'):
@@ -709,7 +735,7 @@ class AdvancedSalary(models.Model):
 
 
     def action_accepted(self):
-        if self.env.user.has_group('account.group_account_manager'):
+        if self.env.user.has_group('account.group_account_user'):
             AccountMove = self.env['account.move'].with_context(default_type='entry')
             if not self.move_id:
                 moves = AccountMove.create(self.return_movelines())
@@ -746,6 +772,11 @@ class AdvancedSalary(models.Model):
 
 
     def action_cancel(self):
+        activity_old = (
+            self.env['mail.activity'].search([('res_model', '=', 'advanced.salary'), ('res_id', '=', self.id)]))
+        for ac in activity_old:
+            ac.action_done()
+
         return self.write({'state': 'cancel'})
 
 
@@ -827,6 +858,7 @@ class PenaltySalary(models.Model):
 
     order_number  = fields.Char(string="Number",readonly=True)
     note = fields.Char(string="الوصف",required=True)
+    reason_refuse = fields.Char(string="سبب الرفض")
 
     penalty_name = fields.Many2one('penalty.name', string="العقوبة",required=True)
     hr_employee = fields.Many2one('hr.employee', string="الموظف",required=True)
@@ -950,6 +982,16 @@ class PenaltySalary(models.Model):
                     )
 
                 )
+        if not self.reason_refuse:
+            raise UserError(
+                _(
+                    "يجب تعبئة حقل سبب الرفض"
+                ))
+
+        activity_old = (
+            self.env['mail.activity'].search([('res_model', '=', 'penalty.salary'), ('res_id', '=', self.id)]))
+        for ac in activity_old:
+            ac.action_done()
 
     def action_finance_manager(self):
         if self.env.user.has_group('account.group_account_manager'):
@@ -1085,7 +1127,7 @@ class PenaltySalary(models.Model):
             )
 
     def action_accepted(self):
-        if self.env.user.has_group('account.group_account_manager'):
+        if self.env.user.has_group('account.group_account_user'):
             AccountMove = self.env['account.move'].with_context(default_type='entry')
             if not self.move_id:
                 moves = AccountMove.create(self.return_movelines())
@@ -1168,3 +1210,9 @@ class PenaltySalary(models.Model):
                 )
             return super(PenaltySalary, me).unlink()
 
+    def action_cancel(self):
+        activity_old = (
+            self.env['mail.activity'].search([('res_model', '=', 'penalty.salary'), ('res_id', '=', self.id)]))
+        for ac in activity_old:
+            ac.action_done()
+        return self.write({'state': 'cancel'})

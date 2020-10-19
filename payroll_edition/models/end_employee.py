@@ -33,6 +33,8 @@ class EndEmployee(models.Model):
     days_in  = fields.Integer(string="الايام ", compute='_compute_years_in', store=True)
     days_paid_holidays = fields.Float(string="عدد الايام المدفوعة",readonly=True, compute='_compute_years_in', store=True)
     amount_days_paid_holidays = fields.Float(string="قيمة الايام المدفوعة",readonly=True, compute='_compute_years_in', store=True)
+    reason_refuse = fields.Char(string="سبب الرفض")
+
 
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -159,6 +161,16 @@ class EndEmployee(models.Model):
                     )
 
                 )
+        if not self.reason_refuse:
+            raise UserError(
+                _(
+                    "يجب تعبئة حقل سبب الرفض"
+                ))
+
+        activity_old = (
+        self.env['mail.activity'].search([('res_model', '=', 'end.employee'), ('res_id', '=', self.id)]))
+        for ac in activity_old:
+            ac.action_done()
 
     @api.model
     def create(self, vals):
@@ -296,11 +308,9 @@ class EndEmployee(models.Model):
                 'Advisor', 'Accounting')
             self.env.cr.execute(select)
             results = self.env.cr.dictfetchall()
-            print("wwresults", results)
             users = []
             for obj in results:
                 users.append(obj['uid'])
-            print("users", users)
             user_id = (self.env['res.users'].search([('id', 'in', users)]))
             activity = self.env['mail.activity']
             for user in user_id:
@@ -328,7 +338,7 @@ class EndEmployee(models.Model):
             )
 
     def action_accepted(self):
-        if self.env.user.has_group('account.group_account_manager'):
+        if self.env.user.has_group('account.group_account_user'):
             self.employee_id.type_employee_end = self.type_end
             self.employee_id.date_stop = self.date_stop
             self.employee_id.active = False
@@ -346,6 +356,11 @@ class EndEmployee(models.Model):
             )
 
     def action_cancel(self):
+        activity_old = (
+            self.env['mail.activity'].search([('res_model', '=', 'end.employee'), ('res_id', '=', self.id)]))
+        for ac in activity_old:
+            ac.action_done()
+
         return self.write({'state': 'cancel'})
 
     def to_street(self):

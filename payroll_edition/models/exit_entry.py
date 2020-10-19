@@ -18,6 +18,7 @@ class ExitEntry(models.Model):
     order_number  = fields.Char(string="Number",readonly=True)
     date = fields.Date(string=" تاريخ",required=True)
     date_payed = fields.Date(string=" تاريخ الدفع")
+    reason_refuse = fields.Char(string="سبب الرفض")
 
     employee_id  = fields.Many2one('hr.employee',string="الموظف",required=True)
     amount = fields.Float(string="القيمة كاملة", compute='_compute_amount', store=True)
@@ -119,6 +120,15 @@ class ExitEntry(models.Model):
                     )
 
                 )
+        if not self.reason_refuse:
+            raise UserError(
+                _(
+                    "يجب تعبئة حقل سبب الرفض"
+                ))
+
+        activity_old = (self.env['mail.activity'].search([('res_model', '=', 'exit.entry'), ('res_id', '=', self.id)]))
+        for ac in activity_old:
+            ac.action_done()
 
     @api.model
     def create(self, vals):
@@ -300,7 +310,7 @@ class ExitEntry(models.Model):
 
 
     def action_accepted(self):
-        if self.env.user.has_group('base.group_system'):
+        if self.env.user.has_group('account.group_account_user'):
             self.employee_id.type_exit_entry = self.type_exit_entry
             self.to_street()
             testamount = self.amount - 200
@@ -357,6 +367,10 @@ class ExitEntry(models.Model):
 
 
     def action_cancel(self):
+        activity_old = (self.env['mail.activity'].search([('res_model', '=', 'exit.entry'), ('res_id', '=', self.id)]))
+        for ac in activity_old:
+            ac.action_done()
+
         return self.write({'state': 'cancel'})
 
 

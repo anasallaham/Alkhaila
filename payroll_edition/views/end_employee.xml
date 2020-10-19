@@ -35,17 +35,14 @@
                                 type="object" class="btn-primary"
                                 attrs="{'invisible': [('state', '!=', 'director')]}"/>
 
-                        <!--
-                                                <button name="action_cancel" states="draft" type="object" string="الغاء"/>
-                        -->
+                    <button name="action_cancel" states="director" type="object" string="الغاء"/>
                         <button name="draft_advanced" attrs="{'invisible': [('state', 'in', ['draft','accepted'])]}" type="object"
                                 string="الرجوع الى مسودة"/>
 
-                        <button name="refuse_go"
-                                attrs="{'invisible': [('state', 'in', ['draft','accepted','director','refuse'])]}"
-                                type="object" string="رفض"/>
+                    <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['cancel','accepted','director','refuse'])]}"
+                            type="object" string="رفض"/>
                         <field name="state" widget="statusbar"
-                               statusbar_visible="draft,hr_manager_accept,finance_manager,director,accepted"/>
+                               statusbar_visible="draft,hr_manager_accept,finance_manager,director,accepted,cancel,refuse"/>
                     </header>
 
                     <sheet>
@@ -69,10 +66,9 @@
                                 <field name="months_in" readonly="1"/>
                                 <field name="days_in" readonly="1"/>
                                 <field name="days_paid_holidays" readonly="1"/>
-                                <field name="amount_days_paid_holidays" readonly="1"/>
                             </group>
                             <group>
-
+                                <field name="reason_refuse" attrs="{'readonly': [('state', '=', 'refuse')]}"/>
                                 <field name="payslip_id" attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')],'invisible': [('state', 'not in', ['director','accepted'])]}"/>
                             </group>
 
