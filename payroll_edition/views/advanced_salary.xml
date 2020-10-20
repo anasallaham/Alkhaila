@@ -63,14 +63,14 @@
                         <group>
                             <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="date_payed"
-                                   attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}"
-                                   groups="base.group_system"/>
+                                   attrs="{'readonly': [('state', '!=', 'director')]}"
+                                   groups="payroll_edition.director_group_manager"/>
                             <field name="journal_id"
-                                   attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}"
-                                   groups="base.group_system"/>
+                                   attrs="{'readonly': [('state', '!=', 'director')]}"
+                                   groups="payroll_edition.director_group_manager"/>
                             <field name="account_id"
-                                   attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}"
-                                   groups="base.group_system"/>
+                                   attrs="{'readonly': [('state', '!=', 'director')]}"
+                                   groups="payroll_edition.director_group_manager"/>
 
                             <field name="analytic_account_id" attrs="{'readonly': [('state', '!=', 'director')]}"/>
                                 <field name="reason_refuse" attrs="{'readonly': [('state', '=', 'refuse')]}"/>
@@ -206,17 +206,17 @@
                         <group>
                             <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="journal_id"
-                                   attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}"
-                                   groups="base.group_system"/>
+                                   attrs="{'readonly': [('state', '!=', 'director')]}"
+                                   groups="payroll_edition.director_group_manager"/>
                             <field name="date_payed"
-                                   attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}"
-                                   groups="base.group_system"/>
+                                   attrs="{'readonly': [('state', '!=', 'director')]}"
+                                   groups="payroll_edition.director_group_manager"/>
                             <field name="account_debit_id"
-                                   attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}"
-                                   groups="base.group_system"/>
+                                   attrs="{'readonly': [('state', '!=', 'director')]}"
+                                   groups="payroll_edition.director_group_manager"/>
                             <field name="account_credit_id"
-                                   attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}"
-                                   groups="base.group_system"/>
+                                   attrs="{'readonly': [('state', '!=', 'director')]}"
+                                   groups="payroll_edition.director_group_manager"/>
                             <field name="analytic_account_id" attrs="{'readonly': [('state', '!=', 'director')]}"/>
                                 <field name="reason_refuse" attrs="{'readonly': [('state', '=', 'refuse')]}"/>
                         </group>
@@ -315,14 +315,14 @@
                             <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="date_first_cut" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="date_payed"
-                                   attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}"
-                                   groups="base.group_system"/>
+                                   attrs="{'readonly': [('state', '!=', 'director')]}"
+                                   groups="payroll_edition.director_group_manager"/>
                             <field name="journal_id"
-                                   attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}"
-                                   groups="base.group_system"/>
+                                   attrs="{'readonly': [('state', '!=', 'director')]}"
+                                   groups="payroll_edition.director_group_manager"/>
                             <field name="account_id"
-                                   attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}"
-                                   groups="base.group_system"/>
+                                   attrs="{'readonly': [('state', '!=', 'director')]}"
+                                   groups="payroll_edition.director_group_manager"/>
                             <field name="analytic_account_id" attrs="{'readonly': [('state', '!=', 'director')]}"/>
                                 <field name="reason_refuse" attrs="{'readonly': [('state', '=', 'refuse')]}"/>
                         </group>

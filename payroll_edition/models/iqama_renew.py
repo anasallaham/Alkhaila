@@ -268,10 +268,36 @@ class IqamaRenew(models.Model):
             ac.action_done()
 
     def action_director(self):
-        if self.env.user.has_group('base.group_system'):
+        if self.env.user.has_group('payroll_edition.director_group_manager'):
             activity_old = (self.env['mail.activity'].search([('res_model', '=', 'iqama.renew'),('res_id', '=', self.id)]))
             for ac in activity_old:
                 ac.action_done()
+
+            modelid = (self.env['ir.model'].search([('model', '=', 'iqama.renew')])).id
+            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+                'Accountant', 'Accounting')
+            self.env.cr.execute(select)
+            results = self.env.cr.dictfetchall()
+            users = []
+            for obj in results:
+                users.append(obj['uid'])
+            user_id = (self.env['res.users'].search([('id', 'in', users)]))
+            activity = self.env['mail.activity']
+            for user in user_id:
+                activity_ins = activity.create(
+                    {'res_id': self.id,
+                     'res_model_id': modelid,
+                     'res_model': 'iqama.renew',
+                     'activity_type_id': (self.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                     'summary': '',
+                     'note': '',
+                     'date_deadline': date.today(),
+                     'activity_category': 'default',
+                     'previous_activity_type_id': False,
+                     'recommended_activity_type_id': False,
+                     'user_id': user.id
+                     })
+
             return self.write({'state': 'director'})
         else:
             raise UserError(
@@ -312,6 +338,12 @@ class IqamaRenew(models.Model):
 
     def action_accepted(self):
         if self.env.user.has_group('account.group_account_user'):
+            if not self.account_id or not self.journal_id or not self.date_payed or not self.deferred_expense_models:
+                raise UserError(
+                    _(
+                        "يجب تعبئة الحقول المستخدمة في عملية انشاء القيود"
+                    ))
+
             account_asset = self.env['account.asset']
             res_asset = account_asset.create(
                 {
@@ -387,7 +419,7 @@ class IqamaRenew(models.Model):
                 )
 
         elif self.state == "finance_manager":
-            if self.env.user.has_group('base.group_system'):
+            if self.env.user.has_group('payroll_edition.director_group_manager'):
                 self.state = "refuse"
             else:
                 raise UserError(

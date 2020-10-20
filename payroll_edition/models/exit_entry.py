@@ -111,7 +111,7 @@ class ExitEntry(models.Model):
                 )
 
         elif self.state == "finance_manager":
-            if self.env.user.has_group('base.group_system'):
+            if self.env.user.has_group('payroll_edition.director_group_manager'):
                 self.state = "refuse"
             else:
                 raise UserError(
@@ -224,7 +224,7 @@ class ExitEntry(models.Model):
 
             )
     def action_director(self):
-        if self.env.user.has_group('base.group_system'):
+        if self.env.user.has_group('payroll_edition.director_group_manager'):
             activity_old = (self.env['mail.activity'].search([('res_model', '=', 'exit.entry'),('res_id', '=', self.id)]))
             for ac in activity_old:
                 ac.action_done()
@@ -232,7 +232,7 @@ class ExitEntry(models.Model):
 
             modelid = (self.env['ir.model'].search([('model', '=', 'exit.entry')])).id
             select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
-            'Settings', 'Administration')
+            'Accountant', 'Accounting')
             self.env.cr.execute(select)
             results = self.env.cr.dictfetchall()
             print("wwresults", results)
@@ -311,6 +311,16 @@ class ExitEntry(models.Model):
 
     def action_accepted(self):
         if self.env.user.has_group('account.group_account_user'):
+            if not self.account_id or not self.journal_id or not self.date_payed :
+                raise UserError(
+                    _(
+                        "يجب تعبئة الحقول المستخدمة في عملية انشاء القيود"
+                    ))
+            if not  self.account_advanced_id and self.state == "director" and self.type_exit_entry == "single" and self.amount > 200  :
+                raise UserError(
+                    _(
+                        "يجب تعبئة حقل السلف"
+                    ))
             self.employee_id.type_exit_entry = self.type_exit_entry
             self.to_street()
             testamount = self.amount - 200
@@ -332,6 +342,7 @@ class ExitEntry(models.Model):
 
 
 
+
             return self.write({'state': 'accepted'})
         else:
             raise UserError(
@@ -340,7 +351,7 @@ class ExitEntry(models.Model):
                 )
 
     # def action_accepted(self):
-    #     if self.env.user.has_group('base.group_system'):
+    #     if self.env.user.has_group('payroll_edition.director_group_manager'):
     #         self.employee_id.type_exit_entry = self.type_exit_entry
     #         self.to_street()
     #         if self.count > 2:

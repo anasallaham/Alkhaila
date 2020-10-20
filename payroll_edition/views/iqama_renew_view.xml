@@ -68,7 +68,7 @@
                                 <field name="iqama_newstart_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="iqama_newend_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="deferred_expense_models"
-                                       attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}"
+                                       attrs="{'readonly': [('state', '!=', 'director')]}"
                                        domain="[('asset_type', '=', 'expense'), ('state', '=', 'model')]"/>
                                 <field name="deferred_expense" readonly="1"/>
                                 <field name="reason_refuse" attrs="{'readonly': [('state', '=', 'refuse')]}"/>
@@ -78,14 +78,14 @@
                         <group>
                             <field name="amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="date_payed"
-                                   attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}"
-                                   groups="base.group_system"/>
+                                   attrs="{'readonly': [('state', '!=', 'director')]}"
+                                   groups="payroll_edition.director_group_manager"/>
                             <field name="journal_id"
-                                   attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}"
-                                   groups="base.group_system"/>
+                                   attrs="{'readonly': [('state', '!=', 'director')]}"
+                                   groups="payroll_edition.director_group_manager"/>
                             <field name="account_id"
-                                   attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')]}"
-                                   groups="base.group_system"/>
+                                   attrs="{'readonly': [('state', '!=', 'director')]}"
+                                   groups="payroll_edition.director_group_manager"/>
 
                             <field name="analytic_account_id" attrs="{'readonly': [('state', '!=', 'director')]}"/>
                         </group>

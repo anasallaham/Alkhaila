@@ -33,6 +33,7 @@ class AdvancedSalaryMonthly(models.Model):
         ('finance_manager', 'Finance Manager'),
         ('director', 'Director'),
         ('accepted', 'Final Accept'),
+        ('cancel', 'Cancelled'),
         ("refuse", "Refuse"),
     ],
         string="State",
@@ -99,7 +100,7 @@ class AdvancedSalaryMonthly(models.Model):
                 )
 
         elif self.state == "finance_manager":
-            if self.env.user.has_group('base.group_system'):
+            if self.env.user.has_group('payroll_edition.director_group_manager'):
                 self.state = "refuse"
             else:
                 raise UserError(
@@ -206,7 +207,7 @@ class AdvancedSalaryMonthly(models.Model):
 
             )
     def action_director(self):
-        if self.env.user.has_group('base.group_system'):
+        if self.env.user.has_group('payroll_edition.director_group_manager'):
             activity_old = (self.env['mail.activity'].search([('res_model', '=', 'advanced.salary.monthly'),('res_id', '=', self.id)]))
             for ac in activity_old:
                 ac.action_done()
@@ -214,7 +215,7 @@ class AdvancedSalaryMonthly(models.Model):
 
             modelid = (self.env['ir.model'].search([('model', '=', 'advanced.salary.monthly')])).id
             select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
-                'Settings', 'Administration')
+                'Accountant', 'Accounting')
             self.env.cr.execute(select)
             results = self.env.cr.dictfetchall()
             print("wwresults", results)
@@ -251,6 +252,12 @@ class AdvancedSalaryMonthly(models.Model):
 
     def action_accepted(self):
         if self.env.user.has_group('account.group_account_user'):
+            if not self.account_id  or not self.journal_id or not self.date_payed :
+                raise UserError(
+                    _(
+                        "يجب تعبئة الحقول المستخدمة في عملية انشاء القيود"
+                    ))
+
             if self.holiday_id:
                 date = self.holiday_id.request_date_from
             else:
@@ -484,6 +491,7 @@ class AdvancedSalary(models.Model):
         ('finance_manager', 'Finance Manager'),
         ('director', 'Director'),
         ('accepted', 'Final Accept'),
+        ('cancel', 'Cancelled'),
         ("refuse", "Refuse"),
     ],
         string="State",
@@ -583,7 +591,7 @@ class AdvancedSalary(models.Model):
                 )
 
         elif self.state == "finance_manager":
-            if self.env.user.has_group('base.group_system'):
+            if self.env.user.has_group('payroll_edition.director_group_manager'):
                 self.state = "refuse"
             else:
                 raise UserError(
@@ -647,7 +655,7 @@ class AdvancedSalary(models.Model):
 
             )
     def action_director(self):
-        if self.env.user.has_group('base.group_system'):
+        if self.env.user.has_group('payroll_edition.director_group_manager'):
             activity_old = (self.env['mail.activity'].search([('res_model', '=', 'advanced.salary'),('res_id', '=', self.id)]))
             for ac in activity_old:
                 ac.action_done()
@@ -655,7 +663,7 @@ class AdvancedSalary(models.Model):
 
             modelid = (self.env['ir.model'].search([('model', '=', 'advanced.salary')])).id
             select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
-                'Settings', 'Administration')
+                'Accountant', 'Accounting')
             self.env.cr.execute(select)
             results = self.env.cr.dictfetchall()
             print("wwresults", results)
@@ -736,6 +744,12 @@ class AdvancedSalary(models.Model):
 
     def action_accepted(self):
         if self.env.user.has_group('account.group_account_user'):
+            if not self.account_id  or not self.journal_id or not self.date_payed :
+                raise UserError(
+                    _(
+                        "يجب تعبئة الحقول المستخدمة في عملية انشاء القيود"
+                    ))
+
             AccountMove = self.env['account.move'].with_context(default_type='entry')
             if not self.move_id:
                 moves = AccountMove.create(self.return_movelines())
@@ -878,6 +892,7 @@ class PenaltySalary(models.Model):
         ('finance_manager', 'Finance Manager'),
         ('director', 'Director'),
         ('accepted', 'Final Accept'),
+        ('cancel', 'Cancelled'),
         ("refuse", "Refuse"),
     ],
         string="State",
@@ -973,7 +988,7 @@ class PenaltySalary(models.Model):
                 )
 
         elif self.state == "finance_manager":
-            if self.env.user.has_group('base.group_system'):
+            if self.env.user.has_group('payroll_edition.director_group_manager'):
                 self.state = "refuse"
             else:
                 raise UserError(
@@ -1081,7 +1096,7 @@ class PenaltySalary(models.Model):
             )
 
     def action_director(self):
-        if self.env.user.has_group('base.group_system'):
+        if self.env.user.has_group('payroll_edition.director_group_manager'):
             self.account_credit_id = self.penalty_name.account_credit_id.id
             self.account_debit_id = self.penalty_name.account_debit_id.id
             activity_old = (self.env['mail.activity'].search([('res_model', '=', 'penalty.salary'),('res_id', '=', self.id)]))
@@ -1091,7 +1106,7 @@ class PenaltySalary(models.Model):
 
             modelid = (self.env['ir.model'].search([('model', '=', 'penalty.salary')])).id
             select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
-                'Settings', 'Administration')
+                'Accountant', 'Accounting')
             self.env.cr.execute(select)
             results = self.env.cr.dictfetchall()
             print("wwresults", results)
@@ -1128,6 +1143,12 @@ class PenaltySalary(models.Model):
 
     def action_accepted(self):
         if self.env.user.has_group('account.group_account_user'):
+            if not self.account_debit_id or not self.account_credit_id or not self.journal_id or not self.date_payed :
+                raise UserError(
+                    _(
+                        "يجب تعبئة الحقول المستخدمة في عملية انشاء القيود"
+                    ))
+
             AccountMove = self.env['account.move'].with_context(default_type='entry')
             if not self.move_id:
                 moves = AccountMove.create(self.return_movelines())

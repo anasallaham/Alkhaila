@@ -69,7 +69,7 @@
                                 <field name="reason_refuse" attrs="{'readonly': [('state', '=', 'refuse')]}"/>
                             </group>
                             <group>
-                                <field name="payslip_id" attrs="{'readonly': [('state', '!=', 'director')],'required': [('state', '=', 'director')],'invisible': [('state', 'not in', ['director','accepted'])]}"/>
+                                <field name="payslip_id" attrs="{'readonly': [('state', '!=', 'director')],'invisible': [('state', 'not in', ['director','accepted'])]}"/>
                             </group>
 
                         </group>

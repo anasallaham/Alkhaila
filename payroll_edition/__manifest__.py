@@ -17,6 +17,7 @@
     'depends': ['hr_payroll','account','account_asset','hr_employee_updation'],
     'demo': [],
     'data': [
+        'security/security.xml',
         'views/hr_payslip.xml',
         'views/hr_contract.xml',
         'views/hr_employee.xml',
