@@ -337,7 +337,7 @@ class IqamaRenew(models.Model):
             return all_move_vals
 
     def action_accepted(self):
-        if self.env.user.has_group('payroll_edition.accounting_agent_group_manager'):
+        if self.env.user.has_group('payroll_edition.accounting_agent_group_manager') or self.env.user.has_group('account.group_account_manager'):
             if not self.account_id or not self.journal_id or not self.date_payed or not self.deferred_expense_models:
                 raise UserError(
                     _(

@@ -251,7 +251,7 @@ class AdvancedSalaryMonthly(models.Model):
             )
 
     def action_accepted(self):
-        if self.env.user.has_group('payroll_edition.accounting_agent_group_manager'):
+        if self.env.user.has_group('payroll_edition.accounting_agent_group_manager') or self.env.user.has_group('account.group_account_manager'):
             if not self.account_id  or not self.journal_id or not self.date_payed :
                 raise UserError(
                     _(
@@ -743,7 +743,7 @@ class AdvancedSalary(models.Model):
 
 
     def action_accepted(self):
-        if self.env.user.has_group('payroll_edition.accounting_agent_group_manager'):
+        if self.env.user.has_group('payroll_edition.accounting_agent_group_manager') or self.env.user.has_group('account.group_account_manager'):
             if not self.account_id  or not self.journal_id or not self.date_payed :
                 raise UserError(
                     _(
@@ -1141,7 +1141,7 @@ class PenaltySalary(models.Model):
             )
 
     def action_accepted(self):
-        if self.env.user.has_group('payroll_edition.accounting_agent_group_manager'):
+        if self.env.user.has_group('payroll_edition.accounting_agent_group_manager') or self.env.user.has_group('account.group_account_manager'):
             if not self.account_debit_id or not self.account_credit_id or not self.journal_id or not self.date_payed :
                 raise UserError(
                     _(
