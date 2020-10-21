@@ -274,8 +274,8 @@ class IqamaRenew(models.Model):
                 ac.action_done()
 
             modelid = (self.env['ir.model'].search([('model', '=', 'iqama.renew')])).id
-            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
-                'Accountant', 'Accounting')
+            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s'   ) " % (
+            'Accounting Agent')
             self.env.cr.execute(select)
             results = self.env.cr.dictfetchall()
             users = []
@@ -337,7 +337,7 @@ class IqamaRenew(models.Model):
             return all_move_vals
 
     def action_accepted(self):
-        if self.env.user.has_group('account.group_account_user'):
+        if self.env.user.has_group('payroll_edition.accounting_agent_group_manager'):
             if not self.account_id or not self.journal_id or not self.date_payed or not self.deferred_expense_models:
                 raise UserError(
                     _(

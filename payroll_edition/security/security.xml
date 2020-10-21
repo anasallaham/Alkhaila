@@ -7,6 +7,10 @@
             <field name="name">Director</field>
         </record>
 
+        <record id="accounting_agent_group_manager" model="res.groups">
+            <field name="name">Accounting Agent</field>
+        </record>
+
 
 
 </odoo>
