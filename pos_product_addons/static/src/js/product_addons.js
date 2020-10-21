@@ -19,7 +19,15 @@ odoo.define('pos_product_addons.point_of_sale', function (require) {
                 $('.layout-table').css("width", "80%");
                 $addonpane.css("visibility", "visible");
                 $addonpane.css("width", "13.1%");
-                $('.pos .searchbox').css("right", '168px');
+                var session = require('web.session');
+
+                if (session.user_context.lang == 'en_US'){
+                    $('.pos .searchbox').css("right", '168px');
+                    }
+                else{
+                    $('.pos .searchbox').css("left", '290px');
+                }
+
                 var display_name = '('+product.display_name+')'
                 $('.sub-head').text(display_name).show('fast');
                 for (var item = 0; item < product.addon_ids.length; item++) {
@@ -44,7 +52,16 @@ odoo.define('pos_product_addons.point_of_sale', function (require) {
             $layout_table.removeAttr("width");
             $layout_table.css("width", "100%");
             $('.addonpane').css("visibility", "hidden");
+            var session = require('web.session');
+
+            if (session.user_context.lang == 'en_US'){
             $('.pos .searchbox').css("right", '0%');
+            }
+            else{
+            $('.pos .searchbox').css("left", '0%');
+            }
+
+            console.log("wwws2121212 ",session.user_context.lang)
         }
     });
     screens.ProductListWidget.include({
