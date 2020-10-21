@@ -4,7 +4,7 @@
 
 
         <record id="director_group_manager" model="res.groups">
-            <field name="name">Director</field>
+            <field name="name">Director Group</field>
         </record>
 
         <record id="accounting_agent_group_manager" model="res.groups">

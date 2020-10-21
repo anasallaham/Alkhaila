@@ -128,8 +128,8 @@ class AdvancedSalaryMonthly(models.Model):
 
 
             modelid = (self.env['ir.model'].search([('model', '=', 'advanced.salary.monthly')])).id
-            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
-                'Advisor', 'Accounting')
+            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s'    ) " % (
+            'Director Group')
             self.env.cr.execute(select)
             results = self.env.cr.dictfetchall()
             print("wwresults", results)
@@ -619,8 +619,8 @@ class AdvancedSalary(models.Model):
 
 
             modelid = (self.env['ir.model'].search([('model', '=', 'advanced.salary')])).id
-            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
-                'Advisor', 'Accounting')
+            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s'    ) " % (
+            'Director Group')
             self.env.cr.execute(select)
             results = self.env.cr.dictfetchall()
             print("wwresults", results)
@@ -1016,8 +1016,8 @@ class PenaltySalary(models.Model):
 
 
             modelid = (self.env['ir.model'].search([('model', '=', 'penalty.salary')])).id
-            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
-                'Advisor', 'Accounting')
+            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s'    ) " % (
+            'Director Group')
             self.env.cr.execute(select)
             results = self.env.cr.dictfetchall()
             print("wwresults", results)
