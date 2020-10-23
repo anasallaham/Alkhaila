@@ -386,6 +386,9 @@ class IqamaRenew(models.Model):
                 move_line_vals.append(line2)
                 self.move_id.line_ids = move_line_vals
                 self.move_id.post()
+            activity_old = (self.env['mail.activity'].search([('res_model', '=', 'iqama.renew'),('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
 
             return self.write({'state': 'accepted'})
         else:
