@@ -15,6 +15,8 @@ class IqamaRenew(models.Model):
     job_number = fields.Char(string="Job Number",)
     job_title = fields.Char("Job Title",)
     department_id = fields.Many2one('hr.department', string="Department")
+    iqama_end_date = fields.Date(string="iqama_end_date")
+
     iqama_newstart_date = fields.Date(string="بداية الاقامة الجديدة",required=True)
     iqama_newend_date = fields.Date(string=" نهاية الاقامة الجديدة",required=True)
     reason_refuse = fields.Char(string="سبب الرفض")
@@ -34,10 +36,10 @@ class IqamaRenew(models.Model):
 
     state = fields.Selection([
         ('draft', 'Draft'),
-        ('hr_manager_accept', 'Hr Mananger Accept'),
-        ('finance_manager', 'Finance Manager'),
-        ('director', 'Director'),
-        ('accepted', 'Final Accept'),
+        ('hr_manager_accept', 'Hr Manager Approved'),
+        ('finance_manager', 'Finance Manager Approved'  ),
+        ('director', 'Director Approved'),
+        ('accepted', 'POSTED'),
         ('cancel', 'Cancelled'),
         ("refuse", "Refuse"),
     ], string='Status' ,default='draft')

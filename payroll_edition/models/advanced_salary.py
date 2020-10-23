@@ -29,10 +29,10 @@ class AdvancedSalaryMonthly(models.Model):
     contract_id = fields.Many2one('hr.contract',string="العقد")
     state = fields.Selection([
         ('draft', 'Draft'),
-        ('hr_manager_accept', 'Hr Mananger Accept'),
-        ('finance_manager', 'Finance Manager'),
-        ('director', 'Director'),
-        ('accepted', 'Final Accept'),
+        ('hr_manager_accept', 'Hr Manager Approved'),
+        ('finance_manager', 'Finance Manager Approved'  ),
+        ('director', 'Director Approved'),
+        ('accepted', 'POSTED'),
         ('cancel', 'Cancelled'),
         ("refuse", "Refuse"),
     ],
@@ -487,10 +487,10 @@ class AdvancedSalary(models.Model):
 
     state = fields.Selection([
         ('draft', 'Draft'),
-        ('hr_manager_accept', 'Hr Mananger Accept'),
-        ('finance_manager', 'Finance Manager'),
-        ('director', 'Director'),
-        ('accepted', 'Final Accept'),
+        ('hr_manager_accept', 'Hr Manager Approved'),
+        ('finance_manager', 'Finance Manager Approved'  ),
+        ('director', 'Director Approved'),
+        ('accepted', 'POSTED'),
         ('cancel', 'Cancelled'),
         ("refuse", "Refuse"),
     ],
@@ -888,10 +888,10 @@ class PenaltySalary(models.Model):
 
     state = fields.Selection([
         ('draft', 'Draft'),
-        ('hr_manager_accept', 'Hr Mananger Accept'),
-        ('finance_manager', 'Finance Manager'),
-        ('director', 'Director'),
-        ('accepted', 'Final Accept'),
+        ('hr_manager_accept', 'Hr Manager Approved'),
+        ('finance_manager', 'Finance Manager Approved'  ),
+        ('director', 'Director Approved'),
+        ('accepted', 'POSTED'),
         ('cancel', 'Cancelled'),
         ("refuse", "Refuse"),
     ],

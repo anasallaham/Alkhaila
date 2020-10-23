@@ -19,28 +19,25 @@
             <field name="arch" type="xml">
                 <form string="end_employee  Form">
                     <header>
-                        <button name="action_finance_manager" string="finance manager"
+                        <button name="action_finance_manager" string="FINANCE MANAGER APPROVAL"
                                 type="object" class="btn-primary"
                                 attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
-
-
-                        <button name="action_hr_manager_accept" string="موافقة الموارد البشرية"
+                        <button name="action_hr_manager_accept" string="HR MANAGER APPROVAL"
                                 type="object" class="btn-primary"
                                 attrs="{'invisible': [('state', '!=', 'draft')]}"/>
-
-                        <button name="action_director" string="Director Accept"
+                        <button name="action_director" string="Director approval "
                                 type="object" class="btn-primary"
                                 attrs="{'invisible': [('state', '!=', 'finance_manager')]}"/>
-                        <button name="action_accepted" string="الموافقة النهائية"
+                        <button name="action_accepted" string="POST"
                                 type="object" class="btn-primary"
                                 attrs="{'invisible': [('state', '!=', 'director')]}"/>
 
-                    <button name="action_cancel" states="director" type="object" string="الغاء"/>
+                    <button name="action_cancel" states="director" type="object" string="CANCEL"/>
                         <button name="draft_advanced" attrs="{'invisible': [('state', 'in', ['draft','accepted'])]}" type="object"
-                                string="الرجوع الى مسودة"/>
+                                string="RESET TO DRAFT"/>
 
                     <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['cancel','accepted','director','refuse'])]}"
-                            type="object" string="رفض"/>
+                            type="object" string="REFUSE"/>
                         <field name="state" widget="statusbar"
                                statusbar_visible="draft,hr_manager_accept,finance_manager,director,accepted,cancel,refuse"/>
                     </header>

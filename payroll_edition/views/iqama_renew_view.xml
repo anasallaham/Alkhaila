@@ -8,12 +8,11 @@
                 <tree string="Iqama Renew Tree">
                     <field name="order_number"/>
                     <field name="employee_id"/>
-                    <field name="amount"/>
+                    <field name="iqama_end_date"/>
                     <field name="iqama_newstart_date"/>
                     <field name="iqama_newend_date"/>
                     <field name="date_payed" />
-                    <field name="journal_id"/>
-                    <field name="account_id"/>
+                    <field name="amount"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -26,24 +25,24 @@
                 <form string="Iqama Renew Form">
                     <header>
 
-                        <button name="action_hr_manager_accept" string="موافقة الموارد البشرية"
+                        <button name="action_hr_manager_accept" string="HR MANAGER APPROVAL"
                                 type="object" class="btn-primary"
                                 attrs="{'invisible': [('state', '!=', 'draft')]}"/>
-                        <button name="action_finance_manager" string="finance manager"
+                        <button name="action_finance_manager" string="FINANCE MANAGER APPROVAL"
                                 type="object" class="btn-primary"
                                 attrs="{'invisible': [('state', '!=', 'hr_manager_accept')]}"/>
 
-                        <button name="action_director" string="Director Accept"
+                        <button name="action_director" string="Director APPROVAL"
                                 type="object" class="btn-primary"
                                 attrs="{'invisible': [('state', '!=', 'finance_manager')]}"/>
-                        <button name="action_accepted" string="الموافقة النهائية"
+                        <button name="action_accepted" string="POST"
                                 type="object" class="btn-primary"
                                 attrs="{'invisible': [('state', '!=', 'director')]}"/>
                     <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['cancel','accepted','director','refuse'])]}"
-                            type="object" string="رفض"/>
-                        <button name="action_cancel" states="director" type="object" string="الغاء"/>
+                            type="object" string="REFUSE"/>
+                        <button name="action_cancel" states="director" type="object" string="CANCEL"/>
                         <button name="draft_advanced" attrs="{'invisible': [('state', '=', 'draft')]}" type="object"
-                                string="الرجوع الى مسودة"/>
+                                string="RESET TO DRAFT"/>
                         <field name="state" widget="statusbar"
                                statusbar_visible="draft,hr_manager_accept,finance_manager,director,accepted,cancel,refuse"/>
                     </header>

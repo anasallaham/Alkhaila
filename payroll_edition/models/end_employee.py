@@ -38,10 +38,10 @@ class EndEmployee(models.Model):
 
     state = fields.Selection([
         ('draft', 'Draft'),
-        ('hr_manager_accept', 'Hr Mananger Accept'),
-        ('finance_manager', 'Finance Manager'),
-        ('director', 'Director'),
-        ('accepted', 'Final Accept'),
+        ('hr_manager_accept', 'Hr Manager Approved'),
+        ('finance_manager', 'Finance Manager Approved'  ),
+        ('director', 'Director Approved'),
+        ('accepted', 'POSTED'),
         ('cancel', 'Cancelled'),
         ("refuse", "Refuse"),
     ], string='Status', default='draft')
