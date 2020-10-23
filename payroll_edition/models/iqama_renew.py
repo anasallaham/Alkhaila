@@ -175,7 +175,6 @@ class IqamaRenew(models.Model):
             self.job_title =self.employee_id.job_id.name
             self.job_number = self.employee_id.job_number
             self.department_id = self.employee_id.department_id.id
-            self.iqama_end_date = self.employee_id.iqama_end_date
 
 
     def action_finance_manager(self):

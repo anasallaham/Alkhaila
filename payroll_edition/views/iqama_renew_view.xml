@@ -56,7 +56,6 @@
                             <group>
                                 <field name="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="job_title" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                <field name="iqama_end_date" attrs="{'readonly': [('state', '!=', 'draft')]}" invisible="1"/>
                             </group>
 
                             <group>
