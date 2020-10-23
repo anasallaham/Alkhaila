@@ -15,7 +15,6 @@ class IqamaRenew(models.Model):
     job_number = fields.Char(string="Job Number",)
     job_title = fields.Char("Job Title",)
     department_id = fields.Many2one('hr.department', string="Department")
-    iqama_end_date = fields.Date(string="Old Iqama End Date " )
     iqama_newstart_date = fields.Date(string="بداية الاقامة الجديدة",required=True)
     iqama_newend_date = fields.Date(string=" نهاية الاقامة الجديدة",required=True)
     reason_refuse = fields.Char(string="سبب الرفض")
