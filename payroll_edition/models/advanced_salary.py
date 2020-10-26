@@ -267,6 +267,7 @@ class AdvancedSalaryMonthly(models.Model):
                 for c in range(1, self.count_cut+1):
                     advanced = self.env['advanced.salary'].create({
                         'advanced_salary_monthly': self.id,
+                        'note': self.note,
                         'hr_employee': self.hr_employee.id,
                         'amount': amount_monthly,
                         'date': date,
@@ -290,6 +291,7 @@ class AdvancedSalaryMonthly(models.Model):
                     advanced = self.env['advanced.salary'].create({
                         'advanced_salary_monthly': self.id,
                         'hr_employee': self.hr_employee.id,
+                        'note': self.note,
                         'amount': amount_holidays,
                         'date': date,
                         'date_payed': self.date_payed,
@@ -307,6 +309,7 @@ class AdvancedSalaryMonthly(models.Model):
                             advanced = self.env['advanced.salary'].create({
                                 'advanced_salary_monthly': self.id,
                                 'hr_employee': self.hr_employee.id,
+                                'note': self.note,
                                 'amount': salary,
                                 'date': date,
                                 'date_payed': self.date_payed,
@@ -323,6 +326,7 @@ class AdvancedSalaryMonthly(models.Model):
                             advanced = self.env['advanced.salary'].create({
                                 'advanced_salary_monthly': self.id,
                                 'hr_employee': self.hr_employee.id,
+                                'note': self.note,
                                 'amount': current_amount,
                                 'date': date,
                                 'date_payed': self.date_payed,
