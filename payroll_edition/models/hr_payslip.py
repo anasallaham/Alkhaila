@@ -49,9 +49,15 @@ class HrPayslip(models.Model):
     def _compute_addition_amount(self):
         for s in self:
             if s.contract_id.addition_ture:
-                s.addition_amount = ((s.addition_sum * 60) * (
-                    (s.contract_id.wage+s.contract_id.amount_hous+s.contract_id.amount_trasportation+s.contract_id.amount_mobile+s.contract_id.amount_anuther_allow) / 30 / s.contract_id.resource_calendar_id.hours_per_day / 60)) * (
-                                                s.contract_id.addition_nsbeh / 100.0)
+                if s.contract_id.structure_type_id.is_allow:
+                    s.addition_amount = ((s.addition_sum * 60) * (
+                        (s.contract_id.wage+s.contract_id.amount_hous+s.contract_id.amount_trasportation+s.contract_id.amount_mobile+s.contract_id.amount_anuther_allow) / 30 / s.contract_id.resource_calendar_id.hours_per_day / 60)) * (
+                                                    s.contract_id.addition_nsbeh / 100.0)
+                else:
+                    s.addition_amount = ((s.addition_sum * 60) * (
+                        (s.contract_id.wage) / 30 / s.contract_id.resource_calendar_id.hours_per_day / 60)) * (
+                                                    s.contract_id.addition_nsbeh / 100.0)
+
             else:
                 s.addition_amount = 0.0
 
@@ -59,9 +65,16 @@ class HrPayslip(models.Model):
     def _compute_delay_amount(self):
         for s in self:
             if s.contract_id.delay_ture:
-                s.delay_amount = ((s.delay_sum * 60) * (
-                        (s.contract_id.wage+s.contract_id.amount_hous+s.contract_id.amount_trasportation+s.contract_id.amount_mobile+s.contract_id.amount_anuther_allow)  / 30 / s.contract_id.resource_calendar_id.hours_per_day / 60)) * (
-                                             s.contract_id.delay_nsbeh / 100.0)
+                if s.contract_id.structure_type_id.is_allow:
+
+                    s.delay_amount = ((s.delay_sum * 60) * (
+                            (s.contract_id.wage+s.contract_id.amount_hous+s.contract_id.amount_trasportation+s.contract_id.amount_mobile+s.contract_id.amount_anuther_allow)  / 30 / s.contract_id.resource_calendar_id.hours_per_day / 60)) * (
+                                                 s.contract_id.delay_nsbeh / 100.0)
+                else:
+                    s.delay_amount = ((s.delay_sum * 60) * (
+                            (s.contract_id.wage)  / 30 / s.contract_id.resource_calendar_id.hours_per_day / 60)) * (
+                                                 s.contract_id.delay_nsbeh / 100.0)
+
             else:
                 s.delay_amount = 0.0
 
@@ -126,9 +139,15 @@ class HrPayslip(models.Model):
                 else:
                     edafy_second = 0.0
                     edafy_delay = (second * -1) / 60 / 60
-                me.model.create({'date': current_date, "employee_id": me.employee_id.id, "hr_payslip_id": me.id,
-                                   "hours_per_day": me.contract_id.resource_calendar_id.hours_per_day,
-                                   "time_work": results, "addition": edafy_second, "delays": edafy_delay})
+
+                hr_work_entry_ids = me.env["hr.work.entry"].search(
+                    [
+                        ("employee_id", "=", me.employee_id.id),("date_start", "<=", current_date), ("date_stop", ">=", current_date),("work_entry_type_id.name", "=", "Attendance"),
+                    ])
+                if hr_work_entry_ids:
+                    me.model.create({'date': current_date, "employee_id": me.employee_id.id, "hr_payslip_id": me.id,
+                                       "hours_per_day": me.contract_id.resource_calendar_id.hours_per_day,
+                                       "time_work": results, "addition": edafy_second, "delays": edafy_delay})
                 current_date = (datetime.strptime(str(current_date), '%Y-%m-%d').date() + relativedelta(days=+ 1))
         res = super(HrPayslip, self).compute_sheet()
 
