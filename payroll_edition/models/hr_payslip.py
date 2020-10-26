@@ -49,13 +49,17 @@ class HrPayslip(models.Model):
     def _compute_addition_amount(self):
         for s in self:
             if s.contract_id.addition_ture:
+                sum_of_days = 0
+                for line in s.worked_days_line_ids:
+                    sum_of_days += line.number_of_days
+
                 if s.contract_id.structure_type_id.is_allow:
                     s.addition_amount = ((s.addition_sum * 60) * (
-                        (s.contract_id.wage+s.contract_id.amount_hous+s.contract_id.amount_trasportation+s.contract_id.amount_mobile+s.contract_id.amount_anuther_allow) / 30 / s.contract_id.resource_calendar_id.hours_per_day / 60)) * (
+                        (s.contract_id.wage+s.contract_id.amount_hous+s.contract_id.amount_trasportation+s.contract_id.amount_mobile+s.contract_id.amount_anuther_allow) / sum_of_days / s.contract_id.resource_calendar_id.hours_per_day / 60)) * (
                                                     s.contract_id.addition_nsbeh / 100.0)
                 else:
                     s.addition_amount = ((s.addition_sum * 60) * (
-                        (s.contract_id.wage) / 30 / s.contract_id.resource_calendar_id.hours_per_day / 60)) * (
+                        (s.contract_id.wage) / sum_of_days / s.contract_id.resource_calendar_id.hours_per_day / 60)) * (
                                                     s.contract_id.addition_nsbeh / 100.0)
 
             else:
@@ -65,14 +69,18 @@ class HrPayslip(models.Model):
     def _compute_delay_amount(self):
         for s in self:
             if s.contract_id.delay_ture:
+                sum_of_days = 0
+                for line in s.worked_days_line_ids:
+                    sum_of_days += line.number_of_days
+
                 if s.contract_id.structure_type_id.is_allow:
 
                     s.delay_amount = ((s.delay_sum * 60) * (
-                            (s.contract_id.wage+s.contract_id.amount_hous+s.contract_id.amount_trasportation+s.contract_id.amount_mobile+s.contract_id.amount_anuther_allow)  / 30 / s.contract_id.resource_calendar_id.hours_per_day / 60)) * (
+                            (s.contract_id.wage+s.contract_id.amount_hous+s.contract_id.amount_trasportation+s.contract_id.amount_mobile+s.contract_id.amount_anuther_allow)  / sum_of_days / s.contract_id.resource_calendar_id.hours_per_day / 60)) * (
                                                  s.contract_id.delay_nsbeh / 100.0)
                 else:
                     s.delay_amount = ((s.delay_sum * 60) * (
-                            (s.contract_id.wage)  / 30 / s.contract_id.resource_calendar_id.hours_per_day / 60)) * (
+                            (s.contract_id.wage)  / sum_of_days / s.contract_id.resource_calendar_id.hours_per_day / 60)) * (
                                                  s.contract_id.delay_nsbeh / 100.0)
 
             else:
