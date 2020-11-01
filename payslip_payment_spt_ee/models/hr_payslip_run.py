@@ -115,7 +115,7 @@ class hr_payslip(models.Model):
         return True
 
     def register_multi_payment(self):
-        for record in self:
+        #for record in self:
             # if record.slip_ids[0].connection_spt():
             # if self.connection_spt():
             #     method = record.get_method('register_multi_payment')
@@ -129,36 +129,37 @@ class hr_payslip(models.Model):
             #             '_' : _,
             #         }
             #         exec(method['method'], localdict)
-            for record in self:
-                for slip in record.slip_ids:
-                    name = 'Payment'
-                    if slip.number:
-                        name = slip.number + ' Payment'
-                        if not slip.employee_id.address_home_id.id:
-                            raise UserError(
-                                    _('Partner not found In Employee (Please Related Partner In Current Employee)!'))
+        for record in self:
+            for slip in record.slip_ids:
+                name = 'Payment'
+                if slip.number:
+                    name = slip.number + ' Payment'
+                    if not slip.employee_id.address_home_id.id:
+                        raise UserError(
+                            _('Partner not found In Employee (Please Related Partner In Current Employee)!'))
 
-                            payment = self.env['account.payment'].create({
-                                'name':name,
-                                'partner_id': slip.employee_id.user_id.partner_id.id,
-                                'amount': slip.net_salary,
-                                'payment_date': str(datetime.today())[:10],
-                                'communication': record.communication,
-                                'payslip_id':slip.id,
-                                'partner_type': 'supplier',
-                                'payment_type': 'outbound',
-                                'journal_id': record.pay_journal_id.id,
-                                'payment_method_id': record.pay_journal_id.outbound_payment_method_ids and record.pay_journal_id.outbound_payment_method_ids[0].id or False,
-                                'company_id': slip.employee_id.company_id.id,
-                                'currency_id': slip.employee_id.company_id.currency_id.id,
-                            })
-                            payment.post()
-                            line_to_reconcile = self.env['account.move.line']
-                            for line in payment.move_line_ids + slip.move_id.line_ids:
-                                if line.account_id.internal_type == 'payable':
-                                    line_to_reconcile |= line
-                                    line_to_reconcile.reconcile()
-                                    slip.state = 'paid'
+                        payment = self.env['account.payment'].create({
+                            'name': name,
+                            'partner_id': slip.employee_id.user_id.partner_id.id,
+                            'amount': slip.net_salary,
+                            'payment_date': str(datetime.today())[:10],
+                            'communication': record.communication,
+                            'payslip_id': slip.id,
+                            'partner_type': 'supplier',
+                            'payment_type': 'outbound',
+                            'journal_id': record.pay_journal_id.id,
+                            'payment_method_id': record.pay_journal_id.outbound_payment_method_ids and
+                                                 record.pay_journal_id.outbound_payment_method_ids[0].id or False,
+                            'company_id': slip.employee_id.company_id.id,
+                            'currency_id': slip.employee_id.company_id.currency_id.id,
+                        })
+                        payment.post()
+                        line_to_reconcile = self.env['account.move.line']
+                        for line in payment.move_line_ids + slip.move_id.line_ids:
+                            if line.account_id.internal_type == 'payable':
+                                line_to_reconcile |= line
+                                line_to_reconcile.reconcile()
+                                slip.state = 'paid'
             record.state = 'paid'
 
         return True
