@@ -159,7 +159,7 @@ class hr_payslip(models.Model):
                                     line_to_reconcile |= line
                                     line_to_reconcile.reconcile()
                                     slip.state = 'paid'
-                                    record.state = 'paid'
+            record.state = 'paid'
 
         return True
 
