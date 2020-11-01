@@ -18,7 +18,7 @@ class hr_payslip(models.Model):
 
     pay_journal_id = fields.Many2one('account.journal',
                                      string='Payment Method',
-                                     required=True,
+                                     required=False,
                                      domain=[('type', 'in', ('bank', 'cash'))])
     communication = fields.Char(string='Memo')
     communication2 = fields.Char(string='Memo',
@@ -130,6 +130,10 @@ class hr_payslip(models.Model):
             #         }
             #         exec(method['method'], localdict)
         for record in self:
+            if not record.pay_journal_id:
+                raise UserError(
+                    _('Please Set Payment Method Journal '))
+
             for slip in record.slip_ids:
                 name = 'Payment'
                 if slip.number:
