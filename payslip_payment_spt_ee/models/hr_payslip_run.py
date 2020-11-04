@@ -142,7 +142,7 @@ class hr_payslip(models.Model):
                         raise UserError(
                             _('Partner not found In Employee (Please Related Partner In Current Employee)!'))
 
-                        payment = self.env['account.payment'].create({
+                    payment = self.env['account.payment'].create({
                             'name': name,
                             'partner_id': slip.employee_id.user_id.partner_id.id,
                             'amount': slip.net_salary,
@@ -157,13 +157,13 @@ class hr_payslip(models.Model):
                             'company_id': slip.employee_id.company_id.id,
                             'currency_id': slip.employee_id.company_id.currency_id.id,
                         })
-                        payment.post()
-                        line_to_reconcile = self.env['account.move.line']
-                        for line in payment.move_line_ids + slip.move_id.line_ids:
-                            if line.account_id.internal_type == 'payable':
-                                line_to_reconcile |= line
-                                line_to_reconcile.reconcile()
-                                slip.state = 'paid'
+                    payment.post()
+                    line_to_reconcile = self.env['account.move.line']
+                    for line in payment.move_line_ids + slip.move_id.line_ids:
+                        if line.account_id.internal_type == 'payable':
+                            line_to_reconcile |= line
+                            line_to_reconcile.reconcile()
+                            slip.state = 'paid'
             record.state = 'paid'
 
         return True
