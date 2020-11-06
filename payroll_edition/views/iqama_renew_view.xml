@@ -8,6 +8,7 @@
                 <tree string="Iqama Renew Tree">
                     <field name="order_number"/>
                     <field name="employee_id"/>
+                    <field name="iqama_number"/>
                     <field name="iqama_end_date"/>
                     <field name="iqama_newstart_date"/>
                     <field name="iqama_newend_date"/>
@@ -55,6 +56,7 @@
                             <group>
                                 <field name="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="job_title" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="iqama_number"/>
                             </group>
 
                             <group>

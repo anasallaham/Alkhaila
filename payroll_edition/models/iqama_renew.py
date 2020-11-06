@@ -10,13 +10,15 @@ class IqamaRenew(models.Model):
     _rec_name ='order_number'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
+
+
     order_number  = fields.Char(string="Order Number",readonly=True)
     employee_id  = fields.Many2one('hr.employee',string="Employee")
     job_number = fields.Char(string="Job Number",)
     job_title = fields.Char("Job Title",)
     department_id = fields.Many2one('hr.department', string="Department")
     iqama_end_date = fields.Date(string="iqama_end_date")
-
+    iqama_number = fields.Char("IQAMA NUMBER",related="employee_id.identification_id")
     iqama_newstart_date = fields.Date(string="بداية الاقامة الجديدة",required=True)
     iqama_newend_date = fields.Date(string=" نهاية الاقامة الجديدة",required=True)
     reason_refuse = fields.Char(string="سبب الرفض")
@@ -357,6 +359,10 @@ class IqamaRenew(models.Model):
                     'account_depreciation_id': self.deferred_expense_models.account_depreciation_id.id,
                     'account_depreciation_expense_id': self.deferred_expense_models.account_depreciation_expense_id.id,
                     'journal_id': self.deferred_expense_models.journal_id.id,
+
+
+                    'account_analytic_id': self.deferred_expense_models.account_analytic_id.id,
+                    'analytic_tag_ids':[(6,0,[self.deferred_expense_models.analytic_tag_ids.ids])]
                 })
             self.deferred_expense  = res_asset.id
             self.deferred_expense.compute_depreciation_board()
