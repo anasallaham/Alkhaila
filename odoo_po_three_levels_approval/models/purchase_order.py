@@ -95,7 +95,8 @@ class PurchaseOrder(models.Model):
 
                 select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
                     'Purchase Finance Manager', 'Purchase')
-                group_id = self.env.cr.execute(select)
+                self.env.cr.execute(select)
+                group_id = self.env.cr.dictfetchall()
                 users = []
                 for obj in group_id:
                     users.append(obj['uid'])
@@ -116,7 +117,8 @@ class PurchaseOrder(models.Model):
                 raise UserError(_("Only %s User Can Approve This Order." % (po.director_approval_id)))
             select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
                 'Director', 'Purchase')
-            group_id = self.env.cr.execute(select)
+            self.env.cr.execute(select)
+            group_id = self.env.cr.dictfetchall()
             users = []
             for obj in group_id:
                 users.append(obj['uid'])
