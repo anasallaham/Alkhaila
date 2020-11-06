@@ -362,8 +362,9 @@ class IqamaRenew(models.Model):
 
 
                     'account_analytic_id': self.deferred_expense_models.account_analytic_id.id,
-                    'analytic_tag_ids':[(6,0,[self.deferred_expense_models.analytic_tag_ids.ids])]
+                    'analytic_tag_ids':self.deferred_expense_models.analytic_tag_ids.ids
                 })
+            print ("res_asset",res_asset)
             self.deferred_expense  = res_asset.id
             self.deferred_expense.compute_depreciation_board()
             self.deferred_expense.validate()
