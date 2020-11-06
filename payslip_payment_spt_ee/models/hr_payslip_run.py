@@ -144,7 +144,7 @@ class hr_payslip(models.Model):
 
                     payment = self.env['account.payment'].create({
                             'name': name,
-                            'partner_id': slip.employee_id.user_id.partner_id.id,
+                            'partner_id': slip.employee_id.address_home_id.id,
                             'amount': slip.net_salary,
                             'payment_date': str(datetime.today())[:10],
                             'communication': record.communication,
@@ -158,11 +158,11 @@ class hr_payslip(models.Model):
                             'currency_id': slip.employee_id.company_id.currency_id.id,
                         })
                     payment.post()
-                    # line_to_reconcile = self.env['account.move.line']
-                    # for line in payment.move_line_ids + slip.move_id.line_ids:
-                    #     if line.account_id.internal_type == 'payable':
-                    #         line_to_reconcile |= line
-                    #         line_to_reconcile.reconcile()
+                    line_to_reconcile = self.env['account.move.line']
+                    for line in payment.move_line_ids + slip.move_id.line_ids:
+                        if line.account_id.internal_type == 'payable':
+                            line_to_reconcile |= line
+                            line_to_reconcile.reconcile()
                     slip.state = 'paid'
             record.state = 'paid'
 
