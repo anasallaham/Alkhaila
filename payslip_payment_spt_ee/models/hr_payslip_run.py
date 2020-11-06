@@ -129,11 +129,11 @@ class hr_payslip(models.Model):
             #             '_' : _,
             #         }
             #         exec(method['method'], localdict)
-        for record in self:
-            #if not record.pay_journal_id:
-            #    raise UserError(
-            #        _('Please Set Payment Method Journal '))
+        # if not record.pay_journal_id:
+        #    raise UserError(
+        #        _('Please Set Payment Method Journal '))
 
+        for record in self:
             for slip in record.slip_ids:
                 name = 'Payment'
                 if slip.number:
@@ -158,12 +158,12 @@ class hr_payslip(models.Model):
                             'currency_id': slip.employee_id.company_id.currency_id.id,
                         })
                     payment.post()
-                    line_to_reconcile = self.env['account.move.line']
-                    for line in payment.move_line_ids + slip.move_id.line_ids:
-                        if line.account_id.internal_type == 'payable':
-                            line_to_reconcile |= line
-                            line_to_reconcile.reconcile()
-                            slip.state = 'paid'
+                    # line_to_reconcile = self.env['account.move.line']
+                    # for line in payment.move_line_ids + slip.move_id.line_ids:
+                    #     if line.account_id.internal_type == 'payable':
+                    #         line_to_reconcile |= line
+                    #         line_to_reconcile.reconcile()
+                    slip.state = 'paid'
             record.state = 'paid'
 
         return True
