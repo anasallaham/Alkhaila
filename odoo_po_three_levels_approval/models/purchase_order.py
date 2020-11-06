@@ -93,19 +93,7 @@ class PurchaseOrder(models.Model):
                 po.filtered(lambda p: p.company_id.po_lock == 'lock').write({'state': 'done'})
             else:
 
-                select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
-                    'Purchase Finance Manager', 'Purchase')
-                self.env.cr.execute(select)
-                group_id = self.env.cr.dictfetchall()
-                users = []
-                for obj in group_id:
-                    users.append(obj['uid'])
-                user_id = (self.env['res.users'].search([('id', 'in', users)]))
-                for user in user_id:
-                    email_values = {
-                        'email_to': user.login
-                    }
-                    company.approve_mail_template.send_mail(po.id,force_send=True, email_values=email_values)
+                company.approve_mail_template.send_mail(po.id)
                 po.write({'state': 'director_approve', 'finance_approval_id': self.env.uid,
                           'finance_manager_approve_date': fields.Date.context_today(self)})
         return {}
@@ -115,19 +103,7 @@ class PurchaseOrder(models.Model):
             company = po.company_id
             if po.director_approval_id and self.env.user != po.director_approval_id:
                 raise UserError(_("Only %s User Can Approve This Order." % (po.director_approval_id)))
-            select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
-                'Director', 'Purchase')
-            self.env.cr.execute(select)
-            group_id = self.env.cr.dictfetchall()
-            users = []
-            for obj in group_id:
-                users.append(obj['uid'])
-            user_id = (self.env['res.users'].search([('id', 'in', users)]))
-            for user in user_id:
-                email_values = {
-                    'email_to': user.login
-                }
-                company.approve_mail_template.send_mail(po.id, force_send=True, email_values=email_values)
+            company.approve_mail_template.send_mail(po.id)
 
             po.write({'state': 'purchase', 'director_approval_id': self.env.uid,
                       'director_approve_date': fields.Date.context_today(self), 'date_approve': fields.Date.context_today(self)})
