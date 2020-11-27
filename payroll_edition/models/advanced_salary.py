@@ -776,9 +776,9 @@ class AdvancedSalary(models.Model):
                     move_line_vals.append(line2)
                     self.move_id.line_ids = move_line_vals
                     self.move_id.post()
-                activity_old = (self.env['mail.activity'].search([('res_model', '=', 'advanced.salary'),('res_id', '=', self.id)]))
-                for ac in activity_old:
-                    ac.action_done()
+            activity_old = (self.env['mail.activity'].search([('res_model', '=', 'advanced.salary'),('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
 
             self.state = "accepted"
         else:
