@@ -19,7 +19,7 @@ odoo.define('pos_delivery_type', function (require) {
     models.Order = models.Order.extend({
         initialize: function(attributes,options){
             var result = OrderSuper.prototype.initialize.apply(this,arguments);
-            this.selected_delivery_type = 0;
+            this.selected_delivery_type = this.pos.delivery_type[0].id;
             this.selected_delivery_type_name = 0;
             return result;
             
@@ -74,7 +74,6 @@ odoo.define('pos_delivery_type', function (require) {
         get_current_pricelist_name: function () {
             var name = _t('Take Away');
             var order = this.pos.get_order();
-
             if (order) {
                 var selected_delivery_type = order.selected_delivery_type;
                 for(var i=0;i<this.pos.delivery_type.length;i++){
@@ -82,6 +81,8 @@ odoo.define('pos_delivery_type', function (require) {
                     {
                         name = this.pos.delivery_type[i].name;
                         order.selected_delivery_type_name = name;
+
+
                     } 
                 }
             }
