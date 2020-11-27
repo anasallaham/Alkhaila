@@ -19,7 +19,7 @@ odoo.define('pos_delivery_type', function (require) {
     models.Order = models.Order.extend({
         initialize: function(attributes,options){
             var result = OrderSuper.prototype.initialize.apply(this,arguments);
-            this.selected_delivery_type = this.pos.delivery_type[0].id;
+            this.selected_delivery_type = this.pos.delivery_type[1].id;
             this.selected_delivery_type_name = 0;
             return result;
             
