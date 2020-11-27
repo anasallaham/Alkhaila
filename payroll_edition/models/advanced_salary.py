@@ -748,7 +748,7 @@ class AdvancedSalary(models.Model):
 
     def action_accepted(self):
         if self.env.user.has_group('payroll_edition.accounting_agent_group_manager') or self.env.user.has_group('account.group_account_manager'):
-            if not self.account_id  or not self.journal_id or not self.date_payed :
+            if not self.account_id  or not self.journal_id or not self.date_payed and not self.advanced_salary_monthly:
                 raise UserError(
                     _(
                         "يجب تعبئة الحقول المستخدمة في عملية انشاء القيود"
