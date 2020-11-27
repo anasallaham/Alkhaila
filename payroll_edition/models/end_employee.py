@@ -74,7 +74,6 @@ class EndEmployee(models.Model):
                 me.months_in = difference_in_years.months
                 me.days_in = difference_in_years.days
                 if contract_id:
-                    print ("contract_id",contract_id)
                     if contract_id.structure_type_id.is_allow:
                         amount_res = (contract_id[0].wage + contract_id[0].amount_hous + contract_id[0].amount_trasportation  + contract_id[0].amount_anuther_allow  )
                     else:
@@ -85,29 +84,41 @@ class EndEmployee(models.Model):
                     me.amount_days_paid_holidays = 0.0
 
                 if me.type_end == 'Resignation':
-                    self.amount_in_days = ((me.years_in * 365) + (me.months_in*30) + (me.days_in)) / 365
+                    me.amount_in_days = ((me.years_in * 365) + (me.months_in*30) + (me.days_in)) / 365
                     try:
                         if me.years_in < 2:
                             me.sum_lastes = 0.0
                         elif me.years_in >= 2 and me.years_in < 5:
-                            me.sum_lastes = (33.3 / 100) * self.amount_in_days * (amount_res / 2)
+                            me.sum_lastes = (33.33 / 100) * me.amount_in_days * (amount_res / 2)
                         elif me.years_in >= 5 and me.years_in < 10:
-                            me.sum_lastes = (66 / 100) * self.amount_in_days * (amount_res / 2)
+                            res11 = (66.66 / 100) * 5 * (amount_res / 2)
+                            res12 = (66.66 / 100) * (me.amount_in_days - 5) * (amount_res )
+                            me.sum_lastes = res11 + res12
                         elif me.years_in >= 10:
                             res1 = 5 * (amount_res / 2)
-                            res3 = self.amount_in_days - 5 * (amount_res.wage)
+                            res3 = (me.amount_in_days - 5) * (amount_res)
                             me.sum_lastes = res1 + res3
                     except:
                         me.sum_lastes = 0.0
 
                 else:
-                    self.amount_in_days = ((me.years_in * 365) + (me.months_in*30) + (me.days_in)) / 365
-                    try:
-                        res3 = self.amount_in_days * (amount_res) / 2
-                        me.sum_lastes = res3
-                    except:
-                        me.sum_lastes = 0.0
+                    me.amount_in_days = ((me.years_in * 365) + (me.months_in*30) + (me.days_in)) / 365
 
+                    if me.amount_in_days <= 0.24:
+                        me.sum_lastes = 0.0
+                    elif me.amount_in_days > 0.24 and me.amount_in_days <= 5:
+                        try:
+                            res3 = me.amount_in_days * ((amount_res) / 2)
+                            me.sum_lastes = res3
+                        except:
+                            me.sum_lastes = 0.0
+                    elif me.amount_in_days > 5:
+                        try:
+                            res3 = 5 * ((amount_res) / 2)
+                            res32 = (me.amount_in_days - 5) * (amount_res)
+                            me.sum_lastes = res3+res32
+                        except:
+                            me.sum_lastes = 0.0
     def draft_advanced(self):
         if self.move_id:
             self.move_id.button_draft()
@@ -118,7 +129,6 @@ class EndEmployee(models.Model):
             'Administrator', 'Employees')
         self.env.cr.execute(select)
         results = self.env.cr.dictfetchall()
-        print("wwresults", results)
         users = []
         for obj in results:
             users.append(obj['uid'])
@@ -198,7 +208,6 @@ class EndEmployee(models.Model):
             'Administrator', 'Employees')
         self.env.cr.execute(select)
         results = self.env.cr.dictfetchall()
-        print("wwresults", results)
         users = []
         for obj in results:
             users.append(obj['uid'])
@@ -236,7 +245,6 @@ class EndEmployee(models.Model):
             'Director Group')
             self.env.cr.execute(select)
             results = self.env.cr.dictfetchall()
-            print("wwresults", results)
             users = []
             for obj in results:
                 users.append(obj['uid'])
@@ -279,7 +287,6 @@ class EndEmployee(models.Model):
             'Accounting Agent')
             self.env.cr.execute(select)
             results = self.env.cr.dictfetchall()
-            print("wwresults", results)
             users = []
             for obj in results:
                 users.append(obj['uid'])
