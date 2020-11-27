@@ -31,11 +31,13 @@
                         <button name="action_accepted" string="POST"
                                 type="object" class="btn-primary"
                                 attrs="{'invisible': [('state', '!=', 'director')]}"/>
-                    <button name="action_cancel" states="director" type="object" string="CANCEL"/>
-                    <button name="draft_advanced" attrs="{'invisible': [('state', '=', 'draft')]}" type="object" string="RESET TO DRAFT"/>
+                        <button name="action_cancel" states="director" type="object" string="CANCEL"/>
+                        <button name="draft_advanced" attrs="{'invisible': [('state', '=', 'draft')]}" type="object"
+                                string="RESET TO DRAFT"/>
 
-                    <button name="refuse_go" attrs="{'invisible': [('state', 'in', ['cancel','accepted','director','refuse'])]}"
-                            type="object" string="REFUSE"/>
+                        <button name="refuse_go"
+                                attrs="{'invisible': [('state', 'in', ['cancel','accepted','director','refuse'])]}"
+                                type="object" string="REFUSE"/>
                         <field name="state" widget="statusbar"
                                statusbar_visible="draft,hr_manager_accept,finance_manager,director,accepted,cancel,refuse"/>
                     </header>
@@ -50,39 +52,45 @@
                                 <field name="type_end" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             </group>
                             <group>
-                                <field name="ensbeh_eos" />
-                                <field name="sum_lastes" />
+                                <field name="ensbeh_eos"/>
+                                <field name="sum_lastes"/>
                                 <field name="date_in" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="date_stop" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             </group>
-                            <group >
+                            <group>
 
                                 <field name="years_in" readonly="1"/>
                                 <field name="months_in" readonly="1"/>
                                 <field name="days_in" readonly="1"/>
+                                <field name="amount_in_days" readonly="1"/>
                                 <field name="days_paid_holidays" readonly="1"/>
+                                <field name="amount_days_paid_holidays" readonly="1"/>
                                 <field name="reason_refuse" attrs="{'readonly': [('state', '=', 'refuse')]}"/>
-
-
-                                <field name="journal_id"
-                                   attrs="{'readonly': [('state', '!=', 'director')]}"
-                                   groups="payroll_edition.director_group_manager"/>
-                            <field name="account_id"
-                                   attrs="{'readonly': [('state', '!=', 'director')]}"
-                                   groups="payroll_edition.director_group_manager"/>
-                            <field name="analytic_account_id" attrs="{'readonly': [('state', '!=', 'director')]}"/>
                             </group>
                             <group>
-                                <field name="payslip_id" attrs="{'readonly': [('state', '!=', 'director')],'invisible': [('state', 'not in', ['director','accepted'])]}"/>
+                                <field name="journal_id"
+                                       attrs="{'readonly': [('state', '!=', 'director')]}"
+                                       groups="payroll_edition.director_group_manager"/>
+                                <field name="account_id"
+                                       attrs="{'readonly': [('state', '!=', 'director')]}"
+                                       groups="payroll_edition.director_group_manager"/>
+                                <field name="account_timeoff_id"
+                                       attrs="{'readonly': [('state', '!=', 'director')]}"
+                                       groups="payroll_edition.director_group_manager"/>
+                                <field name="analytic_account_id" attrs="{'readonly': [('state', '!=', 'director')]}"/>
+                            </group>
+                            <group>
+                                <field name="payslip_id"
+                                       attrs="{'readonly': [('state', '!=', 'director')],'invisible': [('state', 'not in', ['director','accepted'])]}"/>
                             </group>
 
                         </group>
-                    <notebook>
-                        <page string="القيود">
-                            <field name="move_id"/>
-                        </page>
+                        <notebook>
+                            <page string="القيود">
+                                <field name="move_id"/>
+                            </page>
 
-                    </notebook>
+                        </notebook>
                     </sheet>
 
                     <div class="oe_chatter">

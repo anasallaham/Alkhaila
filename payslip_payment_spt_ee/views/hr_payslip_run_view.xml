@@ -16,6 +16,7 @@
 
                 <xpath expr="//field[@name='company_id']" position="after">
                     <field name='pay_journal_id' widget='selection' />
+                    <field name='date_paid' attrs="{'readonly': [('state', '=', 'paid')]}" required = "1"/>
                     <field name='communication' />
                 </xpath>
 

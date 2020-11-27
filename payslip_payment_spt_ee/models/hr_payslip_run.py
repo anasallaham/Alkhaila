@@ -23,6 +23,7 @@ class hr_payslip(models.Model):
     communication = fields.Char(string='Memo')
     communication2 = fields.Char(string='Memo',
                                  compute='_compute_release_to_pay')
+    date_paid = fields.Date(string="Paid Date")
 
     @api.onchange()
     def _onchange_release_to_pay_manual(self):
@@ -146,7 +147,7 @@ class hr_payslip(models.Model):
                             'name': name,
                             'partner_id': slip.employee_id.address_home_id.id,
                             'amount': slip.net_salary,
-                            'payment_date': str(datetime.today())[:10],
+                            'payment_date': str(self.date_paid),
                             'communication': record.communication,
                             'payslip_id': slip.id,
                             'partner_type': 'supplier',

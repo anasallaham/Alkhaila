@@ -17,27 +17,29 @@ class EndEmployee(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     order_number = fields.Char(string="Number", readonly=True)
-    date = fields.Date(string=" تاريخ التحرير", required=True)
-    employee_id = fields.Many2one('hr.employee', string="الموظف", required=True)
-    payslip_id = fields.Many2one('hr.payslip', string="احتساب الرواتب")
+    date = fields.Date(string="Request Date", required=True)
+    employee_id = fields.Many2one('hr.employee', string="Employee", required=True)
+    payslip_id = fields.Many2one('hr.payslip', string="Payslip")
 
 
 
-    ensbeh_eos = fields.Float(string="نسبة EOS",readonly=True, related='employee_id.ensbeh_eos')
-    sum_lastes = fields.Float(string="مكافئة انتهاء الخدمة",readonly=True, compute='_compute_years_in', store=True)
-    date_stop  = fields.Date(string="تاريخ الانهاء ",required=True)
-    type_end = fields.Selection([('Resignation','مستقيل'),('end_of_contract','End of contract'),('termination2','Termination')],string="الية الانهاء",required=True)
-    date_in  = fields.Date(string="تاريخ التعيين ",related="employee_id.joining_date")
-    years_in  = fields.Integer(string="السنوات ", compute='_compute_years_in', store=True)
-    months_in  = fields.Integer(string="الاشهر ", compute='_compute_years_in', store=True)
-    days_in  = fields.Integer(string="الايام ", compute='_compute_years_in', store=True)
-    days_paid_holidays = fields.Float(string="عدد الايام المدفوعة",readonly=True, compute='_compute_years_in', store=True)
-    amount_days_paid_holidays = fields.Float(string="قيمة الايام المدفوعة",readonly=True, compute='_compute_years_in', store=True)
-    reason_refuse = fields.Char(string="سبب الرفض")
+    ensbeh_eos = fields.Float(string="نسبة EOS",readonly=True, related='employee_id.ensbeh_eos',invisible=True)
+    sum_lastes = fields.Float(string="EOS",readonly=True, compute='_compute_years_in', store=True)
+    date_stop  = fields.Date(string="Last Working Date ",required=True)
+    type_end = fields.Selection([('Resignation','Resigned'),('end_of_contract','End of contract'),('termination2','Termination')],string="الية الانهاء",required=True)
+    date_in  = fields.Date(string="Joining Date ",related="employee_id.joining_date")
+    years_in  = fields.Integer(string="Years ", compute='_compute_years_in', store=True)
+    months_in  = fields.Integer(string="Months ", compute='_compute_years_in', store=True)
+    days_in  = fields.Integer(string="Days ", compute='_compute_years_in', store=True)
+    days_paid_holidays = fields.Float(string="Vacation Days",readonly=True, compute='_compute_years_in', store=True)
+    amount_days_paid_holidays = fields.Float(string="Vacation Days Amount",readonly=True, compute='_compute_years_in', store=True)
+    amount_in_days = fields.Float(string="Number Of Years",readonly=True, compute='_compute_years_in', store=True)
+    reason_refuse = fields.Char(string="Refuse Reason")
 
-    journal_id = fields.Many2one('account.journal', string="اليوميه")
-    account_id = fields.Many2one('account.account', string="الحساب")
-    move_id = fields.Many2one('account.move', string="القيد",readonly=True)
+    journal_id = fields.Many2one('account.journal', string="Bank Journal")
+    account_id = fields.Many2one('account.account', string="EOS Account")
+    account_timeoff_id = fields.Many2one('account.account', string="Vacation Account")
+    move_id = fields.Many2one('account.move', string="Journal",readonly=True)
     analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', )
 
 
@@ -55,52 +57,56 @@ class EndEmployee(models.Model):
 
     @api.depends('date_stop','employee_id','type_end','date_in')
     def _compute_years_in(self):
-        if self.employee_id:
-            contract_id = self.env["hr.contract"].search(
-                [
-                    ("employee_id", "=", self.employee_id.id), ("date_start", "<=", self.date_stop), ("date_end", ">=", self.date_stop),
-                ]
-            )
+        for me in self:
 
-            remaining = self.employee_id._get_paid_remaining_leaves()
-            self.days_paid_holidays = float_round(remaining.get(self.employee_id.id, 0.0), precision_digits=2)
-            difference_in_years = relativedelta(self.date_stop, self.date_in)
-            self.years_in = difference_in_years.years
-            self.months_in = difference_in_years.months
-            self.days_in = difference_in_years.days
-            if contract_id:
-                print ("contract_id",contract_id)
-                if contract_id.structure_type_id.is_allow:
-                    amount_res = (contract_id[0].wage + contract_id[0].amount_hous + contract_id[0].amount_trasportation  + contract_id[0].amount_anuther_allow  )
+            if me.employee_id:
+                contract_id = me.env["hr.contract"].search(
+                    [
+                        ("employee_id", "=", me.employee_id.id), ("date_start", "<=", me.date_stop), ("date_end", ">=", me.date_stop),
+                    ]
+                )
+
+
+                remaining = me.employee_id._get_paid_remaining_leaves()
+                me.days_paid_holidays = float_round(remaining.get(me.employee_id.id, 0.0), precision_digits=2)
+                difference_in_years = relativedelta(me.date_stop, me.date_in)
+                me.years_in = difference_in_years.years
+                me.months_in = difference_in_years.months
+                me.days_in = difference_in_years.days
+                if contract_id:
+                    print ("contract_id",contract_id)
+                    if contract_id.structure_type_id.is_allow:
+                        amount_res = (contract_id[0].wage + contract_id[0].amount_hous + contract_id[0].amount_trasportation  + contract_id[0].amount_anuther_allow  )
+                    else:
+                        amount_res = (contract_id[0].wage + contract_id[0].amount_anuther_allow  )
+
+                    me.amount_days_paid_holidays = round((amount_res / 30) * me.days_paid_holidays, 2)
                 else:
-                    amount_res = (contract_id[0].wage + contract_id[0].amount_anuther_allow  )
+                    me.amount_days_paid_holidays = 0.0
 
-                self.amount_days_paid_holidays = round((amount_res / 30) * self.days_paid_holidays, 2)
-            else:
-                self.amount_days_paid_holidays = 0.0
+                if me.type_end == 'Resignation':
+                    self.amount_in_days = ((me.years_in * 365) + (me.months_in*30) + (me.days_in)) / 365
+                    try:
+                        if me.years_in < 2:
+                            me.sum_lastes = 0.0
+                        elif me.years_in >= 2 and me.years_in < 5:
+                            me.sum_lastes = (33.3 / 100) * self.amount_in_days * (amount_res / 2)
+                        elif me.years_in >= 5 and me.years_in < 10:
+                            me.sum_lastes = (66 / 100) * self.amount_in_days * (amount_res / 2)
+                        elif me.years_in >= 10:
+                            res1 = 5 * (amount_res / 2)
+                            res3 = self.amount_in_days - 5 * (amount_res.wage)
+                            me.sum_lastes = res1 + res3
+                    except:
+                        me.sum_lastes = 0.0
 
-            if self.type_end == 'Resignation':
-                try:
-                    if self.years_in < 2:
-                        self.sum_lastes = 0.0
-                    elif self.years_in >= 2 and self.years_in < 5:
-                        self.sum_lastes = (33 / 100) * self.years_in * (contract_id[0].wage / 2)
-                    elif self.years_in >= 5 and self.years_in < 10:
-                        self.sum_lastes = (66 / 100) * self.years_in * (contract_id[0].wage / 2)
-                    elif self.years_in >= 10:
-                        res1 = 5 * (contract_id[0].wage / 2)
-                        res3 = self.years_in - 5 * (contract_id[0].wage)
-                        self.sum_lastes = res1 + res3
-                except:
-                    self.sum_lastes = 0.0
-
-            else:
-                try:
-
-                    res3 = self.years_in * (contract_id[0].wage) / 2
-                    self.sum_lastes = res3
-                except:
-                    self.sum_lastes = 0.0
+                else:
+                    self.amount_in_days = ((me.years_in * 365) + (me.months_in*30) + (me.days_in)) / 365
+                    try:
+                        res3 = self.amount_in_days * (amount_res) / 2
+                        me.sum_lastes = res3
+                    except:
+                        me.sum_lastes = 0.0
 
     def draft_advanced(self):
         if self.move_id:
@@ -361,20 +367,23 @@ class EndEmployee(models.Model):
                     moves.post()
                     self.move_id = moves.id
                 else:
-                    amount = self.sum_lastes
-
                     self.move_id.button_draft()
                     move_line_vals = []
-                    line1 = (0, 0, {'name': self.order_number, 'debit': amount, 'credit': 0,
+                    line1 = (0, 0, {'name': self.order_number, 'debit': self.sum_lastes, 'credit': 0,
                                     'account_id': self.account_id.id, 'partner_id': self.employee_id.address_id.id,
                                     'analytic_account_id': self.analytic_account_id.id
                                     })
-                    line2 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': amount,
+                    line11 = (0, 0, {'name': self.order_number, 'debit': self.amount_days_paid_holidays, 'credit': 0,
+                                    'account_id': self.account_timeoff_id.id, 'partner_id': self.employee_id.address_id.id,
+                                    'analytic_account_id': self.analytic_account_id.id
+                                    })
+                    line2 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': self.sum_lastes + self.amount_days_paid_holidays,
                                     'account_id': self.journal_id.default_credit_account_id.id,
                                     'partner_id': self.employee_id.address_id.id,
                                     'analytic_account_id': self.analytic_account_id.id
                                     })
                     move_line_vals.append(line1)
+                    move_line_vals.append(line11)
                     move_line_vals.append(line2)
                     self.move_id.line_ids = move_line_vals
                     self.move_id.post()
@@ -410,8 +419,16 @@ class EndEmployee(models.Model):
                     }),
                     (0, 0, {
                         'name': rec.order_number,
+                        'debit': rec.amount_days_paid_holidays,
+                        'credit': 0.0,
+                        'account_id': rec.account_timeoff_id.id,
+                        'analytic_account_id': rec.analytic_account_id.id,
+                        'partner_id':rec.employee_id.address_home_id.id,
+                    }),
+                    (0, 0, {
+                        'name': rec.order_number,
                         'debit': 0.0,
-                        'credit': rec.sum_lastes,
+                        'credit': rec.sum_lastes+rec.amount_days_paid_holidays,
                         'account_id': rec.journal_id.default_credit_account_id.id,
                         'analytic_account_id': rec.analytic_account_id.id,
                         'partner_id': rec.employee_id.address_home_id.id,
