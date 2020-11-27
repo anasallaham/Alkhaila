@@ -35,6 +35,11 @@ class EndEmployee(models.Model):
     amount_days_paid_holidays = fields.Float(string="قيمة الايام المدفوعة",readonly=True, compute='_compute_years_in', store=True)
     reason_refuse = fields.Char(string="سبب الرفض")
 
+    journal_id = fields.Many2one('account.journal', string="اليوميه")
+    account_id = fields.Many2one('account.account', string="الحساب")
+    move_id = fields.Many2one('account.move', string="القيد",readonly=True)
+    analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', )
+
 
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -98,6 +103,10 @@ class EndEmployee(models.Model):
                     self.sum_lastes = 0.0
 
     def draft_advanced(self):
+        if self.move_id:
+            self.move_id.button_draft()
+            lines = self.env['account.move.line'].search([('move_id', '=', self.move_id.id)])
+            lines.unlink()
         modelid = (self.env['ir.model'].search([('model', '=', 'end.employee')])).id
         select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
             'Administrator', 'Employees')
@@ -338,11 +347,37 @@ class EndEmployee(models.Model):
 
     def action_accepted(self):
         if self.env.user.has_group('payroll_edition.accounting_agent_group_manager') or self.env.user.has_group('account.group_account_manager')  :
-
-
-
+            if (not self.account_id  or not self.journal_id) :
+                raise UserError(
+                    _(
+                        "يجب تعبئة الحقول المستخدمة في عملية انشاء القيود"
+                    ))
             self.employee_id.type_employee_end = self.type_end
             self.employee_id.date_stop = self.date_stop
+            AccountMove = self.env['account.move'].with_context(default_type='entry')
+            for rec in self:
+                if not self.move_id:
+                    moves = AccountMove.create(rec.return_movelines())
+                    moves.post()
+                    self.move_id = moves.id
+                else:
+                    amount = self.sum_lastes
+
+                    self.move_id.button_draft()
+                    move_line_vals = []
+                    line1 = (0, 0, {'name': self.order_number, 'debit': amount, 'credit': 0,
+                                    'account_id': self.account_id.id, 'partner_id': self.employee_id.address_id.id,
+                                    'analytic_account_id': self.analytic_account_id.id
+                                    })
+                    line2 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': amount,
+                                    'account_id': self.journal_id.default_credit_account_id.id,
+                                    'partner_id': self.employee_id.address_id.id,
+                                    'analytic_account_id': self.analytic_account_id.id
+                                    })
+                    move_line_vals.append(line1)
+                    move_line_vals.append(line2)
+                    self.move_id.line_ids = move_line_vals
+                    self.move_id.post()
             self.employee_id.active = False
             activity_old = (self.env['mail.activity'].search([('res_model', '=', 'end.employee'),('res_id', '=', self.id)]))
             for ac in activity_old:
@@ -353,9 +388,38 @@ class EndEmployee(models.Model):
         else:
             raise UserError(
                 _(
-                    "لا يمكنك الموافقة صلاحية الادارة فقط"
+                    "لا يمكنك الموافقة صلاحية مسؤول المحاسبة"
                 )
             )
+    def return_movelines(self):
+        all_move_vals = []
+        for rec in self:
+
+            move_vals = {
+                'date': rec.date_stop,
+                'ref': rec.order_number,
+                'journal_id': rec.journal_id.id,
+                'line_ids': [
+                    (0, 0, {
+                        'name': rec.order_number,
+                        'debit': rec.sum_lastes,
+                        'credit': 0.0,
+                        'account_id': rec.account_id.id,
+                        'analytic_account_id': rec.analytic_account_id.id,
+                        'partner_id':rec.employee_id.address_home_id.id,
+                    }),
+                    (0, 0, {
+                        'name': rec.order_number,
+                        'debit': 0.0,
+                        'credit': rec.sum_lastes,
+                        'account_id': rec.journal_id.default_credit_account_id.id,
+                        'analytic_account_id': rec.analytic_account_id.id,
+                        'partner_id': rec.employee_id.address_home_id.id,
+                    }),
+                ],
+            }
+            all_move_vals.append(move_vals)
+            return all_move_vals
 
     def action_cancel(self):
         activity_old = (
@@ -365,36 +429,3 @@ class EndEmployee(models.Model):
 
         return self.write({'state': 'cancel'})
 
-    def to_street(self):
-        AccountMove = self.env['account.move'].with_context(default_type='entry')
-        for rec in self:
-
-            if not self.move_id:
-                moves = AccountMove.create(rec.return_movelines())
-                moves.post()
-                self.move_id = moves.id
-            else:
-                if self.type_exit_entry == "single":
-                    if self.amount >= 200:
-                        amount = 200
-                    else:
-                        amount = self.amount
-                else:
-                    amount = self.amount
-
-                self.move_id.button_draft()
-                move_line_vals = []
-                line1 = (0, 0, {'name': self.order_number, 'debit': amount, 'credit': 0,
-                                'account_id': self.account_id.id, 'partner_id': self.employee_id.address_id.id,
-                                'analytic_account_id': self.analytic_account_id.id
-                                })
-                line2 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': amount,
-                                'account_id': self.journal_id.default_credit_account_id.id,
-                                'partner_id': self.employee_id.address_id.id,
-                                'analytic_account_id': self.analytic_account_id.id
-                                })
-                move_line_vals.append(line1)
-                move_line_vals.append(line2)
-                self.move_id.line_ids = move_line_vals
-                self.move_id.post()
-        return True

@@ -754,30 +754,31 @@ class AdvancedSalary(models.Model):
                         "يجب تعبئة الحقول المستخدمة في عملية انشاء القيود"
                     ))
 
-            AccountMove = self.env['account.move'].with_context(default_type='entry')
-            if not self.move_id:
-                moves = AccountMove.create(self.return_movelines())
-                moves.post()
-                self.move_id = moves.id
-            else:
-                self.move_id.button_draft()
-                self.move_id.date = self.date_payed
-                move_line_vals = []
-                line1 = (0, 0, {'name': self.order_number, 'debit': self.amount, 'credit': 0,
-                                'account_id': self.account_id.id,'partner_id':self.hr_employee.address_home_id.id,
-                                'analytic_account_id': self.analytic_account_id.id
-                                })
-                line2 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': self.amount,
-                                'account_id': self.journal_id.default_credit_account_id.id,'partner_id':self.hr_employee.address_home_id.id,
-                                'analytic_account_id': self.analytic_account_id.id
-                                })
-                move_line_vals.append(line1)
-                move_line_vals.append(line2)
-                self.move_id.line_ids = move_line_vals
-                self.move_id.post()
-            activity_old = (self.env['mail.activity'].search([('res_model', '=', 'advanced.salary'),('res_id', '=', self.id)]))
-            for ac in activity_old:
-                ac.action_done()
+            if  not self.advanced_salary_monthly:
+                AccountMove = self.env['account.move'].with_context(default_type='entry')
+                if not self.move_id:
+                    moves = AccountMove.create(self.return_movelines())
+                    moves.post()
+                    self.move_id = moves.id
+                else:
+                    self.move_id.button_draft()
+                    self.move_id.date = self.date_payed
+                    move_line_vals = []
+                    line1 = (0, 0, {'name': self.order_number, 'debit': self.amount, 'credit': 0,
+                                    'account_id': self.account_id.id,'partner_id':self.hr_employee.address_home_id.id,
+                                    'analytic_account_id': self.analytic_account_id.id
+                                    })
+                    line2 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': self.amount,
+                                    'account_id': self.journal_id.default_credit_account_id.id,'partner_id':self.hr_employee.address_home_id.id,
+                                    'analytic_account_id': self.analytic_account_id.id
+                                    })
+                    move_line_vals.append(line1)
+                    move_line_vals.append(line2)
+                    self.move_id.line_ids = move_line_vals
+                    self.move_id.post()
+                activity_old = (self.env['mail.activity'].search([('res_model', '=', 'advanced.salary'),('res_id', '=', self.id)]))
+                for ac in activity_old:
+                    ac.action_done()
 
             self.state = "accepted"
         else:
