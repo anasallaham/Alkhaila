@@ -1,5 +1,6 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
+from datetime import date, datetime,timedelta
 
 
 class PurchaseOrder(models.Model):
@@ -58,12 +59,41 @@ class PurchaseOrder(models.Model):
                     po.company_id.dept_manager_approve_limit, po.currency_id):
                 po.button_approve(force=True)
             else:
+                modelid = (self.env['ir.model'].search([('model', '=', 'purchase.order')])).id
+                select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+                    'Administrator', 'Purchase')
+                self.env.cr.execute(select)
+                results = self.env.cr.dictfetchall()
+                users = []
+                for obj in results:
+                    users.append(obj['uid'])
+                print("users", users)
+                user_id = (self.env['res.users'].search([('id', 'in', users)]))
+                activity = self.env['mail.activity']
+                for user in user_id:
+                    activity_ins = activity.create(
+                        {'res_id': self.id,
+                         'res_model_id': modelid,
+                         'res_model': 'purchase.order',
+                         'activity_type_id': (
+                             self.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                         'summary': '',
+                         'note': '',
+                         'date_deadline': date.today(),
+                         'activity_category': 'default',
+                         'previous_activity_type_id': False,
+                         'recommended_activity_type_id': False,
+                         'user_id': user.id
+                         })
+
                 po.write({'state': 'to approve'})  # Call For Manager Approval
         return True
 
     def button_approve(self, force=False):
         # Regular Approve Override Base Method And Added Three Step Approval
         for po in self:
+
+
             company = po.company_id
             if not company.three_step_approval or (company.dept_manager_approve_limit <= 0 or company.finance_approve_limit <= 0 or company.director_approve_limit <= 0):
                 return super(PurchaseOrder, self).button_approve(force=force)
@@ -77,13 +107,45 @@ class PurchaseOrder(models.Model):
                 po._create_picking()
                 po.filtered(lambda p: p.company_id.po_lock == 'lock').write({'state': 'done'})
             else:
-                company.approve_mail_template.send_mail(po.id)
+                activity_old = (
+                    self.env['mail.activity'].search(
+                        [('res_model', '=', 'purchase.order'), ('res_id', '=', self.id)]))
+                for ac in activity_old:
+                    ac.action_done()
+
+                modelid = (self.env['ir.model'].search([('model', '=', 'purchase.order')])).id
+                select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+                    'Purchase Finance Manager', 'Purchase')
+                self.env.cr.execute(select)
+                results = self.env.cr.dictfetchall()
+                users = []
+                for obj in results:
+                    users.append(obj['uid'])
+                print("users", users)
+                user_id = (self.env['res.users'].search([('id', 'in', users)]))
+                activity = self.env['mail.activity']
+                for user in user_id:
+                    activity_ins = activity.create(
+                        {'res_id': self.id,
+                         'res_model_id': modelid,
+                         'res_model': 'purchase.order',
+                         'activity_type_id': (
+                             self.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                         'summary': '',
+                         'note': '',
+                         'date_deadline': date.today(),
+                         'activity_category': 'default',
+                         'previous_activity_type_id': False,
+                         'recommended_activity_type_id': False,
+                         'user_id': user.id
+                         })
                 po.write({'state': 'finance_approve', 'dept_manager_id': self.env.uid,
                           'dept_manager_approve_date': fields.Date.context_today(self)})
         return {}
 
     def purchase_finance_manager_approve(self):
         for po in self:
+
             company = po.company_id
             if po.finance_approval_id and self.env.user != po.finance_approval_id:
                 raise UserError(_("Only %s User Can Approve This Order." % (po.finance_approval_id)))
@@ -92,8 +154,39 @@ class PurchaseOrder(models.Model):
                 po._create_picking()
                 po.filtered(lambda p: p.company_id.po_lock == 'lock').write({'state': 'done'})
             else:
+                activity_old = (
+                    self.env['mail.activity'].search(
+                        [('res_model', '=', 'purchase.order'), ('res_id', '=', self.id)]))
+                for ac in activity_old:
+                    ac.action_done()
 
-                company.approve_mail_template.send_mail(po.id)
+
+                modelid = (self.env['ir.model'].search([('model', '=', 'purchase.order')])).id
+                select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+                    'Director', 'Purchase')
+                self.env.cr.execute(select)
+                results = self.env.cr.dictfetchall()
+                users = []
+                for obj in results:
+                    users.append(obj['uid'])
+                print("users", users)
+                user_id = (self.env['res.users'].search([('id', 'in', users)]))
+                activity = self.env['mail.activity']
+                for user in user_id:
+                    activity_ins = activity.create(
+                        {'res_id': self.id,
+                         'res_model_id': modelid,
+                         'res_model': 'purchase.order',
+                         'activity_type_id': (
+                             self.env['mail.activity.type'].search([('res_model_id', '=', modelid)])).id,
+                         'summary': '',
+                         'note': '',
+                         'date_deadline': date.today(),
+                         'activity_category': 'default',
+                         'previous_activity_type_id': False,
+                         'recommended_activity_type_id': False,
+                         'user_id': user.id
+                         })
                 po.write({'state': 'director_approve', 'finance_approval_id': self.env.uid,
                           'finance_manager_approve_date': fields.Date.context_today(self)})
         return {}
@@ -103,7 +196,11 @@ class PurchaseOrder(models.Model):
             company = po.company_id
             if po.director_approval_id and self.env.user != po.director_approval_id:
                 raise UserError(_("Only %s User Can Approve This Order." % (po.director_approval_id)))
-            company.approve_mail_template.send_mail(po.id)
+            activity_old = (
+                self.env['mail.activity'].search(
+                    [('res_model', '=', 'purchase.order'), ('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
 
             po.write({'state': 'purchase', 'director_approval_id': self.env.uid,
                       'director_approve_date': fields.Date.context_today(self), 'date_approve': fields.Date.context_today(self)})
