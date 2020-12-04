@@ -31,7 +31,7 @@ class EndEmployee(models.Model):
     years_in  = fields.Integer(string="Years ", compute='_compute_years_in', store=True)
     months_in  = fields.Integer(string="Months ", compute='_compute_years_in', store=True)
     days_in  = fields.Integer(string="Days ", compute='_compute_years_in', store=True)
-    days_paid_holidays = fields.Float(string="Vacation Days",readonly=True, compute='_compute_years_in', store=True)
+    days_paid_holidays = fields.Float(string="Vacation Days",readonly=False, compute='_compute_years_in', store=True)
     amount_days_paid_holidays = fields.Float(string="Vacation Days Amount",readonly=True, compute='_compute_years_in', store=True)
     amount_in_days = fields.Float(string="Number Of Years",readonly=True, compute='_compute_years_in', store=True)
     reason_refuse = fields.Char(string="Refuse Reason")
@@ -58,15 +58,12 @@ class EndEmployee(models.Model):
     @api.depends('date_stop','employee_id','type_end','date_in')
     def _compute_years_in(self):
         for me in self:
-
             if me.employee_id:
                 contract_id = me.env["hr.contract"].search(
                     [
                         ("employee_id", "=", me.employee_id.id), ("date_start", "<=", me.date_stop), ("date_end", ">=", me.date_stop),
                     ]
                 )
-
-
                 remaining = me.employee_id._get_paid_remaining_leaves()
                 me.days_paid_holidays = float_round(remaining.get(me.employee_id.id, 0.0), precision_digits=2)
                 difference_in_years = relativedelta(me.date_stop, me.date_in)

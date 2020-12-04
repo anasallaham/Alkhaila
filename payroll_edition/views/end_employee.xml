@@ -63,8 +63,8 @@
                                 <field name="months_in" readonly="1"/>
                                 <field name="days_in" readonly="1"/>
                                 <field name="amount_in_days" readonly="1"/>
-                                <field name="days_paid_holidays" readonly="1"/>
-                                <field name="amount_days_paid_holidays" readonly="1"/>
+                                <field name="days_paid_holidays" attrs="{'readonly': [('state', '=', 'accepted')]}"/>
+                                <field name="amount_days_paid_holidays" attrs="{'readonly': [('state', '=', 'accepted')]}"/>
                                 <field name="reason_refuse" attrs="{'readonly': [('state', '=', 'refuse')]}"/>
                             </group>
                             <group>

@@ -22,7 +22,7 @@
 		</record>
 
 		
-        <menuitem id="menu_payslip_account_payment_spt" name="Payslip Payment" parent="hr_payroll.menu_hr_payroll_root" action="action_payslip_account_payment_spt" sequence='72'/>
+        <menuitem id="menu_payslip_account_payment_spt" name="Payslip Payment" groups="account.group_account_manager" parent="hr_payroll.menu_hr_payroll_root" action="action_payslip_account_payment_spt" sequence='72'/>
 
     </data>
 </odoo>
