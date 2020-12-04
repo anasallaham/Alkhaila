@@ -121,13 +121,20 @@ class EndEmployee(models.Model):
                             me.sum_lastes = res3+res32
                         except:
                             me.sum_lastes = 0.0
+
+
+            accounts = []
             monthly = me.env["advanced.salary.monthly"].search(
                 [
                     ("hr_employee", "=", me.employee_id.id)
                 ])
             sum_monthly = 0.0
             for m in monthly:
-                sum_monthly += m.balance
+                if m.account_id.id in accounts:
+                    continue
+                else:
+                    accounts.append(m.account_id.id)
+                    sum_monthly += m.balance
             me.balance =sum_monthly
             me.net = me.sum_lastes + me.amount_days_paid_holidays - sum_monthly
     def draft_advanced(self):
