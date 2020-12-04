@@ -8,6 +8,7 @@
                 <tree string="end employee  Tree">
                     <field name="employee_id"/>
                     <field name="date"/>
+                    <field name="net"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -56,6 +57,8 @@
                                 <field name="sum_lastes"/>
                                 <field name="date_in" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="date_stop" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="balance" />
+                                <field name="net" />
                             </group>
                             <group>
 
@@ -75,6 +78,9 @@
                                        attrs="{'readonly': [('state', '!=', 'director')]}"
                                        groups="payroll_edition.director_group_manager"/>
                                 <field name="account_timeoff_id"
+                                       attrs="{'readonly': [('state', '!=', 'director')]}"
+                                       groups="payroll_edition.director_group_manager"/>
+                                <field name="account_monthly_id"
                                        attrs="{'readonly': [('state', '!=', 'director')]}"
                                        groups="payroll_edition.director_group_manager"/>
                                 <field name="analytic_account_id" attrs="{'readonly': [('state', '!=', 'director')]}"/>

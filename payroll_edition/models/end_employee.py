@@ -39,6 +39,7 @@ class EndEmployee(models.Model):
     journal_id = fields.Many2one('account.journal', string="Bank Journal")
     account_id = fields.Many2one('account.account', string="EOS Account")
     account_timeoff_id = fields.Many2one('account.account', string="Vacation Account")
+    account_monthly_id = fields.Many2one('account.account', string="Advanced Salary Account")
     move_id = fields.Many2one('account.move', string="Journal",readonly=True)
     analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', )
 
@@ -52,6 +53,10 @@ class EndEmployee(models.Model):
         ('cancel', 'Cancelled'),
         ("refuse", "Refuse"),
     ], string='Status', default='draft')
+
+
+    balance = fields.Float(string="السلف المتبقية", compute='_compute_years_in', store=True,readonly=False)
+    net = fields.Float(string="الصافي", compute='_compute_years_in', store=True,readonly=False)
 
 
 
@@ -116,6 +121,15 @@ class EndEmployee(models.Model):
                             me.sum_lastes = res3+res32
                         except:
                             me.sum_lastes = 0.0
+            monthly = me.env["advanced.salary.monthly"].search(
+                [
+                    ("hr_employee", "=", me.employee_id.id)
+                ])
+            sum_monthly = 0.0
+            for m in monthly:
+                sum_monthly += m.balance
+            me.balance =sum_monthly
+            me.net = me.sum_lastes + me.amount_days_paid_holidays - sum_monthly
     def draft_advanced(self):
         if self.move_id:
             self.move_id.button_draft()
@@ -357,7 +371,7 @@ class EndEmployee(models.Model):
 
     def action_accepted(self):
         if self.env.user.has_group('payroll_edition.accounting_agent_group_manager') or self.env.user.has_group('account.group_account_manager')  :
-            if (not self.account_id  or not self.journal_id) :
+            if (not self.account_id  or not self.journal_id) or (self.balance > 0 and not self.account_monthly_id) :
                 raise UserError(
                     _(
                         "يجب تعبئة الحقول المستخدمة في عملية انشاء القيود"
@@ -374,18 +388,25 @@ class EndEmployee(models.Model):
                     self.move_id.button_draft()
                     move_line_vals = []
                     line1 = (0, 0, {'name': self.order_number, 'debit': self.sum_lastes, 'credit': 0,
-                                    'account_id': self.account_id.id, 'partner_id': self.employee_id.address_id.id,
+                                    'account_id': self.account_id.id, 'partner_id': self.employee_id.address_home_id.id,
                                     'analytic_account_id': self.analytic_account_id.id
                                     })
                     line11 = (0, 0, {'name': self.order_number, 'debit': self.amount_days_paid_holidays, 'credit': 0,
-                                    'account_id': self.account_timeoff_id.id, 'partner_id': self.employee_id.address_id.id,
+                                    'account_id': self.account_timeoff_id.id, 'partner_id': self.employee_id.address_home_id.id,
                                     'analytic_account_id': self.analytic_account_id.id
                                     })
-                    line2 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': self.sum_lastes + self.amount_days_paid_holidays,
+                    if self.balance > 0:
+                        line112 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': self.balance,
+                                        'account_id': self.account_monthly_id.id, 'partner_id': self.employee_id.address_home_id.id,
+                                        'analytic_account_id': self.analytic_account_id.id
+                                        })
+                    line2 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': self.sum_lastes + self.amount_days_paid_holidays - self.balance,
                                     'account_id': self.journal_id.default_credit_account_id.id,
-                                    'partner_id': self.employee_id.address_id.id,
+                                    'partner_id': self.employee_id.address_home_id.id,
                                     'analytic_account_id': self.analytic_account_id.id
                                     })
+                    if self.balance > 0:
+                        move_line_vals.append(line112)
                     move_line_vals.append(line1)
                     move_line_vals.append(line11)
                     move_line_vals.append(line2)
@@ -439,6 +460,13 @@ class EndEmployee(models.Model):
                     }),
                 ],
             }
+            if self.balance > 0:
+                line112 = (0, 0, {'name': self.order_number, 'debit': 0, 'credit': self.balance,
+                                  'account_id': self.account_monthly_id.id,
+                                  'partner_id': self.employee_id.address_home_id.id,
+                                  'analytic_account_id': self.analytic_account_id.id
+                                  })
+                all_move_vals.append(line112)
             all_move_vals.append(move_vals)
             return all_move_vals
 

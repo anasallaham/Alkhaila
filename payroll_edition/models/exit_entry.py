@@ -409,7 +409,7 @@ class ExitEntry(models.Model):
                         'credit': 0.0,
                         'account_id': exitentry.account_id.id,
                         'analytic_account_id': exitentry.analytic_account_id.id,
-                        'partner_id':exitentry.employee_id.address_id.id,
+                        'partner_id':exitentry.employee_id.address_home_id.id,
                     }),
                     (0, 0, {
                         'name': exitentry.order_number,
@@ -417,7 +417,7 @@ class ExitEntry(models.Model):
                         'credit': amount,
                         'account_id': exitentry.journal_id.default_credit_account_id.id,
                         'analytic_account_id': exitentry.analytic_account_id.id,
-                        'partner_id': exitentry.employee_id.address_id.id,
+                        'partner_id': exitentry.employee_id.address_home_id.id,
                     }),
                 ],
             }
@@ -445,10 +445,10 @@ class ExitEntry(models.Model):
                 rec.move_id.date = rec.date_payed
                 move_line_vals = []
                 line1 = (0, 0, {'name': rec.order_number, 'debit': amount, 'credit': 0,
-                                'analytic_account_id': rec.analytic_account_id.id,'account_id': rec.account_id.id,'partner_id':rec.employee_id.address_id.id,
+                                'analytic_account_id': rec.analytic_account_id.id,'account_id': rec.account_id.id,'partner_id':rec.employee_id.address_home_id.id,
                                 })
                 line2 = (0, 0, {'name': rec.order_number, 'debit': 0, 'credit': amount,
-                                'account_id': rec.journal_id.default_credit_account_id.id,'partner_id':rec.employee_id.address_id.id,
+                                'account_id': rec.journal_id.default_credit_account_id.id,'partner_id':rec.employee_id.address_home_id.id,
                                 'analytic_account_id': rec.analytic_account_id.id
                                 })
                 move_line_vals.append(line1)

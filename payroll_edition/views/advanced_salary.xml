@@ -261,6 +261,7 @@
                 <field name="amount" sum="Total"/>
                 <field name="date"/>
                 <field name="date_payed"/>
+                <field name="balance"/>
                 <field name="count_cut"/>
                 <field name="state"/>
             </tree>
@@ -310,6 +311,8 @@
                                    attrs="{'readonly': [('state', '!=', 'draft')],'invisible': [('holiday_id', '!=', False)]}"/>
                             <field name="count_cut"
                                    attrs="{'readonly': [('state', '!=', 'draft')],'invisible': [('holiday_id', '!=', False)]}"/>
+                            <field name="balance"
+                                  />
                         </group>
                         <group>
                             <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>

@@ -40,6 +40,19 @@ class AdvancedSalaryMonthly(models.Model):
         default="draft",
     )
 
+    balance = fields.Float(string="الرصيد المتبقي",compute="_compute_balance")
+
+
+    def _compute_balance(self):
+        for me in self:
+            select = "select sum(debit)-sum(credit) as res from account_move_line where account_id = %s and partner_id = %s" % (me.account_id.id,me.hr_employee.address_home_id.id or 0)
+            me.env.cr.execute(select)
+            results = me.env.cr.dictfetchall()[0]['res']
+            me.balance = results
+
+
+
+
     @api.model
     def create(self, vals):
         if 'order_number' not in vals:
@@ -426,6 +439,10 @@ class AdvancedSalaryMonthly(models.Model):
         for line in self.advanced_salary:
             line.draft_advanced()
             line.unlink()
+        self.move_id.button_draft()
+        lines = self.env['account.move.line'].search([('move_id', '=', self.move_id.id)])
+        lines.unlink()
+
         modelid = (self.env['ir.model'].search([('model', '=', 'advanced.salary.monthly')])).id
         select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
             'Administrator', 'Employees')
