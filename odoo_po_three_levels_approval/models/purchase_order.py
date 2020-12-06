@@ -67,8 +67,30 @@ class PurchaseOrder(models.Model):
                 users = []
                 for obj in results:
                     users.append(obj['uid'])
+
+
+                select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+                    'Purchase Finance Manager', 'Purchase')
+                self.env.cr.execute(select)
+                results = self.env.cr.dictfetchall()
+                finance_users = []
+                for obj in results:
+                    finance_users.append(obj['uid'])
+
+
+                select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+                    'Director', 'Purchase')
+                self.env.cr.execute(select)
+                results = self.env.cr.dictfetchall()
+                Director_users = []
+                for obj in results:
+                    Director_users.append(obj['uid'])
+
+
+
                 print("users", users)
-                user_id = (self.env['res.users'].search([('id', 'in', users)]))
+
+                user_id = (self.env['res.users'].search([('id', 'in', users),('id', 'not in', finance_users),('id', 'not in', Director_users)]))
                 activity = self.env['mail.activity']
                 for user in user_id:
                     activity_ins = activity.create(
@@ -122,7 +144,15 @@ class PurchaseOrder(models.Model):
                 for obj in results:
                     users.append(obj['uid'])
                 print("users", users)
-                user_id = (self.env['res.users'].search([('id', 'in', users)]))
+                select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
+                    'Director', 'Purchase')
+                self.env.cr.execute(select)
+                results = self.env.cr.dictfetchall()
+                Director_users = []
+                for obj in results:
+                    Director_users.append(obj['uid'])
+
+                user_id = (self.env['res.users'].search([('id', 'in', users),('id', 'not in', Director_users)]))
                 activity = self.env['mail.activity']
                 for user in user_id:
                     activity_ins = activity.create(
