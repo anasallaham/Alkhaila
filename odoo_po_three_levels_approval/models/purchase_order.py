@@ -114,7 +114,11 @@ class PurchaseOrder(models.Model):
     def button_approve(self, force=False):
         # Regular Approve Override Base Method And Added Three Step Approval
         for po in self:
-
+            activity_old = (
+                self.env['mail.activity'].search(
+                    [('res_model', '=', 'purchase.order'), ('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
 
             company = po.company_id
             if not company.three_step_approval or (company.dept_manager_approve_limit <= 0 or company.finance_approve_limit <= 0 or company.director_approve_limit <= 0):
@@ -129,11 +133,6 @@ class PurchaseOrder(models.Model):
                 po._create_picking()
                 po.filtered(lambda p: p.company_id.po_lock == 'lock').write({'state': 'done'})
             else:
-                activity_old = (
-                    self.env['mail.activity'].search(
-                        [('res_model', '=', 'purchase.order'), ('res_id', '=', self.id)]))
-                for ac in activity_old:
-                    ac.action_done()
 
                 modelid = (self.env['ir.model'].search([('model', '=', 'purchase.order')])).id
                 select = "select uid from res_groups_users_rel as gs where gs.gid in (select id from res_groups as gg where name = '%s' and category_id in (select id from ir_module_category where name = '%s')   ) " % (
