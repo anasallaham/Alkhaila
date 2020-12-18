@@ -174,6 +174,11 @@ class PurchaseOrder(models.Model):
 
     def purchase_finance_manager_approve(self):
         for po in self:
+            activity_old = (
+                self.env['mail.activity'].search(
+                    [('res_model', '=', 'purchase.order'), ('res_id', '=', self.id)]))
+            for ac in activity_old:
+                ac.action_done()
 
             company = po.company_id
             if po.finance_approval_id and self.env.user != po.finance_approval_id:
@@ -183,11 +188,6 @@ class PurchaseOrder(models.Model):
                 po._create_picking()
                 po.filtered(lambda p: p.company_id.po_lock == 'lock').write({'state': 'done'})
             else:
-                activity_old = (
-                    self.env['mail.activity'].search(
-                        [('res_model', '=', 'purchase.order'), ('res_id', '=', self.id)]))
-                for ac in activity_old:
-                    ac.action_done()
 
 
                 modelid = (self.env['ir.model'].search([('model', '=', 'purchase.order')])).id
@@ -238,6 +238,7 @@ class PurchaseOrder(models.Model):
         return {}
 
     def refused_order(self):
+        
         # Check User Access
         groups_ids = self.env.user.groups_id.ids
         access = ''

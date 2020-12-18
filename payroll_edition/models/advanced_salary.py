@@ -40,7 +40,7 @@ class AdvancedSalaryMonthly(models.Model):
         default="draft",
     )
 
-    balance = fields.Float(string="الرصيد المتبقي",compute="_compute_balance")
+    balance = fields.Float(string="Remaining Employee Loan Balance",compute="_compute_balance")
 
 
     def _compute_balance(self):
