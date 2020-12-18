@@ -45,7 +45,9 @@ class AdvancedSalaryMonthly(models.Model):
 
     def _compute_balance(self):
         for me in self:
-            select = "select sum(debit)-sum(credit) as res from account_move_line where account_id = %s and partner_id = %s" % (me.account_id.id,me.hr_employee.address_home_id.id or 0)
+            date = datetime.now()
+            #select = "select sum(debit)-sum(credit) as res from account_move_line where account_id = %s and partner_id = %s" % (me.account_id.id,me.hr_employee.address_home_id.id or 0)
+            select = "select sum(amount) as res from advanced_salary where state = 'accepted' and hr_employee = %s and date > %r" % (me.hr_employee.id or 0,str(date))
             me.env.cr.execute(select)
             results = me.env.cr.dictfetchall()[0]['res']
             me.balance = results
